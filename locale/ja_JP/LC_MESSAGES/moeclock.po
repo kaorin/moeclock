@@ -1,0 +1,122 @@
+# Japanese translations for src package
+# src パッケージに対する英訳.
+# Copyright (C) 2019 THE src'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the src package.
+# kaoru <kaoru.konno@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: src 2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-08 23:17+0900\n"
+"PO-Revision-Date: 2019-08-08 23:17+0900\n"
+"Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: moeclock.glade.h:1
+msgid "MoeClock"
+msgstr "萌え時計"
+
+#: moeclock.glade.h:2
+msgid "Time Signal"
+msgstr "時報"
+
+#: moeclock.glade.h:3
+msgid "Always in front"
+msgstr "常に前面に"
+
+#: moeclock.glade.h:4
+msgid "Window Size"
+msgstr "ウィンドウサイズ"
+
+#: moeclock.glade.h:5
+msgid "Micro(280)"
+msgstr "最小(280)"
+
+#: moeclock.glade.h:6
+msgid "Small(320)"
+msgstr "小(320)"
+
+#: moeclock.glade.h:7
+msgid "Medium(400)"
+msgstr "中(400)"
+
+#: moeclock.glade.h:8
+msgid "Large(480)"
+msgstr "大(480)"
+
+#: moeclock.glade.h:9
+msgid "Big(640)"
+msgstr "特大(640)"
+
+#: moeclockdlg.glade.h:1
+msgid "Settings"
+msgstr "設定"
+
+#: moeclockdlg.glade.h:2
+msgid "Wallpaper Folder"
+msgstr "壁紙フォルダ"
+
+#: moeclockdlg.glade.h:3
+msgid "* Folder changes will be effective from the next startup."
+msgstr "※フォルダ変更は次回起動時から有効になります。"
+
+#: moeclockdlg.glade.h:4
+msgid "Font"
+msgstr "フォント"
+
+#: moeclockdlg.glade.h:5
+msgid ""
+"* Selecting only the font name is effective.\n"
+" Size and style are not reflected."
+msgstr ""
+"※フォントはフォント名のみの選択が有効です。\n"
+"　サイズとスタイルは反映されません。"
+#: moeclockdlg.glade.h:7
+msgid "Day of week display offset(px)"
+msgstr "曜日表示オフセット(px)"
+
+#: moeclockdlg.glade.h:8
+msgid "Select Skin"
+msgstr "スキン選択"
+
+#: moeclockdlg.glade.h:9
+msgid "Select Skin Folder"
+msgstr "スキンフォルダの選択"
+
+#: moeclockdlg.glade.h:10
+msgid "Font Color"
+msgstr "文字の色"
+
+#: moeclockdlg.glade.h:11
+msgid "Time signal audio select"
+msgstr "時報音声選択"
+
+#: moeclockdlg.glade.h:12
+msgid "Time signal audio file select(WAVE only)"
+msgstr "時報音声ファイルの選択(WAVE形式のみ)"
+
+#: moeclockdlg.glade.h:13
+msgid "centered"
+msgstr "centered"
+
+#: moeclockdlg.glade.h:14
+msgid "scaled"
+msgstr "scaled"
+
+#: moeclockdlg.glade.h:15
+msgid "stretched"
+msgstr "stretched"
+
+#: moeclockdlg.glade.h:16
+msgid "zoom"
+msgstr "zoom"
+
+#: moeclockdlg.glade.h:17
+msgid "spanned"
+msgstr "spanned"

@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-08 23:17+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: moeclock.glade.h:1
+msgid "MoeClock"
+msgstr ""
+
+#: moeclock.glade.h:2
+msgid "Time Signal"
+msgstr ""
+
+#: moeclock.glade.h:3
+msgid "Always in front"
+msgstr ""
+
+#: moeclock.glade.h:4
+msgid "Window Size"
+msgstr ""
+
+#: moeclock.glade.h:5
+msgid "Micro(280)"
+msgstr ""
+
+#: moeclock.glade.h:6
+msgid "Small(320)"
+msgstr ""
+
+#: moeclock.glade.h:7
+msgid "Medium(400)"
+msgstr ""
+
+#: moeclock.glade.h:8
+msgid "Large(480)"
+msgstr ""
+
+#: moeclock.glade.h:9
+msgid "Big(640)"
+msgstr ""
+
+#: moeclockdlg.glade.h:1
+msgid "Settings"
+msgstr ""
+
+#: moeclockdlg.glade.h:2
+msgid "Wallpaper Folder"
+msgstr ""
+
+#: moeclockdlg.glade.h:3
+msgid "* Folder changes will be effective from the next startup."
+msgstr ""
+
+#: moeclockdlg.glade.h:4
+msgid "Font"
+msgstr ""
+
+#: moeclockdlg.glade.h:5
+msgid ""
+"* Selecting only the font name is effective.\n"
+" Size and style are not reflected."
+msgstr ""
+
+#: moeclockdlg.glade.h:7
+msgid "Day of week display offset(px)"
+msgstr ""
+
+#: moeclockdlg.glade.h:8
+msgid "Select Skin"
+msgstr ""
+
+#: moeclockdlg.glade.h:9
+msgid "Select Skin Folder"
+msgstr ""
+
+#: moeclockdlg.glade.h:10
+msgid "Font Color"
+msgstr ""
+
+#: moeclockdlg.glade.h:11
+msgid "Time signal audio select"
+msgstr ""
+
+#: moeclockdlg.glade.h:12
+msgid "Time signal audio file select(WAVE only)"
+msgstr ""
+
+#: moeclockdlg.glade.h:13
+msgid "centered"
+msgstr ""
+
+#: moeclockdlg.glade.h:14
+msgid "scaled"
+msgstr ""
+
+#: moeclockdlg.glade.h:15
+msgid "stretched"
+msgstr ""
+
+#: moeclockdlg.glade.h:16
+msgid "zoom"
+msgstr ""
+
+#: moeclockdlg.glade.h:17
+msgid "spanned"
+msgstr ""

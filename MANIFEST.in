@@ -1,0 +1,11 @@
+include *.txt
+include *.py
+include *.png
+include *.glade
+include *.wav
+include *.desktop
+recursive-include default *.png *.txt
+recursive-include moeskin* *.png *.txt
+recursive-include mikunchu *.png *.txt
+recursive-include sound *.wav
+recursive-include locale *.po *.mo

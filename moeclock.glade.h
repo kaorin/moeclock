@@ -1,0 +1,9 @@
+char *s = N_("MoeClock");
+char *s = N_("Time Signal");
+char *s = N_("Always in front");
+char *s = N_("Window Size");
+char *s = N_("Micro(280)");
+char *s = N_("Small(320)");
+char *s = N_("Medium(400)");
+char *s = N_("Large(480)");
+char *s = N_("Big(640)");

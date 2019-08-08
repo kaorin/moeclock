@@ -25,7 +25,7 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.3.0.2"
+VERSION="1.3.0.3"
 NAME="moeclock"
 WEEKString=(u'（月）',u'（火）',u'（水）',u'（木）',u'（金）',u'（土）',u'（日）',)
 APP = 'moeclock'

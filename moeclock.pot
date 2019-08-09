@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
+"POT-Creation-Date: 2019-08-10 05:04+JST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,28 +42,40 @@ msgstr ""
 msgid "(Wed)"
 msgstr ""
 
-#: moeclock.py:225
+#: moeclock.py:227
 msgid "All Files"
 msgstr ""
 
-#: moeclock.py:228
+#: moeclock.py:230
 msgid "Sound Files"
 msgstr ""
 
-#: moeclock.py:481 moeclock.py:507
+#: moeclock.py:497 moeclock.py:523
 msgid "Moe Clock"
 msgstr ""
 
-#: moeclock.py:484
+#: moeclock.py:500
 msgid "Change the image every minute and notify the time."
 msgstr ""
 
-#: moeclock.py:485 moeclock.py:486
+#: moeclock.py:501 moeclock.py:502
 msgid "Kaorin@"
 msgstr ""
 
-#: moeclock.py:504
+#: moeclock.py:520
 msgid "Moe Clock - %H:%M:%S"
+msgstr ""
+
+#: moeclock.py:564
+msgid "%s"
+msgstr ""
+
+#: moeclock.py:599
+msgid "Just Now!"
+msgstr ""
+
+#: moeclock.py:603
+msgid "Now!"
 msgstr ""
 
 #: moeclock.glade.h:1

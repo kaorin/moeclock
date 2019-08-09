@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
-"PO-Revision-Date: 2019-08-09 23:07+0900\n"
+"POT-Creation-Date: 2019-08-10 05:04+JST\n"
+"PO-Revision-Date: 2019-08-10 05:04+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -65,9 +65,21 @@ msgstr "1分ごとに画像を変更し時間を通知します。"
 msgid "Kaorin@"
 msgstr "かおりん@"
 
-#: moeclock.py:504
+#: moeclock.py:520
 msgid "Moe Clock - %H:%M:%S"
 msgstr "萌え時計 - %H:%M:%S"
+
+#: moeclock.py:564
+msgid "%s"
+msgstr "%sねん"
+
+#: moeclock.py:599
+msgid "Just Now!"
+msgstr "になったよ！"
+
+#: moeclock.py:603
+msgid "Now!"
+msgstr "だよ！"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"

@@ -136,6 +136,8 @@ class moeclock:
     iconifed = False
     noticeFlag = True
     notice = True
+    defaultHeaderBar = None
+    customHeaderBar = None
 
     def __init__(self):
         logging.debug("__init__")
@@ -153,7 +155,7 @@ class moeclock:
         self.windowDecorate = eval(conf.GetOption("windowDecorate"))
         self.sound = conf.GetOption("sound")
         if len(uselist) > 0:
-            use_wallpaper_list = eval(uselist)
+            self.use_wallpaper_list = eval(uselist)
         #メインウィンドウを作成
         self.wMain = Gtk.Builder()
         self.wMain.set_translation_domain(APP)
@@ -255,6 +257,7 @@ class moeclock:
         #tmplist = os.listdir(WALLPAPER_PATH+"/")
         #self.wallpaper_list = [ WALLPAPER_PATH+"/" +x for x in tmplist if x.find(".jpg") >= 0 or x.find(".JPG") >= 0 or x.find(".png") >= 0 or x.find(".PNG") >= 0]
         logging.debug(str(self.wallpaper_list))
+        mainWindow.set_decorated(self.windowDecorate)
         self.timeout = GLib.timeout_add_seconds(int(self.timeout_interval),self.timeout_callback,self)
 
     def __getitem__(self, key):
@@ -406,40 +409,47 @@ class moeclock:
 
     def on_miDecorate_toggled(self,widget):
         self.windowDecorate = widget.get_active()
+        mainWindow = self.wMain.get_object("Main")
+        mainWindow.set_decorated(self.windowDecorate)
+        (xsize, ysize) = mainWindow.get_size()
+        mainWindow.resize(xsize,40)
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
         
     def on_miMicro_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(280,88)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miSmall_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(320,180)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miMidium_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(400,225)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miLarge_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(480,270)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miBig_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(640,360)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_Main_size_allocate(self,widget,event):
@@ -458,12 +468,21 @@ class moeclock:
 
     def on_Main_focus_in_event(self,widget,event):
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.set_decorated(True)
+        # if mainWindow.get_decorated() == False:
+        #     mainWindow.set_decorated(True)
+        # mainWindow.set_titlebar = self.defaultHeaderBar
 
     def on_Main_focus_out_event(self,widget,event):
         mainWindow = self.wMain.get_object("Main")
-        if self.windowDecorate == False:
-            mainWindow.set_decorated(False)
+        # if self.windowDecorate == False:
+            # self.timeoutDecorate = GLib.timeout_add_seconds(10,self.timeoutDecorate_callback,self)
+            # mainWindow.set_decorated(False)
+            # mainWindow.set_titlebar = self.customHeaderBar
+
+    # def timeoutDecorate_callback(self, event):
+    #     mainWindow = self.wMain.get_object("Main")
+    #     mainWindow.set_decorated(False)
+    #     self._setWallpaper("/tmp/moeclock.png")
 
     def on_Main_configure_event(self,widget,event):
         print (event)
@@ -545,7 +564,7 @@ class moeclock:
             del pixbuf
             del pixbuf2
             d = datetime.datetime.today()
-            yearStr = '%sねん' % (d.year,)
+            yearStr = _('%s') % (d.year,)
             dateStr = d.strftime("%m/%d")
             timeStr = d.strftime("%H:%M")
             weekStr = WEEKString[d.weekday()]
@@ -580,11 +599,11 @@ class moeclock:
             if d.minute == 0:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("になったよ!")
                 ctx.move_to(144 / 2 +10 - width/2 + ofsX, 125 + ofsY)
-                ctx.show_text("になったよ!")
+                ctx.show_text(_("Just Now!"))
             else:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("だよ!")
                 ctx.move_to(144 / 2 +10 - width/2 + ofsX, 125 + ofsY)
-                ctx.show_text("だよ!")
+                ctx.show_text(_("Now!"))
             s1.write_to_png('/tmp/moeclockTmp.png')
             del s1
 
@@ -618,10 +637,10 @@ class moeclock:
     def execCommand(self,command):
         print (command)   #受け渡されたコマンドのデバッグ用プリント
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         ret = subprocess.run(command, shell=True)
         while Gtk.events_pending():
-            Gtk.main_iteration(1)
+            Gtk.main_iteration_do(False)
         print (ret)             #実行結果のデバッグ用プリント
         return ret
 

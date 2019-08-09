@@ -5,15 +5,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
-"PO-Revision-Date: 2019-08-09 23:06+0900\n"
+"POT-Creation-Date: 2019-08-10 05:04+JST\n"
+"PO-Revision-Date: 2019-08-10 05:05+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"Language: en_US\n"
+"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: moeclock.py:45
@@ -44,29 +44,41 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:225
+#: moeclock.py:227
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:228
+#: moeclock.py:230
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:481 moeclock.py:507
+#: moeclock.py:497 moeclock.py:523
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:484
+#: moeclock.py:500
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:485 moeclock.py:486
+#: moeclock.py:501 moeclock.py:502
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:504
+#: moeclock.py:520
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
+
+#: moeclock.py:564
+msgid "%s"
+msgstr "%s"
+
+#: moeclock.py:599
+msgid "Just Now!"
+msgstr "Just Now!"
+
+#: moeclock.py:603
+msgid "Now!"
+msgstr "Now!"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"

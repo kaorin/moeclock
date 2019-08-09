@@ -127,6 +127,7 @@ class ConfigXML:
 class moeclock:
 
     wallpaper_list = []
+    wlist = []
     use_wallpaper_list = []
     #timeout_interval = 10
     timeout_interval = 1

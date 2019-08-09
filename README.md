@@ -9,7 +9,7 @@
 動作の確認はUbuntu10.10(amd64)のみで行われています。  
 
 本プログラムは、pythonを使用して書かれています。  
-GUIの部分には、PyGTKを使用しています。  
+GUIの部分には、python-gobjectを使用しています。  
 
 ## 【インストール/debの場合】
 
@@ -117,7 +117,7 @@ TOYさん、ありがとうございます。
 
 ## 【ライセンス】
 
-プログラム GPLv2  
+プログラム MIT  
 スキン/アイコン by TOY(<http://moebuntu.web.fc2.com/>) is licensed under a Creative Commons Attribution 3.0 Unported License.  
 時報音声ファイル Copyright © 2011 草乃さちか All Rights Reserved.  
 ※時報ファイルの改変および単体での再配布は許可されていません。  
@@ -130,3 +130,7 @@ TOYさん、ありがとうございます。
 *1.2.0.0　2011/01/26*  
 　・時報音声ファイル選択機能追加  
 　・スキン切り替え機能追加  
+
+*1.3.0.0 2019/08/09*  
+　・Python3対応
+　・ライセンス変更  

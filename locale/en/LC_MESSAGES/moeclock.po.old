@@ -1,72 +1,21 @@
-# English translations for PACKAGE package.
-# Copyright (C) 2019 ORGANIZATION
+# English translations for src package.
+# Copyright (C) 2019 THE src'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the src package.
 # kaoru <kaoru.konno@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
-"PO-Revision-Date: 2019-08-09 23:06+0900\n"
+"Project-Id-Version: src 2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-08 21:01+0900\n"
+"PO-Revision-Date: 2019-08-08 21:01+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Generated-By: pygettext.py 1.5\n"
 "Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: moeclock.py:45
-msgid "(Fri)"
-msgstr "(Fri)"
-
-#: moeclock.py:45
-msgid "(Mon)"
-msgstr "(Mon)"
-
-#: moeclock.py:45
-msgid "(Sat)"
-msgstr "(Sat)"
-
-#: moeclock.py:45
-msgid "(Sun)"
-msgstr "(Sun)"
-
-#: moeclock.py:45
-msgid "(Thu)"
-msgstr "(Thu)"
-
-#: moeclock.py:45
-msgid "(Tue)"
-msgstr "(Tue)"
-
-#: moeclock.py:45
-msgid "(Wed)"
-msgstr "(Wed)"
-
-#: moeclock.py:225
-msgid "All Files"
-msgstr "All Files"
-
-#: moeclock.py:228
-msgid "Sound Files"
-msgstr "Sound Files"
-
-#: moeclock.py:481 moeclock.py:507
-msgid "Moe Clock"
-msgstr "Moe Clock"
-
-#: moeclock.py:484
-msgid "Change the image every minute and notify the time."
-msgstr "Change the image every minute and notify the time."
-
-#: moeclock.py:485 moeclock.py:486
-msgid "Kaorin@"
-msgstr "Kaorin@"
-
-#: moeclock.py:504
-msgid "Moe Clock - %H:%M:%S"
-msgstr "Moe Clock - %H:%M:%S"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"
@@ -81,32 +30,24 @@ msgid "Always in front"
 msgstr "Always in front"
 
 #: moeclock.glade.h:4
-msgid "Window Decorate"
-msgstr "Window Decorate"
-
-#: moeclock.glade.h:5
 msgid "Window Size"
 msgstr "Window Size"
 
-#: moeclock.glade.h:6
+#: moeclock.glade.h:5
 msgid "Micro(280)"
 msgstr "Micro(280)"
 
-#: moeclock.glade.h:7
+#: moeclock.glade.h:6
 msgid "Small(320)"
 msgstr "Small(320)"
 
-#: moeclock.glade.h:8
+#: moeclock.glade.h:7
 msgid "Medium(400)"
 msgstr "Medium(400)"
 
-#: moeclock.glade.h:9
+#: moeclock.glade.h:8
 msgid "Large(480)"
 msgstr "Large(480)"
-
-#: moeclock.glade.h:10
-msgid "Big(640)"
-msgstr "Big(640)"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

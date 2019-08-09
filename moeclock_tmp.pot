@@ -1,70 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-09 23:06+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
-
-#: moeclock.py:45
-msgid "(Fri)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Mon)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Sat)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Sun)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Thu)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Tue)"
-msgstr ""
-
-#: moeclock.py:45
-msgid "(Wed)"
-msgstr ""
-
-#: moeclock.py:225
-msgid "All Files"
-msgstr ""
-
-#: moeclock.py:228
-msgid "Sound Files"
-msgstr ""
-
-#: moeclock.py:481 moeclock.py:507
-msgid "Moe Clock"
-msgstr ""
-
-#: moeclock.py:484
-msgid "Change the image every minute and notify the time."
-msgstr ""
-
-#: moeclock.py:485 moeclock.py:486
-msgid "Kaorin@"
-msgstr ""
-
-#: moeclock.py:504
-msgid "Moe Clock - %H:%M:%S"
-msgstr ""
+"Content-Transfer-Encoding: 8bit\n"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"

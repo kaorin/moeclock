@@ -25,14 +25,24 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.3.0.3"
+VERSION="1.3.0.4"
 NAME="moeclock"
-WEEKString=(u'（月）',u'（火）',u'（水）',u'（木）',u'（金）',u'（土）',u'（日）',)
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
 LOCALE_DIR = join(WHERE_AM_I, 'locale')
 
-usecompiz = True
+try:
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+locale.bindtextdomain(APP, LOCALE_DIR)
+gettext.bindtextdomain(APP, LOCALE_DIR)
+gettext.textdomain(APP)
+_ = gettext.gettext
+
+print('Using locale directory: {}'.format(LOCALE_DIR))
+
+WEEKString=[ _('(Mon)'), _('(Tue)'), _('(Wed)'), _('(Thu)'), _('(Fri)'), _('(Sat)'), _('(Sun)'),]
 
 class ConfigXML:
     OptionList = {  "x_pos":"0",
@@ -47,7 +57,8 @@ class ConfigXML:
                     "alwaysTop":"False",
                     "weekOffset":"-10",
                     "skin": os.path.dirname(os.path.abspath(__file__)) + "/default",
-                    "sound": os.path.dirname(os.path.abspath(__file__)) + "/sound.wav"}
+                    "sound": os.path.dirname(os.path.abspath(__file__)) + "/sound.wav",
+                    "windowDecorate":"True"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
@@ -139,6 +150,7 @@ class moeclock:
         self.alwaysTop = eval(conf.GetOption("alwaysTop"))
         self.weekOffset = eval(conf.GetOption("weekOffset"))
         self.skin = conf.GetOption("skin")
+        self.windowDecorate = eval(conf.GetOption("windowDecorate"))
         self.sound = conf.GetOption("sound")
         if len(uselist) > 0:
             use_wallpaper_list = eval(uselist)
@@ -153,6 +165,7 @@ class moeclock:
                     "on_miInfo_activate" : self.showAboutDialog,
                     "on_miNotice_toggled" : self.on_miNotice_toggled,
                     "on_miTop_toggled" : self.on_miTop_toggled,
+                    "on_miDecorate_toggled" : self.on_miDecorate_toggled,
                     "on_miMicro_activate" : self.on_miMicro_activate,
                     "on_miSmall_activate" : self.on_miSmall_activate,
                     "on_miMidium_activate" : self.on_miMidium_activate,
@@ -172,6 +185,8 @@ class moeclock:
         miNotice.set_active(self.notice)
         miTop = self.wMain.get_object("miTop")
         miTop.set_active(self.alwaysTop)
+        miDecorate = self.wMain.get_object("miDecorate")
+        miDecorate.set_active(self.windowDecorate)
         xpos = conf.GetOption("x_pos")
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
@@ -207,10 +222,10 @@ class moeclock:
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
 
-        self.allFilter.set_name("全てのファイル")
+        self.allFilter.set_name(_("All Files"))
         self.allFilter.add_pattern("*")
 
-        self.waveFilter.set_name("音声ファイル")
+        self.waveFilter.set_name(_("Sound Files"))
         self.waveFilter.add_pattern("*.wav")
 
         self.fcSound.add_filter(self.waveFilter)
@@ -366,6 +381,7 @@ class moeclock:
         conf.SetOption("weekOffset",self.weekOffset)
         conf.SetOption("sound",self.sound)
         conf.SetOption("skin",self.skin)
+        conf.SetOption("windowDecorate", self.windowDecorate)
         conf.Write()
 
     def showMenu(self,widget, event):
@@ -388,6 +404,9 @@ class moeclock:
         mainWindow = self.wMain.get_object("Main")
         mainWindow.set_keep_above(self.alwaysTop)
 
+    def on_miDecorate_toggled(self,widget):
+        self.windowDecorate = widget.get_active()
+        
     def on_miMicro_activate(self,widget):
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(280,88)
@@ -439,12 +458,11 @@ class moeclock:
 
     def on_Main_focus_in_event(self,widget,event):
         mainWindow = self.wMain.get_object("Main")
-        if usecompiz:
-            mainWindow.set_decorated(True)
+        mainWindow.set_decorated(True)
 
     def on_Main_focus_out_event(self,widget,event):
         mainWindow = self.wMain.get_object("Main")
-        if usecompiz:
+        if self.windowDecorate == False:
             mainWindow.set_decorated(False)
 
     def on_Main_configure_event(self,widget,event):
@@ -459,13 +477,13 @@ class moeclock:
         self.logo.set_from_file(imagePath)
         self.logo_pixbuf = self.logo.get_pixbuf()
         about = Gtk.AboutDialog()
-        # "萌え時計",VERSION,"GPLv3","1分ごとに画像を変更し時間を通知します。",["かおりん"],["かおりん"],"かおりん",self.logo_pixbuf
-        about.set_program_name("萌え時計")
+        # "萌え時計",VERSION,"MIT","1分ごとに画像を変更し時間を通知します。",["かおりん"],["かおりん"],"かおりん",self.logo_pixbuf
+        about.set_program_name(_("Moe Clock"))
         about.set_version(VERSION)
-        about.set_license("GPLv2")
-        about.set_comments("1分ごとに画像を変更し時間を通知します。")
-        about.set_authors(["かおりん"])
-        about.set_documenters(["かおりん"])
+        about.set_license("MIT")
+        about.set_comments(_("Change the image every minute and notify the time."))
+        about.set_authors([_("Kaorin@")])
+        about.set_documenters([_("Kaorin@")])
         about.set_logo(self.logo_pixbuf)
         about.connect("response", self.on_about_close)
         about.show()
@@ -483,10 +501,10 @@ class moeclock:
             self._changeWallPaper()
         mainWindow = self.wMain.get_object("Main")
         if self.iconifed :
-            dateStr = d.strftime("萌え時計 - %H:%M:%S")
+            dateStr = d.strftime(_("Moe Clock - %H:%M:%S"))
             mainWindow.set_title(dateStr)
         else:
-            mainWindow.set_title("萌え時計")
+            mainWindow.set_title(_("Moe Clock"))
         if self.notice :
             if d.minute == 0 and self.noticeFlag:
                 if os.path.exists(self.sound) :
@@ -607,22 +625,6 @@ class moeclock:
         print (ret)             #実行結果のデバッグ用プリント
         return ret
 
-def init_translation():
-    try:
-        locale.setlocale(locale.LC_ALL, '')
-    except:
-        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
-    locale.bindtextdomain(APP, LOCALE_DIR)
-    gettext.bindtextdomain(APP, LOCALE_DIR)
-    gettext.textdomain(APP)
-    _ = gettext.gettext
-    
-    print('Using locale directory: {}'.format(LOCALE_DIR))
-
 if __name__ == '__main__':
-    ret = subprocess.run('ps -A | grep compiz', shell=True)
-    if ret.stdout == None:
-        usecompiz = False
-    init_translation()
     moeclock()
     Gtk.main()

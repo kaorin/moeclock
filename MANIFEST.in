@@ -1,9 +1,10 @@
-include *.txt
 include *.py
 include *.png
 include *.glade
 include *.wav
 include *.desktop
+include *.md
+include LICENSE
 recursive-include default *.png *.txt
 recursive-include moeskin* *.png *.txt
 recursive-include mikunchu *.png *.txt

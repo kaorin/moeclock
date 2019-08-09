@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__="1.3.0.2"
+__VERSION__="1.3.0.4"
 
 params = {
         'name': 'moeclock',
@@ -9,7 +9,7 @@ params = {
         'description': 'moeclock is Desktop Clock',
         'author': 'Kaoru Konno',
         'author_email': 'kaoru.konno@gmail.com',
-        'url': 'http://code.google.com/p/moeclock/',
+        'url': 'https://github.com/kaorin/moeclock',
         'scripts': ['moeclock',],
         'data_files': [
             ('share/moeclock',
@@ -18,13 +18,20 @@ params = {
                 'sound.wav',
                 'moeclock.glade',
                 'moeclockdlg.glade',
-                'README.txt']),
+                'LICENSE',
+                'README.md']),
             ('share/moeclock/locale/ja_JP/LC_MESSAGES',
                 ['locale/ja_JP/LC_MESSAGES/moeclock.po',
                 'locale/ja_JP/LC_MESSAGES/moeclock.mo',]),
             ('share/moeclock/locale/en_US/LC_MESSAGES',
                 ['locale/en_US/LC_MESSAGES/moeclock.po',
                 'locale/en_US/LC_MESSAGES/moeclock.mo',]),
+            ('share/moeclock/locale/ja/LC_MESSAGES',
+                ['locale/ja/LC_MESSAGES/moeclock.po',
+                'locale/ja/LC_MESSAGES/moeclock.mo',]),
+            ('share/moeclock/locale/en/LC_MESSAGES',
+                ['locale/en/LC_MESSAGES/moeclock.po',
+                'locale/en/LC_MESSAGES/moeclock.mo',]),
             ('share/moeclock/default',
                 ['default/color_setting.txt',
                 'default/frame.png',
@@ -153,13 +160,13 @@ params = {
                 'sound/sachika_10.wav',
                 'sound/sachika_11.wav']),
             ('share/applications',
-				[u'moeclock.desktop',])],
-       'license': 'GPL2',
+				['moeclock.desktop',])],
+       'license': 'MIT',
         'download_url': \
-            'http://moeclock.googlecode.com/files/moeclock-%s.tar.gz' % (__VERSION__),
+            'https://github.com/kaorin/moeclock/archive/master.zip',
         'classifiers': [
             'Intended Audience :: End Users/Desktop',
-            'License :: OSI Approved :: GNU General Public License (GPL)',
+            'License :: OSI Approved :: MIT license(MIT)',
             'Operating System :: OS Independent',
             'Programming Language :: Python']}
 

@@ -1,4 +1,14 @@
 i18n.sh
+i18n2.sh
+build.sh
 .vscode/launch.json
 locale/en_US/LC_MESSAGES/moeclock.po.old
 locale/ja_JP/LC_MESSAGES/moeclock.po.old
+deb_dist
+dist
+moeclock.egg-info
+*.glade.h
+*.py.h
+*.glade~
+*.txt
+

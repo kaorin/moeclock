@@ -1,73 +1,22 @@
-# Japanese translations for PACKAGE package
-# PACKAGE パッケージに対する英訳.
-# Copyright (C) 2019 ORGANIZATION
+# Japanese translations for src package
+# src パッケージに対する英訳.
+# Copyright (C) 2019 THE src'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the src package.
 # kaoru <kaoru.konno@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-09 23:06+JST\n"
-"PO-Revision-Date: 2019-08-09 23:07+0900\n"
+"Project-Id-Version: src 2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-08 21:01+0900\n"
+"PO-Revision-Date: 2019-08-08 21:01+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: pygettext.py 1.5\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: moeclock.py:45
-msgid "(Fri)"
-msgstr "（金）"
-
-#: moeclock.py:45
-msgid "(Mon)"
-msgstr "（月）"
-
-#: moeclock.py:45
-msgid "(Sat)"
-msgstr "（土）"
-
-#: moeclock.py:45
-msgid "(Sun)"
-msgstr "（日）"
-
-#: moeclock.py:45
-msgid "(Thu)"
-msgstr "（木）"
-
-#: moeclock.py:45
-msgid "(Tue)"
-msgstr "（火）"
-
-#: moeclock.py:45
-msgid "(Wed)"
-msgstr "（水）"
-
-#: moeclock.py:225
-msgid "All Files"
-msgstr "すべてのファイル"
-
-#: moeclock.py:228
-msgid "Sound Files"
-msgstr "音声ファイル"
-
-#: moeclock.py:481 moeclock.py:507
-msgid "Moe Clock"
-msgstr "萌え時計"
-
-#: moeclock.py:484
-msgid "Change the image every minute and notify the time."
-msgstr "1分ごとに画像を変更し時間を通知します。"
-
-#: moeclock.py:485 moeclock.py:486
-msgid "Kaorin@"
-msgstr "かおりん@"
-
-#: moeclock.py:504
-msgid "Moe Clock - %H:%M:%S"
-msgstr "萌え時計 - %H:%M:%S"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"
@@ -82,10 +31,6 @@ msgid "Always in front"
 msgstr "常に前面に"
 
 #: moeclock.glade.h:4
-msgid "Window Decorate"
-msgstr "タイトルバーを表示する"
-
-#: moeclock.glade.h:5
 msgid "Window Size"
 msgstr "ウィンドウサイズ"
 
@@ -104,10 +49,6 @@ msgstr "中(400)"
 #: moeclock.glade.h:8
 msgid "Large(480)"
 msgstr "大(480)"
-
-#: moeclock.glade.h:9
-msgid "Big(640)"
-msgstr "特大(640)"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

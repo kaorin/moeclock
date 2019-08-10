@@ -25,7 +25,7 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.3.0.4"
+VERSION="1.4.0.0"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -45,6 +45,10 @@ print('Using locale directory: {}'.format(LOCALE_DIR))
 WEEKString=[ _('(Mon)'), _('(Tue)'), _('(Wed)'), _('(Thu)'), _('(Fri)'), _('(Sat)'), _('(Sun)'),]
 
 class ConfigXML:
+    '''
+    設定ファイル入出力クラス
+    ConfigPathで指定されたファイルを読み込む
+    '''
     OptionList = {  "x_pos":"0",
                     "y_pos":"0",
                     "x_size":"320",
@@ -58,13 +62,18 @@ class ConfigXML:
                     "weekOffset":"-10",
                     "skin": os.path.dirname(os.path.abspath(__file__)) + "/default",
                     "sound": os.path.dirname(os.path.abspath(__file__)) + "/sound.wav",
-                    "windowDecorate":"True"}
+                    "windowDecorate":"True",
+                    "annotationType":"0"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
     domobj = None
 
     def __init__(self, read):
+        '''
+        初期化
+        read：設定ファイル読み込みフラグ　True=読み込み/False=初期化のみ
+        '''
         #print "ConfigXML"
         if read == True :
             try:
@@ -82,6 +91,9 @@ class ConfigXML:
                     self.Options[op] = defVal
 
     def getText(self,nodelist):
+        '''
+        設定ファイルから文字列取得
+        '''
         rc = ""
         for node in nodelist:
             if node.nodeType == node.TEXT_NODE:
@@ -92,6 +104,10 @@ class ConfigXML:
         return rc
 
     def GetOption(self, optName ):
+        '''
+        設定取得
+        optName：設定キー
+        '''
         if optName == "password":
             return str(base64.b64decode(self.Options[optName]))
         else:
@@ -101,6 +117,11 @@ class ConfigXML:
                 return str(self.OptionList[optName])
 
     def SetOption(self, optName, value ):
+        '''
+        設定値設定
+        optName：設定キー
+        value：設定値
+        '''
         if optName == "password":
             val = base64.b64encode(value)
             self.Options[optName] = val
@@ -108,6 +129,9 @@ class ConfigXML:
             self.Options[optName] = value
 
     def Write(self):
+        '''
+        設定ファイル書き込み
+        '''
         try:
             impl = minidom.getDOMImplementation()
             newdoc = impl.createDocument(None, self.AppName, None)
@@ -125,9 +149,12 @@ class ConfigXML:
             logging.error(traceback.format_exc())
 
 class moeclock:
-
+    '''
+    萌え時計クラス
+    '''
     wallpaper_list = []
     wlist = []
+    sw = 0
     use_wallpaper_list = []
     #timeout_interval = 10
     timeout_interval = 1
@@ -141,6 +168,9 @@ class moeclock:
     customHeaderBar = None
 
     def __init__(self):
+        '''
+        コンストラクタ
+        '''
         logging.debug("__init__")
         #オプションを読み込み
         global WALLPAPER_PATH
@@ -154,6 +184,7 @@ class moeclock:
         self.weekOffset = eval(conf.GetOption("weekOffset"))
         self.skin = conf.GetOption("skin")
         self.windowDecorate = eval(conf.GetOption("windowDecorate"))
+        self.annotationType = eval(conf.GetOption("annotationType"))
         self.sound = conf.GetOption("sound")
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
@@ -174,6 +205,10 @@ class moeclock:
                     "on_miMidium_activate" : self.on_miMidium_activate,
                     "on_miLarge_activate" : self.on_miLarge_activate,
                     "on_miBig_activate" : self.on_miBig_activate,
+                    "on_miTopLeft_activate" : self.on_miTopLeft_activate,
+                    "on_miTopRight_activate" : self.on_miTopRight_activate,
+                    "on_miBottomLeft_activate" : self.on_miBottomLeft_activate,
+                    "on_miBottomRight_activate" : self.on_miBottomRight_activate,
                     "on_daPict_draw" : self.on_daPict_draw,
                     "on_Main_size_allocate" : self.on_Main_size_allocate,
                     "on_Main_window_state_event" : self.on_Main_window_state_event,
@@ -265,6 +300,9 @@ class moeclock:
         return self.wTree.get_object (key)
 
     def on_BTN_OK_clicked(self,widget):
+        '''
+        設定ダイアログOKボタンハンドラ
+        '''
         global WALLPAPER_PATH
         WALLPAPER_PATH = self.selectedFolder.get_filename()
         print (WALLPAPER_PATH)
@@ -287,16 +325,26 @@ class moeclock:
         self.timeout = GLib.timeout_add_seconds(int(self.timeout_interval),self.timeout_callback,self)
 
     def on_BTN_CANCEL_clicked(self,widget):
+        '''
+        設定ダイアログキャンセルボタンハンドラ
+        '''
         self.selectedFolder.set_filename(WALLPAPER_PATH+"/")
         self.preferences.hide()
 
     def on_btnPlay_clicked(self,widget):
+        '''
+        設定ダイアログ
+        音声再生ボタン
+        '''
         if os.path.exists(self.sound) :
             soundFile = self.fcSound.get_filename()
             cmdStr = "aplay " + soundFile
             self.execCommand(cmdStr)
 
     def on_fcSkin_file_set(self,widget):
+        '''
+        スキン選択
+        '''
         skin = self.fcSkin.get_filename()
         if os.path.exists(skin + "/color_setting.txt") :
             for line in open(skin + "/color_setting.txt", 'r'):
@@ -309,17 +357,18 @@ class moeclock:
         return Gtk.TRUE
 
     def on_daPict_draw(self,widget, cr, event=None):
+        '''
+        画面表示イベントハンドラ
+        '''
         if self.pixbuf2:
-            pict = self.wMain.get_object("daPict")
-            # gc = pict.style.fg_gc[Gtk.StateFlags.NORMAL]
-            # pict.window.draw_pixbuf(gc, self.pixbuf2, 0, 0, 0, 0, -1, -1)
-            # cr = pict.get_window().cairo_create()
             Gdk.cairo_set_source_pixbuf(cr, self.pixbuf2, 0, 0)
             cr.paint()
-            # cr.fill()
             self.userResize = True
 
     def _setWallpaper(self,WallpaperLocation):
+        '''
+        壁紙設定
+        '''
         try:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
@@ -347,6 +396,10 @@ class moeclock:
             return False
 
     def _changeWallPaper(self):
+        '''
+        壁紙切り替え
+        一度使用した壁紙が表示されないようにフラグ管理を行っている
+        '''
         self.wlist = self.wallpaper_list
         if len(self.use_wallpaper_list) > 0:
             chkSet = set(self.use_wallpaper_list)
@@ -366,6 +419,10 @@ class moeclock:
         self._saveConf()
 
     def _saveConf(self):
+        '''
+        設定保存
+        操作等で変更された設定を保存する
+        '''
         #変更結果を保存
         mainWindow = self.wMain.get_object("Main")
         global WALLPAPER_PATH
@@ -386,9 +443,15 @@ class moeclock:
         conf.SetOption("sound",self.sound)
         conf.SetOption("skin",self.skin)
         conf.SetOption("windowDecorate", self.windowDecorate)
+        conf.SetOption("annotationType", self.annotationType)
         conf.Write()
 
     def showMenu(self,widget, event):
+        '''
+        ポップアップメニュー表示
+        右クリックでメニュー表示
+        左クリックで壁紙切り替え
+        '''
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             #右クリック
             self.context_menu.popup(None, None, None,None, event.button, event.time)
@@ -397,18 +460,31 @@ class moeclock:
             self._changeWallPaper()
 
     def on_quit(self,widget):
+        '''
+        アプリケーション終了
+        '''
         self._saveConf()
         Gtk.main_quit()
 
     def on_miNotice_toggled(self,widget):
+        '''
+        時報切り替え
+        '''
         self.notice = widget.get_active()
 
     def on_miTop_toggled(self,widget):
+        '''
+        常に前面に表示切り替え
+        '''
         self.alwaysTop = widget.get_active()
         mainWindow = self.wMain.get_object("Main")
         mainWindow.set_keep_above(self.alwaysTop)
 
     def on_miDecorate_toggled(self,widget):
+        '''
+        タイトルバー表示切り替え
+        実際はウィンドウ装飾を切り替える
+        '''
         self.windowDecorate = widget.get_active()
         mainWindow = self.wMain.get_object("Main")
         mainWindow.set_decorated(self.windowDecorate)
@@ -419,6 +495,9 @@ class moeclock:
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
         
     def on_miMicro_activate(self,widget):
+        '''
+        表示サイズ変更：最小
+        '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(280,88)
         while Gtk.events_pending():
@@ -426,6 +505,9 @@ class moeclock:
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miSmall_activate(self,widget):
+        '''
+        表示サイズ変更：小
+        '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(320,180)
         while Gtk.events_pending():
@@ -433,6 +515,9 @@ class moeclock:
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miMidium_activate(self,widget):
+        '''
+        表示サイズ変更：中
+        '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(400,225)
         while Gtk.events_pending():
@@ -440,6 +525,9 @@ class moeclock:
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miLarge_activate(self,widget):
+        '''
+        表示サイズ変更：大
+        '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(480,270)
         while Gtk.events_pending():
@@ -447,18 +535,64 @@ class moeclock:
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miBig_activate(self,widget):
+        '''
+        表示サイズ変更：特大
+        '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(640,360)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
+    def on_miTopLeft_activate(self,widget):
+        '''
+        吹き出し位置切り替え：左上
+        '''
+        self.annotationType = 3
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+
+    def on_miTopRight_activate(self,widget):
+        '''
+        吹き出し位置切り替え：右上
+        '''
+        self.annotationType = 1
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+
+    def on_miBottomLeft_activate(self,widget):
+        '''
+        吹き出し位置切り替え：左下
+        '''
+        self.annotationType = 2
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+
+    def on_miBottomRight_activate(self,widget):
+        '''
+        吹き出し位置切り替え：右下
+        '''
+        self.annotationType = 0
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+
     def on_Main_size_allocate(self,widget,event):
+        '''
+        画面サイズ変更イベント
+        '''
         if self.userResize :
             self._buildWallPaper(self.wlist[self.sw])
             self._setWallpaper("/tmp/moeclock.png")
 
     def on_Main_window_state_event(self, widget, event):
+        '''
+        画面状態変更イベント
+        最小化した際にタスクバーに表示するかどうかの切り替え
+        '''
         mainWindow = self.wMain.get_object("Main")
         if event.new_window_state & Gdk.WindowState.ICONIFIED:
             mainWindow.set_skip_taskbar_hint(False)
@@ -468,27 +602,31 @@ class moeclock:
             self.iconifed = False
 
     def on_Main_focus_in_event(self,widget,event):
-        mainWindow = self.wMain.get_object("Main")
+        '''
+        フォーカス取得イベント
+        '''
+        #mainWindow = self.wMain.get_object("Main")
         # if mainWindow.get_decorated() == False:
         #     mainWindow.set_decorated(True)
         # mainWindow.set_titlebar = self.defaultHeaderBar
 
     def on_Main_focus_out_event(self,widget,event):
-        mainWindow = self.wMain.get_object("Main")
+        '''
+        フォーカス失効イベント
+        '''
+        #mainWindow = self.wMain.get_object("Main")
         # if self.windowDecorate == False:
-            # self.timeoutDecorate = GLib.timeout_add_seconds(10,self.timeoutDecorate_callback,self)
             # mainWindow.set_decorated(False)
             # mainWindow.set_titlebar = self.customHeaderBar
 
-    # def timeoutDecorate_callback(self, event):
-    #     mainWindow = self.wMain.get_object("Main")
-    #     mainWindow.set_decorated(False)
-    #     self._setWallpaper("/tmp/moeclock.png")
 
     def on_Main_configure_event(self,widget,event):
         print (event)
 
     def showAboutDialog(self,*arguments, **keywords):
+        '''
+        このアプリについてダイアログ表示
+        '''
         if os.path.exists("/usr/share/moeclock/moeclock.png") == True:
             imagePath = "/usr/share/moeclock/moeclock.png"
         elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/moeclock.png") == True:
@@ -516,6 +654,10 @@ class moeclock:
         self.preferences.show()
 
     def timeout_callback(self,event):
+        '''
+        時計用タイムアウトイベント
+        時刻表示/時報
+        '''
         d = datetime.datetime.today()
         if self.min != d.minute:
             self._changeWallPaper()
@@ -535,28 +677,40 @@ class moeclock:
         return True
 
     def chanegSize_callback(self,event):
-        self._buildWallPaper(self.wlist[self.sw])
-        self._setWallpaper("/tmp/moeclock.png")
+        '''
+        画面サイズ変更タイムアウトイベント
+        '''
+        if len(self.wlist) > 0:
+            self._buildWallPaper(self.wlist[self.sw])
+            self._setWallpaper("/tmp/moeclock.png")
 
     def sound_callback(self,event):
+        '''
+        時報タイムアウトイベント
+        '''
         cmdStr = "aplay "+ self.sound
         self.execCommand(cmdStr)
 
     def _buildWallPaper(self,wallpaper):
+        '''
+        画像生成
+        '''
         try:
             logging.debug("_buildWallPaper")
             logging.debug("wallpaper:"+wallpaper)
             print ("wallpaper:"+wallpaper)
             mainWindow = self.wMain.get_object("Main")
             (xsize,ysize) = mainWindow.get_size()
+            #壁紙生成
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(wallpaper)
             x = float(pixbuf.get_width())
             y = float(pixbuf.get_height())
             aspect = y / x
             pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
-            del pixbuf
             pixbuf2.savev("/tmp/moeclockWall.png", "png", ["compression"], ["9"])
+            del pixbuf
             del pixbuf2
+            #枠生成
             if os.path.exists(self.skin + '/frame.png') == False:
                  os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/frame.png')
@@ -564,15 +718,32 @@ class moeclock:
             pixbuf2.savev("/tmp/moeclockFrame.png", "png", ["compression"], ["9"])
             del pixbuf
             del pixbuf2
+            #吹き出し生成
+            if os.path.exists(self.skin + '/annotation.png') == False:
+                os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
+            pixbuf2 = pixbuf
+            pixbuf3 = pixbuf
+            if self.annotationType == 1:
+                pixbuf2 = pixbuf.flip(False)
+                pixbuf3 = pixbuf2
+            if self.annotationType == 2:
+                pixbuf2 = pixbuf.flip(True)
+                pixbuf3 = pixbuf2
+            if self.annotationType == 3:
+                pixbuf2 = pixbuf.flip(True)
+                pixbuf3 = pixbuf2.flip(False)
+            pixbuf3.savev("/tmp/moeclockAnnotation.png", "png", ["compression"], ["9"])
+            del pixbuf
+            del pixbuf2
+            del pixbuf3
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
             dateStr = d.strftime("%m/%d")
             timeStr = d.strftime("%H:%M")
             weekStr = WEEKString[d.weekday()]
             self.min = d.minute
-            if os.path.exists(self.skin + '/annotation.png') == False:
-                 os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
-            s1 = cairo.ImageSurface.create_from_png(self.skin + '/annotation.png')
+            s1 = cairo.ImageSurface.create_from_png('/tmp/moeclockAnnotation.png')
             x1 = s1.get_width()
             y1 = s1.get_height()
             ctx = cairo.Context(s1)
@@ -583,27 +754,41 @@ class moeclock:
             ctx.set_font_size(16)
             ofsX = x1 - 144
             ofsY = y1 - 144
+            yearYofs = 60
+            dateYofs = 80
+            timeYofs = 105
+            nowYOfs = 125
+            xOfs = 144 / 2 + 10
+            if self.annotationType == 1 or self.annotationType == 3:
+                ofsX = x1 - 144
+                ofsY = y1 - 144
+                yearYofs = 30
+                dateYofs = 50
+                timeYofs = 75
+                nowYOfs = 95
+            if self.annotationType == 2 or self.annotationType == 3:
+                xOfs = 40
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
-            ctx.move_to(144 / 2 + 10 - width/2 + ofsX, 60 + ofsY)
+            ctx.move_to(xOfs - width/2 + ofsX, yearYofs + ofsY)
             ctx.show_text(yearStr)
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(dateStr)
-            ctx.move_to(144 / 2 + 10 - width/2 + ofsX, 80 + ofsY)
+            ctx.move_to(xOfs - width/2 + ofsX, dateYofs + ofsY)
             ctx.show_text(dateStr)
             ctx.set_font_size(10)
-            ctx.move_to(144 / 2 + self.weekOffset + width + ofsX, 80 + ofsY)
+            ctx.move_to(xOfs - 10 + self.weekOffset + width + ofsX, dateYofs + ofsY)
             ctx.show_text(weekStr)
             ctx.set_font_size(22)
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(timeStr)
-            ctx.move_to(144 / 2 +10 - width/2 + ofsX, 105 + ofsY)
+            ctx.move_to(xOfs - width/2 + ofsX, timeYofs + ofsY)
             ctx.show_text(timeStr)
             ctx.set_font_size(15)
             if d.minute == 0:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("になったよ!")
-                ctx.move_to(144 / 2 +10 - width/2 + ofsX, 125 + ofsY)
+                ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Just Now!"))
             else:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("だよ!")
-                ctx.move_to(144 / 2 +10 - width/2 + ofsX, 125 + ofsY)
+                ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Now!"))
             s1.write_to_png('/tmp/moeclockTmp.png')
             del s1
@@ -618,9 +803,19 @@ class moeclock:
             y3 = s3.get_height()
             s4 = cairo.ImageSurface.create_from_png('/tmp/moeclockFrame.png')
             ctx = cairo.Context(s1)
-            ctx.set_source_surface(s2,xsize-x1,(xsize*aspect)-y1)
+            if self.annotationType == 0:
+                ctx.set_source_surface(s2,xsize-x1,(xsize*aspect)-y1)
+            if self.annotationType == 1:
+                ctx.set_source_surface(s2,xsize-x1,0)
+            if self.annotationType == 2:
+                ctx.set_source_surface(s2,0,(xsize*aspect)-y1)
+            if self.annotationType == 3:
+                ctx.set_source_surface(s2,0,0)
             ctx.paint()
-            ctx.set_source_surface(s3,0,(xsize*aspect)-y3)
+            if self.annotationType == 2:
+                ctx.set_source_surface(s3,xsize-x3,(xsize*aspect)-y3)
+            else:
+                ctx.set_source_surface(s3,0,(xsize*aspect)-y3)
             ctx.paint()
             ctx.set_source_surface(s4,0,0)
             ctx.paint()
@@ -636,6 +831,9 @@ class moeclock:
 
 
     def execCommand(self,command):
+        '''
+        コマンド実行
+        '''
         print (command)   #受け渡されたコマンドのデバッグ用プリント
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)

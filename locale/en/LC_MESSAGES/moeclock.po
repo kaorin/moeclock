@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-10 05:04+JST\n"
-"PO-Revision-Date: 2019-08-10 05:05+0900\n"
+"POT-Creation-Date: 2019-08-10 20:23+JST\n"
+"PO-Revision-Date: 2019-08-10 20:24+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -44,39 +44,39 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:227
+#: moeclock.py:263
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:230
+#: moeclock.py:266
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:497 moeclock.py:523
+#: moeclock.py:639 moeclock.py:669
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:500
+#: moeclock.py:642
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:501 moeclock.py:502
+#: moeclock.py:643 moeclock.py:644
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:520
+#: moeclock.py:666
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:564
+#: moeclock.py:741
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:599
+#: moeclock.py:788
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:603
+#: moeclock.py:792
 msgid "Now!"
 msgstr "Now!"
 
@@ -119,6 +119,26 @@ msgstr "Large(480)"
 #: moeclock.glade.h:10
 msgid "Big(640)"
 msgstr "Big(640)"
+
+#: moeclock.glade.h:11
+msgid "Annotation"
+msgstr "Annotation"
+
+#: moeclock.glade.h:12
+msgid "TopLeft"
+msgstr "TopLeft"
+
+#: moeclock.glade.h:13
+msgid "TopRight"
+msgstr "TopRight"
+
+#: moeclock.glade.h:14
+msgid "BottomLeft"
+msgstr "BottomLeft"
+
+#: moeclock.glade.h:15
+msgid "BottomRight"
+msgstr "BottomRight"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

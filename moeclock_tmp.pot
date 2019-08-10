@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-10 05:04+0900\n"
+"POT-Creation-Date: 2019-08-10 20:23+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,6 +55,26 @@ msgstr ""
 
 #: moeclock.glade.h:10
 msgid "Big(640)"
+msgstr ""
+
+#: moeclock.glade.h:11
+msgid "Annotation"
+msgstr ""
+
+#: moeclock.glade.h:12
+msgid "TopLeft"
+msgstr ""
+
+#: moeclock.glade.h:13
+msgid "TopRight"
+msgstr ""
+
+#: moeclock.glade.h:14
+msgid "BottomLeft"
+msgstr ""
+
+#: moeclock.glade.h:15
+msgid "BottomRight"
 msgstr ""
 
 #: moeclockdlg.glade.h:1

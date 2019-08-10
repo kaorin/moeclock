@@ -126,6 +126,56 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="miAnnotationPos">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Annotation</property>
+        <property name="use_underline">True</property>
+        <child type="submenu">
+          <object class="GtkMenu" id="menu2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="miTopLeft">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">TopLeft</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_miTopLeft_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="miTopRight">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">TopRight</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_miTopRight_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="miBottomLeft">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">BottomLeft</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_miBottomLeft_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="miBottomRight">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">BottomRight</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_miBottomRight_activate" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="GtkSeparatorMenuItem" id="menuitem2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>

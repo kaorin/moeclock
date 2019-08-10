@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-10 05:04+JST\n"
-"PO-Revision-Date: 2019-08-10 05:04+0900\n"
+"POT-Creation-Date: 2019-08-10 20:23+JST\n"
+"PO-Revision-Date: 2019-08-10 20:24+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -120,6 +120,26 @@ msgstr "大(480)"
 #: moeclock.glade.h:9
 msgid "Big(640)"
 msgstr "特大(640)"
+
+#: moeclock.glade.h:11
+msgid "Annotation"
+msgstr "吹き出し位置"
+
+#: moeclock.glade.h:12
+msgid "TopLeft"
+msgstr "左上"
+
+#: moeclock.glade.h:13
+msgid "TopRight"
+msgstr "右上"
+
+#: moeclock.glade.h:14
+msgid "BottomLeft"
+msgstr "左下"
+
+#: moeclock.glade.h:15
+msgid "BottomRight"
+msgstr "右下"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

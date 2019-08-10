@@ -16,3 +16,4 @@ moeclock.egg-info
 message.pot
 moeclock_tmp.pot
 moeclock.pot
+locale/en_US/LC_MESSAGES/moeclock_en_US.po

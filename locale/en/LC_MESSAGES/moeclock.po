@@ -1,19 +1,19 @@
 # English translations for PACKAGE package.
 # Copyright (C) 2019 ORGANIZATION
-# kaoru <kaoru.konno@gmail.com>, 2019.
+# kaoru <kaoru.konn@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-10 20:23+JST\n"
-"PO-Revision-Date: 2019-08-10 20:24+0900\n"
-"Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
+"POT-Creation-Date: 2019-08-10 20:49+JST\n"
+"PO-Revision-Date: 2019-08-10 20:49+0900\n"
+"Last-Translator: kaoru <kaoru.konn@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"Language: en\n"
+"Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: moeclock.py:45

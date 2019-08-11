@@ -89,9 +89,9 @@ moeclockを指定すると起動時に画面サイズがデフォルトに戻っ
 　メニュー等の操作が不可能になり、再度タイトルバーを表示しようとしても画面上からは行えなくなります。  
 　もしも実施してしまった場合、~/.config/moeclock.xmlを開き  
 　```<windowDecorate>False</windowDecorate>```  
- を  
- ```<windowDecorate>True</windowDecorate>```  
- に変更してください。
+　を  
+　```<windowDecorate>True</windowDecorate>```  
+　に変更してください。
 
 ### 5.ウィンドウサイズ  
 

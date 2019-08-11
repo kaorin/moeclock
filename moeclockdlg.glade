@@ -69,24 +69,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="TEST">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkBox" id="vbox2">
@@ -186,7 +169,7 @@
               <object class="GtkLabel" id="label7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">* Selecting only the font name is effective.
+                <property name="label" translatable="yes">* Font name only is selectable.
  Size and style are not reflected.</property>
                 <property name="xalign">0.10000000149011612</property>
               </object>
@@ -248,7 +231,7 @@
               <object class="GtkLabel" id="label8">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Select Skin</property>
+                <property name="label" translatable="yes">Select skin</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -263,7 +246,7 @@
                 <property name="can_focus">False</property>
                 <property name="action">select-folder</property>
                 <property name="create_folders">False</property>
-                <property name="title" translatable="yes">Select Skin Folder</property>
+                <property name="title" translatable="yes">Select skin Folder</property>
                 <signal name="file-set" handler="on_fcSkin_file_set" swapped="no"/>
               </object>
               <packing>
@@ -287,7 +270,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Font Color</property>
+                <property name="label" translatable="yes">Change font color</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -324,7 +307,7 @@
               <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Time signal audio select</property>
+                <property name="label" translatable="yes">Select time signal audio</property>
                 <property name="xalign">0</property>
               </object>
               <packing>
@@ -337,7 +320,7 @@
               <object class="GtkFileChooserButton" id="fcSound">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="title" translatable="yes">Time signal audio file select(WAVE only)</property>
+                <property name="title" translatable="yes">Select time signal audio file (WAVE only)</property>
               </object>
               <packing>
                 <property name="expand">True</property>

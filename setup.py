@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__="1.4.1.0"
+__VERSION__="1.4.1.1"
 
 params = {
         'name': 'moeclock',
@@ -10,7 +10,7 @@ params = {
         'author': 'Kaoru Konno',
         'author_email': 'kaoru.konno@gmail.com',
         'url': 'https://github.com/kaorin/moeclock',
-        'scripts': ['moeclock',],
+        'scripts': ['moeclock','moeclock_autostart'],
         'data_files': [
             ('share/moeclock',
                 ['moeclock.py',

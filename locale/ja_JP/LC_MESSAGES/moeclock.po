@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-10 20:23+JST\n"
-"PO-Revision-Date: 2019-08-10 20:24+0900\n"
+"POT-Creation-Date: 2019-08-11 17:55+JST\n"
+"PO-Revision-Date: 2019-08-11 17:55+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: moeclock.py:45
 msgid "(Fri)"
-msgstr "（金）"
+msgstr ""
 
 #: moeclock.py:45
 msgid "(Mon)"
@@ -45,41 +45,41 @@ msgstr "（火）"
 msgid "(Wed)"
 msgstr "（水）"
 
-#: moeclock.py:225
+#: moeclock.py:265
 msgid "All Files"
 msgstr "すべてのファイル"
 
-#: moeclock.py:228
+#: moeclock.py:268
 msgid "Sound Files"
 msgstr "音声ファイル"
 
-#: moeclock.py:481 moeclock.py:507
+#: moeclock.py:641 moeclock.py:671
 msgid "Moe Clock"
 msgstr "萌え時計"
 
-#: moeclock.py:484
+#: moeclock.py:644
 msgid "Change the image every minute and notify the time."
 msgstr "1分ごとに画像を変更し時間を通知します。"
 
-#: moeclock.py:485 moeclock.py:486
+#: moeclock.py:645 moeclock.py:646
 msgid "Kaorin@"
 msgstr "かおりん@"
 
-#: moeclock.py:520
+#: moeclock.py:668
 msgid "Moe Clock - %H:%M:%S"
 msgstr "萌え時計 - %H:%M:%S"
 
-#: moeclock.py:564
+#: moeclock.py:743
 msgid "%s"
 msgstr "%sねん"
 
-#: moeclock.py:599
+#: moeclock.py:790
 msgid "Just Now!"
 msgstr "になったよ！"
 
-#: moeclock.py:603
+#: moeclock.py:794
 msgid "Now!"
-msgstr "だよ！"
+msgstr ""
 
 #: moeclock.glade.h:1
 msgid "MoeClock"
@@ -101,23 +101,23 @@ msgstr "タイトルバーを表示する"
 msgid "Window Size"
 msgstr "ウィンドウサイズ"
 
-#: moeclock.glade.h:5
+#: moeclock.glade.h:6
 msgid "Micro(280)"
 msgstr "最小(280)"
 
-#: moeclock.glade.h:6
+#: moeclock.glade.h:7
 msgid "Small(320)"
 msgstr "小(320)"
 
-#: moeclock.glade.h:7
+#: moeclock.glade.h:8
 msgid "Medium(400)"
 msgstr "中(400)"
 
-#: moeclock.glade.h:8
+#: moeclock.glade.h:9
 msgid "Large(480)"
 msgstr "大(480)"
 
-#: moeclock.glade.h:9
+#: moeclock.glade.h:10
 msgid "Big(640)"
 msgstr "特大(640)"
 

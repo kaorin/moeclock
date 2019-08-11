@@ -25,7 +25,7 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.1.0"
+VERSION="1.4.1.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -244,9 +244,11 @@ class moeclock:
         self.selectedFolder.set_current_folder(WALLPAPER_PATH+"/")
         self.lscvType = self.wTree.get_object ("listStyle")
         self.colorSelect = self.wTree.get_object ("clrPicker")
-        self.colorSelect.set_color(Gdk.color_parse(self.color))
+        rgba = Gdk.RGBA()
+        rgba.parse(self.color)
+        self.colorSelect.set_rgba(rgba)
         self.fontSelect = self.wTree.get_object ("fntSelect")
-        self.fontSelect.set_font_name(self.font)
+        self.fontSelect.set_font(self.font)
         self.fontSelect.set_show_size(False)
         self.fontSelect.set_show_style(False)
         self.sbWeekOffset = self.wTree.get_object("sbWeekOffset")
@@ -306,12 +308,12 @@ class moeclock:
         global WALLPAPER_PATH
         WALLPAPER_PATH = self.selectedFolder.get_filename()
         print (WALLPAPER_PATH)
-        tmp = self.fontSelect.get_font_name().split(' ')
+        tmp = self.fontSelect.get_font().split(' ')
         if len(tmp) > 1:
             tmp = tmp[:-1]
         self.font = ' '.join(tmp)
         print ("font:"+self.font)
-        self.color = "#%02X%02X%02X" % (int(self.colorSelect.get_color().red / 256),int(self.colorSelect.get_color().green / 256),int(self.colorSelect.get_color().blue / 256))
+        self.color = "#%02X%02X%02X" % (int(self.colorSelect.get_rgba().red * 255),int(self.colorSelect.get_rgba().green * 255),int(self.colorSelect.get_rgba().blue * 255))
         self.weekOffset = self.sbWeekOffset.get_value_as_int()
         soundFile = self.fcSound.get_filename()
         if len(soundFile) > 0:

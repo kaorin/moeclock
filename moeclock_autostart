@@ -1,0 +1,5 @@
+#!/bin/sh
+sleep 10
+python3 /usr/share/moeclock/moeclock.py $1 $2 $3
+
+

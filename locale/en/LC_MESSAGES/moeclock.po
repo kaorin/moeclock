@@ -1,13 +1,13 @@
 # English translations for PACKAGE package.
 # Copyright (C) 2019 ORGANIZATION
-# kaoru <kaoru.konn@gmail.com>, 2019.
+# kaoru <kaoru.konno@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-10 20:49+JST\n"
-"PO-Revision-Date: 2019-08-10 20:49+0900\n"
-"Last-Translator: kaoru <kaoru.konn@gmail.com>\n"
+"POT-Creation-Date: 2019-08-11 17:55+JST\n"
+"PO-Revision-Date: 2019-08-11 17:55+0900\n"
+"Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
@@ -44,39 +44,39 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:263
+#: moeclock.py:265
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:266
+#: moeclock.py:268
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:639 moeclock.py:669
+#: moeclock.py:641 moeclock.py:671
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:642
+#: moeclock.py:644
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:643 moeclock.py:644
+#: moeclock.py:645 moeclock.py:646
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:666
+#: moeclock.py:668
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:741
+#: moeclock.py:743
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:788
+#: moeclock.py:790
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:792
+#: moeclock.py:794
 msgid "Now!"
 msgstr "Now!"
 
@@ -161,7 +161,7 @@ msgid ""
 "* Selecting only the font name is effective.\n"
 " Size and style are not reflected."
 msgstr ""
-"* Selecting only the font name is effective.\n"
+"* Font name only is selectable.\n"
 " Size and style are not reflected."
 
 #: moeclockdlg.glade.h:7
@@ -170,23 +170,23 @@ msgstr "Day of week display offset(px)"
 
 #: moeclockdlg.glade.h:8
 msgid "Select Skin"
-msgstr "Select Skin"
+msgstr "Select skin"
 
 #: moeclockdlg.glade.h:9
 msgid "Select Skin Folder"
-msgstr "Select Skin Folder"
+msgstr "Select skin Folder"
 
 #: moeclockdlg.glade.h:10
 msgid "Font Color"
-msgstr "Font Color"
+msgstr "Change font color"
 
 #: moeclockdlg.glade.h:11
 msgid "Time signal audio select"
-msgstr "Time signal audio select"
+msgstr "Select time signal audio"
 
 #: moeclockdlg.glade.h:12
 msgid "Time signal audio file select(WAVE only)"
-msgstr "Time signal audio file select(WAVE only)"
+msgstr "Select time signal audio file (WAVE only)"
 
 #: moeclockdlg.glade.h:13
 msgid "centered"

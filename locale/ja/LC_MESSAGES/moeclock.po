@@ -19,7 +19,7 @@ msgstr ""
 
 #: moeclock.py:45
 msgid "(Fri)"
-msgstr ""
+msgstr "（金）"
 
 #: moeclock.py:45
 msgid "(Mon)"
@@ -79,7 +79,7 @@ msgstr "になったよ！"
 
 #: moeclock.py:794
 msgid "Now!"
-msgstr ""
+msgstr "だよ！"
 
 #: moeclock.glade.h:1
 msgid "MoeClock"

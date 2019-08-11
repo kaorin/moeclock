@@ -25,7 +25,7 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.0.0"
+VERSION="1.4.1.0"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -232,7 +232,7 @@ class moeclock:
         mainWindow.move(int(xpos),int(ypos))
         if int(xsize) > 10 and int(ysize) > 10 :
             self.userResize = False
-            mainWindow.resize(int(xsize),int(ysize))
+        mainWindow.resize(int(xsize),int(ysize))
         mainWindow.set_keep_above(self.alwaysTop)
         #ダイアログを作成
         self.wTree = Gtk.Builder()

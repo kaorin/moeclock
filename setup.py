@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__="1.4.1.1"
+__VERSION__="1.4.2.1"
 
 params = {
         'name': 'moeclock',
@@ -148,7 +148,8 @@ params = {
                 'moeskin_heart02/logo.png',
                 'moeskin_heart02/annotation.png']),
             ('share/moeclock/sound',
-                ['sound/sachika_01.wav',
+                ['sound/nosound.wav',
+                'sound/sachika_01.wav',
                 'sound/sachika_02.wav',
                 'sound/sachika_03.wav',
                 'sound/sachika_04.wav',

@@ -25,7 +25,7 @@ import gettext
 import locale
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.1.1"
+VERSION="1.4.2.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -63,7 +63,8 @@ class ConfigXML:
                     "skin": os.path.dirname(os.path.abspath(__file__)) + "/default",
                     "sound": os.path.dirname(os.path.abspath(__file__)) + "/sound.wav",
                     "windowDecorate":"True",
-                    "annotationType":"0"}
+                    "annotationType":"0",
+                    "soundCutOut":"False"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
@@ -185,6 +186,7 @@ class moeclock:
         self.skin = conf.GetOption("skin")
         self.windowDecorate = eval(conf.GetOption("windowDecorate"))
         self.annotationType = eval(conf.GetOption("annotationType"))
+        self.soundCutOut = eval(conf.GetOption("soundCutOut"))
         self.sound = conf.GetOption("sound")
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
@@ -258,6 +260,8 @@ class moeclock:
         self.fcSkin.set_current_folder(self.skin+"/")
         self.fcSound = self.wTree.get_object ("fcSound")
         self.fcSound.set_filename(self.sound)
+        self.cbSoundCutOut = self.wTree.get_object ("cbSoundCutOut")
+        self.cbSoundCutOut.set_active(self.soundCutOut)
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
@@ -275,11 +279,12 @@ class moeclock:
         self.preferences = preferencesDialog
         #Create our dictionay and connect it
         dic = { "on_BTN_OK_clicked" : self.on_BTN_OK_clicked,
-                   "on_BTN_CANCEL_clicked" : self.on_BTN_CANCEL_clicked,
-                   "on_btnPlay_clicked" : self.on_btnPlay_clicked,
-                   "on_properties_delete_event" : self.on_properties_delete_event,
-                   "on_fcSkin_file_set" : self.on_fcSkin_file_set
-                }
+                "on_BTN_CANCEL_clicked" : self.on_BTN_CANCEL_clicked,
+                "on_btnPlay_clicked" : self.on_btnPlay_clicked,
+                "on_properties_delete_event" : self.on_properties_delete_event,
+                "on_fcSkin_file_set" : self.on_fcSkin_file_set,
+                "on_cbSoundCutOut_toggled": self.on_cbSoundCutOut_toggled
+        }
         self.wTree.connect_signals(dic)
         #壁紙一覧を作成
         if os.path.isdir(WALLPAPER_PATH) == False:
@@ -338,6 +343,15 @@ class moeclock:
         設定ダイアログ
         音声再生ボタン
         '''
+        if self.soundCutOut:
+            # 先頭がカットされる場合S/PDIF等
+            # 一度無音の音声ファイルを再生する
+            if os.path.exists("/usr/share/moeclock/sound/nosound.wav") == True:
+                soundPath = "/usr/share/moeclock/sound/nosound.wav"
+            elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
+                soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
+            cmdStr = "aplay "+ soundPath
+            self.execCommand(cmdStr)
         if os.path.exists(self.sound) :
             soundFile = self.fcSound.get_filename()
             cmdStr = "aplay " + soundFile
@@ -353,6 +367,12 @@ class moeclock:
                 line = line.strip('\n')
                 if len(line) > 0:
                     self.colorSelect.set_color(Gdk.color_parse(line))
+
+    def on_cbSoundCutOut_toggled(self, wiget):
+        '''
+        音声の先頭が切れる場合の対応を行うかどうか
+        '''
+        self.soundCutOut = self.cbSoundCutOut.get_active()
 
     def on_properties_delete_event(self,widget,event):
         widget.hide()
@@ -446,6 +466,7 @@ class moeclock:
         conf.SetOption("skin",self.skin)
         conf.SetOption("windowDecorate", self.windowDecorate)
         conf.SetOption("annotationType", self.annotationType)
+        conf.SetOption("soundCutOut", self.soundCutOut)
         conf.Write()
 
     def showMenu(self,widget, event):
@@ -690,6 +711,15 @@ class moeclock:
         '''
         時報タイムアウトイベント
         '''
+        if self.soundCutOut:
+            # 先頭がカットされる場合S/PDIF等
+            # 一度無音の音声ファイルを再生する
+            if os.path.exists("/usr/share/moeclock/sound/nosound.wav") == True:
+                soundPath = "/usr/share/moeclock/sound/nosound.wav"
+            elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
+                soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
+            cmdStr = "aplay "+ soundPath
+            self.execCommand(cmdStr)
         cmdStr = "aplay "+ self.sound
         self.execCommand(cmdStr)
 

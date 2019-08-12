@@ -23,6 +23,7 @@ import datetime
 import cairo
 import gettext
 import locale
+import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
 VERSION="1.4.2.1"
@@ -412,6 +413,7 @@ class moeclock:
             self.userResize = False
             mainWindow.resize(xsize,int(xsize*aspect))
             pict.queue_draw()
+            gc.collect()
             return True
         except Exception as e:
             print(e)
@@ -856,6 +858,7 @@ class moeclock:
             del s2
             del s3
             del s4
+            gc.collect()
             return True
         except Exception as e:
             print(e)

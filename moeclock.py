@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.2.1"
+VERSION="1.4.3.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -228,6 +228,7 @@ class moeclock:
         miTop.set_active(self.alwaysTop)
         miDecorate = self.wMain.get_object("miDecorate")
         miDecorate.set_active(self.windowDecorate)
+        mainWindow.set_decorated(self.windowDecorate)
         xpos = conf.GetOption("x_pos")
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
@@ -301,7 +302,6 @@ class moeclock:
         #tmplist = os.listdir(WALLPAPER_PATH+"/")
         #self.wallpaper_list = [ WALLPAPER_PATH+"/" +x for x in tmplist if x.find(".jpg") >= 0 or x.find(".JPG") >= 0 or x.find(".png") >= 0 or x.find(".PNG") >= 0]
         logging.debug(str(self.wallpaper_list))
-        mainWindow.set_decorated(self.windowDecorate)
         self.timeout = GLib.timeout_add_seconds(int(self.timeout_interval),self.timeout_callback,self)
 
     def __getitem__(self, key):

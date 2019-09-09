@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.4.1"
+VERSION="1.4.4.2"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -569,11 +569,68 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
+    def checkPrefix(self, wallpaper):
+        '''
+        壁紙名にプレフィックスが存在するかどうかのチェック
+        '''
+        #ファイル名取得
+        basename = os.path.basename(wallpaper)
+        if basename.upper().find("--UL--") == 0:
+            return True
+        if basename.upper().find("--DL--") == 0:
+            return True
+        if basename.upper().find("--UR--") == 0:
+            return True
+        if basename.upper().find("--DR--") == 0:
+            return True
+        return False
+
+    def renameWallpaper(self, wallpaper, type):
+        '''
+        壁紙に吹き出しプレフィックスを追加
+        '''
+        dialog = RenameDialog(self.wMain.get_object("Main"))
+        response = dialog.run()
+
+        if response == Gtk.ResponseType.OK:
+            print("The OK button was clicked")
+            dirname, basename = os.path.split(wallpaper)
+            if self.checkPrefix(basename):
+                basename = basename[6:]
+            # 吹出位置 
+            # 右下：0
+            # 右上：1
+            # 左下：2
+            # 左上：3
+            if type == 3:
+                basename = "--UL--" + basename
+            if type == 2:
+                basename = "--DL--" + basename
+            if type == 1:
+                basename = "--UR--" + basename
+            if type == 0:
+                basename = "--DR--" + basename
+            path = os.path.join(dirname, basename)
+            os.rename(wallpaper, path)
+            self.wlist[self.sw] = path
+            idx = self.use_wallpaper_list.index(wallpaper)
+            if idx >= 0:
+                self.use_wallpaper_list[idx] = path
+            idx = self.wallpaper_list.index(wallpaper)
+            if idx >= 0:
+                self.wallpaper_list[idx] = path
+
+        elif response == Gtk.ResponseType.CANCEL:
+            print("The Cancel button was clicked")
+        dialog.destroy()
+
     def on_miTopLeft_activate(self,widget):
         '''
         吹き出し位置切り替え：左上
         '''
         self.annotationType = 3
+        self.wlist[self.sw] # 現在の壁紙'
+        self.renameWallpaper(self.wlist[self.sw], self.annotationType)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -583,6 +640,8 @@ class moeclock:
         吹き出し位置切り替え：右上
         '''
         self.annotationType = 1
+        self.wlist[self.sw] # 現在の壁紙'
+        self.renameWallpaper(self.wlist[self.sw], self.annotationType)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -592,6 +651,8 @@ class moeclock:
         吹き出し位置切り替え：左下
         '''
         self.annotationType = 2
+        self.wlist[self.sw] # 現在の壁紙'
+        self.renameWallpaper(self.wlist[self.sw], self.annotationType)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -601,6 +662,8 @@ class moeclock:
         吹き出し位置切り替え：右下
         '''
         self.annotationType = 0
+        self.wlist[self.sw] # 現在の壁紙'
+        self.renameWallpaper(self.wlist[self.sw], self.annotationType)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -895,6 +958,20 @@ class moeclock:
             Gtk.main_iteration_do(False)
         print (ret)             #実行結果のデバッグ用プリント
         return ret
+
+class RenameDialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, _("Callout position change"), parent, 0,
+            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+             Gtk.STOCK_OK, Gtk.ResponseType.OK))
+
+        self.set_default_size(150, 100)
+
+        label = Gtk.Label(_("Do you want to save the changed callout position in the image?"))
+
+        box = self.get_content_area()
+        box.add(label)
+        self.show_all()
 
 if __name__ == '__main__':
     moeclock()

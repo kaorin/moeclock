@@ -962,8 +962,8 @@ class moeclock:
 class RenameDialog(Gtk.Dialog):
     def __init__(self, parent):
         Gtk.Dialog.__init__(self, _("Callout position change"), parent, 0,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-             Gtk.STOCK_OK, Gtk.ResponseType.OK))
+            (Gtk.STOCK_NO, Gtk.ResponseType.CANCEL,
+             Gtk.STOCK_YES, Gtk.ResponseType.OK))
 
         self.set_default_size(150, 100)
 

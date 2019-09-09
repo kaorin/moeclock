@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-08-19 23:23+JST\n"
+"POT-Creation-Date: 2019-09-09 19:37+JST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,15 +67,15 @@ msgstr ""
 msgid "Moe Clock - %H:%M:%S"
 msgstr ""
 
-#: moeclock.py:775
+#: moeclock.py:793
 msgid "%s"
 msgstr ""
 
-#: moeclock.py:822
+#: moeclock.py:840
 msgid "Just Now!"
 msgstr ""
 
-#: moeclock.py:826
+#: moeclock.py:844
 msgid "Now!"
 msgstr ""
 

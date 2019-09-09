@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.3.1"
+VERSION="1.4.4.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -735,6 +735,8 @@ class moeclock:
             print ("wallpaper:"+wallpaper)
             mainWindow = self.wMain.get_object("Main")
             (xsize,ysize) = mainWindow.get_size()
+            #ファイル名取得
+            basename = os.path.basename(wallpaper)
             #壁紙生成
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(wallpaper)
             x = float(pixbuf.get_width())
@@ -758,13 +760,29 @@ class moeclock:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
             pixbuf2 = pixbuf
             pixbuf3 = pixbuf
-            if self.annotationType == 1:
+            anoType = self.annotationType
+            # 吹出位置 
+            # 右下：0
+            # 右上：1
+            # 左下：2
+            # 左上：3
+            # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
+            if basename.upper().find("--UL--") == 0:
+                anoType = 3
+            if basename.upper().find("--DL--") == 0:
+                anoType = 2
+            if basename.upper().find("--UR--") == 0:
+                anoType = 1
+            if basename.upper().find("--DR--") == 0:
+                anoType = 0
+
+            if anoType == 1:
                 pixbuf2 = pixbuf.flip(False)
                 pixbuf3 = pixbuf2
-            if self.annotationType == 2:
+            if anoType == 2:
                 pixbuf2 = pixbuf.flip(True)
                 pixbuf3 = pixbuf2
-            if self.annotationType == 3:
+            if anoType == 3:
                 pixbuf2 = pixbuf.flip(True)
                 pixbuf3 = pixbuf2.flip(False)
             pixbuf3.savev("/tmp/moeclockAnnotation.png", "png", ["compression"], ["9"])
@@ -793,14 +811,14 @@ class moeclock:
             timeYofs = 105
             nowYOfs = 125
             xOfs = 144 / 2 + 10
-            if self.annotationType == 1 or self.annotationType == 3:
+            if anoType == 1 or anoType == 3:
                 ofsX = x1 - 144
                 ofsY = y1 - 144
                 yearYofs = 30
                 dateYofs = 50
                 timeYofs = 75
                 nowYOfs = 95
-            if self.annotationType == 2 or self.annotationType == 3:
+            if anoType == 2 or anoType == 3:
                 xOfs = 40
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
             ctx.move_to(xOfs - width/2 + ofsX, yearYofs + ofsY)
@@ -837,16 +855,16 @@ class moeclock:
             y3 = s3.get_height()
             s4 = cairo.ImageSurface.create_from_png('/tmp/moeclockFrame.png')
             ctx = cairo.Context(s1)
-            if self.annotationType == 0:
+            if anoType == 0:
                 ctx.set_source_surface(s2,xsize-x1,(xsize*aspect)-y1)
-            if self.annotationType == 1:
+            if anoType == 1:
                 ctx.set_source_surface(s2,xsize-x1,0)
-            if self.annotationType == 2:
+            if anoType == 2:
                 ctx.set_source_surface(s2,0,(xsize*aspect)-y1)
-            if self.annotationType == 3:
+            if anoType == 3:
                 ctx.set_source_surface(s2,0,0)
             ctx.paint()
-            if self.annotationType == 2:
+            if anoType == 2:
                 ctx.set_source_surface(s3,xsize-x3,(xsize*aspect)-y3)
             else:
                 ctx.set_source_surface(s3,0,(xsize*aspect)-y3)

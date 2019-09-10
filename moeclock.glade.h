@@ -13,3 +13,4 @@ char *s = N_("TopLeft");
 char *s = N_("TopRight");
 char *s = N_("BottomLeft");
 char *s = N_("BottomRight");
+char *s = N_("RemovePrefix");

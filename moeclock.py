@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.4.3"
+VERSION="1.4.4.4"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -212,6 +212,7 @@ class moeclock:
                     "on_miTopRight_activate" : self.on_miTopRight_activate,
                     "on_miBottomLeft_activate" : self.on_miBottomLeft_activate,
                     "on_miBottomRight_activate" : self.on_miBottomRight_activate,
+                    "on_miRemovePrefix_activate" : self.on_miRemovePrefix_activate,
                     "on_daPict_draw" : self.on_daPict_draw,
                     "on_Main_size_allocate" : self.on_Main_size_allocate,
                     "on_Main_window_state_event" : self.on_Main_window_state_event,
@@ -577,11 +578,15 @@ class moeclock:
         basename = os.path.basename(wallpaper)
         if basename.upper().find("--UL--") == 0:
             return True
-        if basename.upper().find("--DL--") == 0:
+        if basename.upper().find("--LL--") == 0:
             return True
         if basename.upper().find("--UR--") == 0:
             return True
+        if basename.upper().find("--LR--") == 0:
+            return True
         if basename.upper().find("--DR--") == 0:
+            return True
+        if basename.upper().find("--DL--") == 0:
             return True
         return False
 
@@ -606,11 +611,11 @@ class moeclock:
                 if type == 3:
                     basename = "--UL--" + basename
                 if type == 2:
-                    basename = "--DL--" + basename
+                    basename = "--LL--" + basename
                 if type == 1:
                     basename = "--UR--" + basename
                 if type == 0:
-                    basename = "--DR--" + basename
+                    basename = "--LR--" + basename
                 path = os.path.join(dirname, basename)
                 os.rename(wallpaper, path)
                 self.wlist[self.sw] = path
@@ -625,6 +630,33 @@ class moeclock:
         elif response == Gtk.ResponseType.CANCEL:
             print("The Cancel button was clicked")
         dialog.destroy()
+
+    def deletePrefixWallpaper(self, wallpaper):
+        '''
+        壁紙の吹き出しプレフィックスを削除
+        '''
+        dirname, basename = os.path.split(wallpaper)
+        if self.checkPrefix(basename):
+            basename = basename[6:]
+            path = os.path.join(dirname, basename)
+            os.rename(wallpaper, path)
+            self.wlist[self.sw] = path
+            idx = self.use_wallpaper_list.index(wallpaper)
+            if idx >= 0:
+                self.use_wallpaper_list[idx] = path
+            idx = self.wallpaper_list.index(wallpaper)
+            if idx >= 0:
+                self.wallpaper_list[idx] = path
+
+    def on_miRemovePrefix_activate(self,widget):
+        '''
+        プレフィックスを削除してデフォルト位置に吹き出し表示
+        '''
+        wallpaper = self.wlist[self.sw]
+        self.deletePrefixWallpaper(wallpaper)
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
     def on_miTopLeft_activate(self,widget):
         '''
@@ -834,11 +866,11 @@ class moeclock:
             # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
             if basename.upper().find("--UL--") == 0:
                 anoType = 3
-            if basename.upper().find("--DL--") == 0:
+            if basename.upper().find("--LL--") == 0:
                 anoType = 2
             if basename.upper().find("--UR--") == 0:
                 anoType = 1
-            if basename.upper().find("--DR--") == 0:
+            if basename.upper().find("--LR--") == 0:
                 anoType = 0
 
             if anoType == 1:

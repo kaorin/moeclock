@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-10 20:43+0900\n"
+"POT-Creation-Date: 2019-09-11 01:15+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,6 +75,10 @@ msgstr ""
 
 #: moeclock.glade.h:15
 msgid "BottomRight"
+msgstr ""
+
+#: moeclock.glade.h:16
+msgid "RemovePrefix"
 msgstr ""
 
 #: moeclockdlg.glade.h:1

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-10 20:43+JST\n"
-"PO-Revision-Date: 2019-09-10 20:43+0900\n"
+"POT-Creation-Date: 2019-09-11 01:15+JST\n"
+"PO-Revision-Date: 2019-09-11 01:15+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -45,55 +45,55 @@ msgstr "（火）"
 msgid "(Wed)"
 msgstr "（水）"
 
-#: moeclock.py:271
+#: moeclock.py:272
 msgid "All Files"
 msgstr "すべてのファイル"
 
-#: moeclock.py:274
+#: moeclock.py:275
 msgid "Sound Files"
 msgstr "音声ファイル"
 
-#: moeclock.py:729 moeclock.py:759
+#: moeclock.py:761 moeclock.py:791
 msgid "Moe Clock"
 msgstr "萌え時計"
 
-#: moeclock.py:732
+#: moeclock.py:764
 msgid "Change the image every minute and notify the time."
 msgstr "1分ごとに画像を変更し時間を通知します。"
 
-#: moeclock.py:733 moeclock.py:734
+#: moeclock.py:765 moeclock.py:766
 msgid "Kaorin@"
 msgstr "かおりん@"
 
-#: moeclock.py:756
+#: moeclock.py:788
 msgid "Moe Clock - %H:%M:%S"
 msgstr "萌え時計 - %H:%M:%S"
 
-#: moeclock.py:858
+#: moeclock.py:890
 msgid "%s"
 msgstr "%sねん"
 
-#: moeclock.py:905
+#: moeclock.py:937
 msgid "Just Now!"
 msgstr "になったよ！"
 
-#: moeclock.py:909
+#: moeclock.py:941
 msgid "Now!"
 msgstr "だよ！"
 
-#: moeclock.py:966
+#: moeclock.py:998
 msgid "Callout position change"
 msgstr "吹き出し位置変更"
 
-#: moeclock.py:972
+#: moeclock.py:1004
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "現在の画像に吹き出し位置を保存しますか？"
 
-#: moeclock.py:974
+#: moeclock.py:1006
 msgid "Save callout location in image"
 msgstr "画像に吹き出し位置を保存"
 
-#: moeclock.py:977
+#: moeclock.py:1009
 msgid "Change default callout position"
 msgstr "デフォルトの吹き出し位置を変更"
 
@@ -156,6 +156,10 @@ msgstr "左下"
 #: moeclock.glade.h:15
 msgid "BottomRight"
 msgstr "右下"
+
+#: moeclock.glade.h:16
+msgid "RemovePrefix"
+msgstr "デフォルトの位置に表示"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

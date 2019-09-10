@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-10 05:22+JST\n"
+"POT-Creation-Date: 2019-09-10 20:43+JST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,40 +50,48 @@ msgstr ""
 msgid "Sound Files"
 msgstr ""
 
-#: moeclock.py:727 moeclock.py:757
+#: moeclock.py:729 moeclock.py:759
 msgid "Moe Clock"
 msgstr ""
 
-#: moeclock.py:730
+#: moeclock.py:732
 msgid "Change the image every minute and notify the time."
 msgstr ""
 
-#: moeclock.py:731 moeclock.py:732
+#: moeclock.py:733 moeclock.py:734
 msgid "Kaorin@"
 msgstr ""
 
-#: moeclock.py:754
+#: moeclock.py:756
 msgid "Moe Clock - %H:%M:%S"
 msgstr ""
 
-#: moeclock.py:856
+#: moeclock.py:858
 msgid "%s"
 msgstr ""
 
-#: moeclock.py:903
+#: moeclock.py:905
 msgid "Just Now!"
 msgstr ""
 
-#: moeclock.py:907
+#: moeclock.py:909
 msgid "Now!"
 msgstr ""
 
-#: moeclock.py:964
+#: moeclock.py:966
 msgid "Callout position change"
 msgstr ""
 
-#: moeclock.py:970
+#: moeclock.py:972
 msgid "Do you want to save the changed callout position in the image?"
+msgstr ""
+
+#: moeclock.py:974
+msgid "Save callout location in image"
+msgstr ""
+
+#: moeclock.py:977
+msgid "Change default callout position"
 msgstr ""
 
 #: moeclock.glade.h:1

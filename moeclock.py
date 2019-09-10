@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.4.4"
+VERSION="1.4.5.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -65,7 +65,8 @@ class ConfigXML:
                     "sound": os.path.dirname(os.path.abspath(__file__)) + "/sound.wav",
                     "windowDecorate":"True",
                     "annotationType":"0",
-                    "soundCutOut":"False"}
+                    "soundCutOut":"False",
+                    "calloutSize":"100%"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
@@ -189,6 +190,7 @@ class moeclock:
         self.annotationType = eval(conf.GetOption("annotationType"))
         self.soundCutOut = eval(conf.GetOption("soundCutOut"))
         self.sound = conf.GetOption("sound")
+        self.calloutSize = conf.GetOption("calloutSize")
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
         #メインウィンドウを作成
@@ -213,6 +215,12 @@ class moeclock:
                     "on_miBottomLeft_activate" : self.on_miBottomLeft_activate,
                     "on_miBottomRight_activate" : self.on_miBottomRight_activate,
                     "on_miRemovePrefix_activate" : self.on_miRemovePrefix_activate,
+                    "on_mi100_activate" : self.on_miCalloutSize_activate,
+                    "on_mi110_activate" : self.on_miCalloutSize_activate,
+                    "on_mi120_activate" : self.on_miCalloutSize_activate,
+                    "on_mi130_activate" : self.on_miCalloutSize_activate,
+                    "on_mi140_activate" : self.on_miCalloutSize_activate,
+                    "on_mi150_activate" : self.on_miCalloutSize_activate,
                     "on_daPict_draw" : self.on_daPict_draw,
                     "on_Main_size_allocate" : self.on_Main_size_allocate,
                     "on_Main_window_state_event" : self.on_Main_window_state_event,
@@ -230,6 +238,19 @@ class moeclock:
         miDecorate = self.wMain.get_object("miDecorate")
         miDecorate.set_active(self.windowDecorate)
         mainWindow.set_decorated(self.windowDecorate)
+        # 吹出位置 
+        # 右下：0
+        # 右上：1
+        # 左下：2
+        # 左上：3
+        if self.annotationType == 0:
+            self.wMain.get_object("miBottomRight").set_active(True)
+        if self.annotationType == 1:
+            self.wMain.get_object("miTopRight").set_active(True)
+        if self.annotationType == 2:
+            self.wMain.get_object("miBottomLeft").set_active(True)
+        if self.annotationType == 3:
+            self.wMain.get_object("miBottomLeft").set_active(True)
         xpos = conf.GetOption("x_pos")
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
@@ -470,6 +491,7 @@ class moeclock:
         conf.SetOption("windowDecorate", self.windowDecorate)
         conf.SetOption("annotationType", self.annotationType)
         conf.SetOption("soundCutOut", self.soundCutOut)
+        conf.SetOption("calloutSize", self.calloutSize)
         conf.Write()
 
     def showMenu(self,widget, event):
@@ -480,6 +502,19 @@ class moeclock:
         '''
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             #右クリック
+            # 吹出位置 
+            # 右下：0
+            # 右上：1
+            # 左下：2
+            # 左上：3
+            if self.annotationType == 0:
+                self.wMain.get_object("miBottomRight").set_active(True)
+            if self.annotationType == 1:
+                self.wMain.get_object("miTopRight").set_active(True)
+            if self.annotationType == 2:
+                self.wMain.get_object("miBottomLeft").set_active(True)
+            if self.annotationType == 3:
+                self.wMain.get_object("miBottomLeft").set_active(True)
             self.context_menu.popup(None, None, None,None, event.button, event.time)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1:
             #左クリック
@@ -566,6 +601,15 @@ class moeclock:
         '''
         mainWindow = self.wMain.get_object("Main")
         mainWindow.resize(640,360)
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
+        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+
+    def on_miCalloutSize_activate(self, widget):
+        '''
+        吹き出しサイズ変更
+        '''
+        self.calloutSize = widget.get_child().get_text()
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -885,6 +929,8 @@ class moeclock:
             if anoType == 3:
                 pixbuf2 = pixbuf.flip(True)
                 pixbuf3 = pixbuf2.flip(False)
+            x = float(pixbuf3.get_width())
+            y = float(pixbuf3.get_height())
             pixbuf3.savev("/tmp/moeclockAnnotation.png", "png", ["compression"], ["9"])
             del pixbuf
             del pixbuf2
@@ -943,6 +989,17 @@ class moeclock:
                 ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Now!"))
             s1.write_to_png('/tmp/moeclockTmp.png')
+            if self.calloutSize != "100%":
+                scale = float(self.calloutSize[0:3]) / 100;
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file('/tmp/moeclockTmp.png')
+                x1 = s1.get_width()
+                y1 = s1.get_height()
+                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.BILINEAR )
+                pixbuf2.savev("/tmp/moeclockTmp.png", "png", ["compression"], ["9"])
+                x1 = pixbuf2.get_width()
+                y1 = pixbuf2.get_height()
+                del pixbuf
+                del pixbuf2
             del s1
 
             #合成開始

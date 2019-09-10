@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-11 02:00+JST\n"
-"PO-Revision-Date: 2019-09-11 02:00+0900\n"
+"POT-Creation-Date: 2019-09-11 05:58+JST\n"
+"PO-Revision-Date: 2019-09-11 05:59+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -44,55 +44,55 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:272
+#: moeclock.py:293
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:275
+#: moeclock.py:296
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:764 moeclock.py:794
+#: moeclock.py:808 moeclock.py:838
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:767
+#: moeclock.py:811
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:768 moeclock.py:769
+#: moeclock.py:812 moeclock.py:813
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:791
+#: moeclock.py:835
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:893
+#: moeclock.py:939
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:940
+#: moeclock.py:986
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:944
+#: moeclock.py:990
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1001
+#: moeclock.py:1058
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1007
+#: moeclock.py:1064
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1009
+#: moeclock.py:1066
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1012
+#: moeclock.py:1069
 msgid "Change default callout position"
 msgstr "Change default callout position"
 
@@ -159,6 +159,34 @@ msgstr "BottomRight"
 #: moeclock.glade.h:16
 msgid "RemovePrefix"
 msgstr "RemovePrefix"
+
+#: moeclock.glade.h:17
+msgid "Callout size"
+msgstr "Callout size"
+
+#: moeclock.glade.h:19
+msgid "100%"
+msgstr "100%"
+
+#: moeclock.glade.h:21
+msgid "110%"
+msgstr "110%"
+
+#: moeclock.glade.h:23
+msgid "120%"
+msgstr "120%"
+
+#: moeclock.glade.h:25
+msgid "130%"
+msgstr "130%"
+
+#: moeclock.glade.h:27
+msgid "140%"
+msgstr "140%"
+
+#: moeclock.glade.h:29
+msgid "150%"
+msgstr "150%"
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"

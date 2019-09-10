@@ -590,6 +590,9 @@ class moeclock:
             return True
         return False
 
+    def tryIndex(self, l, x, default=False):
+        return l.index(x) if x in l else default
+
     def renameWallpaper(self, wallpaper, type):
         '''
         壁紙に吹き出しプレフィックスを追加
@@ -619,10 +622,10 @@ class moeclock:
                 path = os.path.join(dirname, basename)
                 os.rename(wallpaper, path)
                 self.wlist[self.sw] = path
-                idx = self.use_wallpaper_list.index(wallpaper)
+                idx = self.tryIndex(self.use_wallpaper_list,wallpaper,-1)
                 if idx >= 0:
                     self.use_wallpaper_list[idx] = path
-                idx = self.wallpaper_list.index(wallpaper)
+                idx = self.tryIndex(self.wallpaper_list,wallpaper,-1)
                 if idx >= 0:
                     self.wallpaper_list[idx] = path
             if dialog.calloutDefault.get_active():

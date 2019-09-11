@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.1"
+VERSION="1.4.5.2"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -935,6 +935,7 @@ class moeclock:
             del pixbuf
             del pixbuf2
             del pixbuf3
+            # 日付時刻描画
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
             dateStr = d.strftime("%m/%d")
@@ -966,19 +967,24 @@ class moeclock:
                 nowYOfs = 95
             if anoType == 2 or anoType == 3:
                 xOfs = 40
+            # 年描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
             ctx.move_to(xOfs - width/2 + ofsX, yearYofs + ofsY)
             ctx.show_text(yearStr)
+            # 月日描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(dateStr)
             ctx.move_to(xOfs - width/2 + ofsX, dateYofs + ofsY)
             ctx.show_text(dateStr)
+            # 週描画
             ctx.set_font_size(10)
             ctx.move_to(xOfs - 10 + self.weekOffset + width + ofsX, dateYofs + ofsY)
             ctx.show_text(weekStr)
+            # 時刻描画
             ctx.set_font_size(22)
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(timeStr)
             ctx.move_to(xOfs - width/2 + ofsX, timeYofs + ofsY)
             ctx.show_text(timeStr)
+            # メッセージ描画
             ctx.set_font_size(15)
             if d.minute == 0:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("になったよ!")
@@ -989,22 +995,28 @@ class moeclock:
                 ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Now!"))
             s1.write_to_png('/tmp/moeclockTmp.png')
-            if self.calloutSize != "100%":
-                scale = float(self.calloutSize[0:3]) / 100;
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file('/tmp/moeclockTmp.png')
-                x1 = s1.get_width()
-                y1 = s1.get_height()
-                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.BILINEAR )
-                pixbuf2.savev("/tmp/moeclockTmp.png", "png", ["compression"], ["9"])
-                x1 = pixbuf2.get_width()
-                y1 = pixbuf2.get_height()
-                del pixbuf
-                del pixbuf2
             del s1
 
             #合成開始
             s1 = cairo.ImageSurface.create_from_png('/tmp/moeclockWall.png')
-            s2 = cairo.ImageSurface.create_from_png('/tmp/moeclockTmp.png')
+            # 吹き出し拡大
+            if self.calloutSize != "100%":
+                scale = float(self.calloutSize[0:3]) / 100;
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file('/tmp/moeclockTmp.png')
+                x1 = pixbuf.get_width()
+                y1 = pixbuf.get_height()
+                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.BILINEAR )
+                x1 = pixbuf2.get_width()
+                y1 = pixbuf2.get_height()
+                s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32,x1, y1)
+                ctx = cairo.Context(s2)
+                Gdk.cairo_set_source_pixbuf(ctx, pixbuf2, 0, 0)
+                ctx.paint()
+                del pixbuf
+                del pixbuf2
+            else:
+                s2 = cairo.ImageSurface.create_from_png('/tmp/moeclockTmp.png')
+
             if os.path.exists(self.skin + '/logo.png') == False:
                  os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/logo.png'
             s3 = cairo.ImageSurface.create_from_png(self.skin + '/logo.png')

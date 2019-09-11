@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-11 05:58+JST\n"
-"PO-Revision-Date: 2019-09-11 05:59+0900\n"
+"POT-Creation-Date: 2019-09-11 13:05+JST\n"
+"PO-Revision-Date: 2019-09-11 13:05+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -69,31 +69,31 @@ msgstr "かおりん@"
 msgid "Moe Clock - %H:%M:%S"
 msgstr "萌え時計 - %H:%M:%S"
 
-#: moeclock.py:939
+#: moeclock.py:940
 msgid "%s"
 msgstr "%sねん"
 
-#: moeclock.py:986
+#: moeclock.py:992
 msgid "Just Now!"
 msgstr "になったよ！"
 
-#: moeclock.py:990
+#: moeclock.py:996
 msgid "Now!"
 msgstr "だよ！"
 
-#: moeclock.py:1058
+#: moeclock.py:1070
 msgid "Callout position change"
 msgstr "吹き出し位置変更"
 
-#: moeclock.py:1064
+#: moeclock.py:1076
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "現在の画像に吹き出し位置を保存しますか？"
 
-#: moeclock.py:1066
+#: moeclock.py:1078
 msgid "Save callout location in image"
 msgstr "画像に吹き出し位置を保存"
 
-#: moeclock.py:1069
+#: moeclock.py:1081
 msgid "Change default callout position"
 msgstr "デフォルトの吹き出し位置を変更"
 

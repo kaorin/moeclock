@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-11 05:58+JST\n"
-"PO-Revision-Date: 2019-09-11 05:58+0900\n"
+"POT-Creation-Date: 2019-09-11 13:05+JST\n"
+"PO-Revision-Date: 2019-09-11 13:05+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -68,31 +68,31 @@ msgstr "Kaorin@"
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:939
+#: moeclock.py:940
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:986
+#: moeclock.py:992
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:990
+#: moeclock.py:996
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1058
+#: moeclock.py:1070
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1064
+#: moeclock.py:1076
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1066
+#: moeclock.py:1078
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1069
+#: moeclock.py:1081
 msgid "Change default callout position"
 msgstr "Change default callout position"
 

@@ -32,6 +32,8 @@ APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
 LOCALE_DIR = join(WHERE_AM_I, 'locale')
 
+SOUND_PLAY="aplay"
+
 try:
     locale.setlocale(locale.LC_ALL, '')
 except:
@@ -373,11 +375,11 @@ class moeclock:
                 soundPath = "/usr/share/moeclock/sound/nosound.wav"
             elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
                 soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
-            cmdStr = "aplay "+ soundPath
+            cmdStr = SOUND_PLAY + " "+ soundPath
             self.execCommand(cmdStr)
         if os.path.exists(self.sound) :
             soundFile = self.fcSound.get_filename()
-            cmdStr = "aplay " + soundFile
+            cmdStr = SOUND_PLAY + " " + soundFile
             self.execCommand(cmdStr)
 
     def on_fcSkin_file_set(self,widget):
@@ -864,9 +866,9 @@ class moeclock:
                 soundPath = "/usr/share/moeclock/sound/nosound.wav"
             elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
                 soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
-            cmdStr = "aplay "+ soundPath
+            cmdStr = SOUND_PLAY + " " + soundPath
             self.execCommand(cmdStr)
-        cmdStr = "aplay "+ self.sound
+        cmdStr = SOUND_PLAY + " " + self.sound
         self.execCommand(cmdStr)
 
     def _buildWallPaper(self,wallpaper):

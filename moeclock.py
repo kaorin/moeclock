@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.2"
+VERSION="1.4.5.3"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -171,6 +171,7 @@ class moeclock:
     notice = True
     defaultHeaderBar = None
     customHeaderBar = None
+    eventCancel = False
 
     def __init__(self):
         '''
@@ -212,10 +213,10 @@ class moeclock:
                     "on_miMidium_activate" : self.on_miMidium_activate,
                     "on_miLarge_activate" : self.on_miLarge_activate,
                     "on_miBig_activate" : self.on_miBig_activate,
-                    "on_miTopLeft_activate" : self.on_miTopLeft_activate,
-                    "on_miTopRight_activate" : self.on_miTopRight_activate,
-                    "on_miBottomLeft_activate" : self.on_miBottomLeft_activate,
-                    "on_miBottomRight_activate" : self.on_miBottomRight_activate,
+                    "on_miTopLeft_toggled" : self.on_miTopLeft_toggled,
+                    "on_miTopRight_toggled" : self.on_miTopRight_toggled,
+                    "on_miBottomLeft_toggled" : self.on_miBottomLeft_toggled,
+                    "on_miBottomRight_toggled" : self.on_miBottomRight_toggled,
                     "on_miRemovePrefix_activate" : self.on_miRemovePrefix_activate,
                     "on_mi100_activate" : self.on_miCalloutSize_activate,
                     "on_mi110_activate" : self.on_miCalloutSize_activate,
@@ -245,6 +246,11 @@ class moeclock:
         # 右上：1
         # 左下：2
         # 左上：3
+        self.eventCancel = True
+        self.wMain.get_object("miBottomRight").set_active(False)
+        self.wMain.get_object("miTopRight").set_active(False)
+        self.wMain.get_object("miBottomLeft").set_active(False)
+        self.wMain.get_object("miTopLeft").set_active(False)
         if self.annotationType == 0:
             self.wMain.get_object("miBottomRight").set_active(True)
         if self.annotationType == 1:
@@ -252,7 +258,8 @@ class moeclock:
         if self.annotationType == 2:
             self.wMain.get_object("miBottomLeft").set_active(True)
         if self.annotationType == 3:
-            self.wMain.get_object("miBottomLeft").set_active(True)
+            self.wMain.get_object("miTopLeft").set_active(True)
+        self.eventCancel = False
         xpos = conf.GetOption("x_pos")
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
@@ -509,6 +516,11 @@ class moeclock:
             # 右上：1
             # 左下：2
             # 左上：3
+            self.eventCancel = True
+            self.wMain.get_object("miBottomRight").set_active(False)
+            self.wMain.get_object("miTopRight").set_active(False)
+            self.wMain.get_object("miBottomLeft").set_active(False)
+            self.wMain.get_object("miTopLeft").set_active(False)
             if self.annotationType == 0:
                 self.wMain.get_object("miBottomRight").set_active(True)
             if self.annotationType == 1:
@@ -516,7 +528,8 @@ class moeclock:
             if self.annotationType == 2:
                 self.wMain.get_object("miBottomLeft").set_active(True)
             if self.annotationType == 3:
-                self.wMain.get_object("miBottomLeft").set_active(True)
+                self.wMain.get_object("miTopLeft").set_active(True)
+            self.eventCancel = False
             self.context_menu.popup(None, None, None,None, event.button, event.time)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1:
             #左クリック
@@ -707,10 +720,12 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miTopLeft_activate(self,widget):
+    def on_miTopLeft_toggled(self,widget):
         '''
         吹き出し位置切り替え：左上
         '''
+        if self.eventCancel:
+            return
         # self.annotationType = 3
         wallpaper = self.wlist[self.sw]
         self.renameWallpaper(wallpaper, 3)
@@ -718,10 +733,12 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miTopRight_activate(self,widget):
+    def on_miTopRight_toggled(self,widget):
         '''
         吹き出し位置切り替え：右上
         '''
+        if self.eventCancel:
+            return
         # self.annotationType = 1
         wallpaper = self.wlist[self.sw]
         self.renameWallpaper(wallpaper, 1)
@@ -729,10 +746,12 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miBottomLeft_activate(self,widget):
+    def on_miBottomLeft_toggled(self,widget):
         '''
         吹き出し位置切り替え：左下
         '''
+        if self.eventCancel:
+            return
         # self.annotationType = 2
         wallpaper = self.wlist[self.sw]
         self.renameWallpaper(wallpaper, 2)
@@ -740,10 +759,12 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miBottomRight_activate(self,widget):
+    def on_miBottomRight_toggled(self,widget):
         '''
         吹き出し位置切り替え：右下
         '''
+        if self.eventCancel:
+            return
         # self.annotationType = 0
         wallpaper = self.wlist[self.sw]
         self.renameWallpaper(wallpaper, 0)

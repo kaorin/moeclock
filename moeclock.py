@@ -32,7 +32,7 @@ APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
 LOCALE_DIR = join(WHERE_AM_I, 'locale')
 
-SOUND_PLAY="aplay"
+SOUND_PLAY="paplay"
 
 try:
     locale.setlocale(locale.LC_ALL, '')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__="1.4.5.3"
+__VERSION__="1.4.5.4"
 
 params = {
         'name': 'moeclock',

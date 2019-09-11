@@ -26,7 +26,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.3"
+VERSION="1.4.5.4"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -1028,7 +1028,7 @@ class moeclock:
                 pixbuf = GdkPixbuf.Pixbuf.new_from_file('/tmp/moeclockTmp.png')
                 x1 = pixbuf.get_width()
                 y1 = pixbuf.get_height()
-                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.BILINEAR )
+                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.HYPER )
                 x1 = pixbuf2.get_width()
                 y1 = pixbuf2.get_height()
                 s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32,x1, y1)

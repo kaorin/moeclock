@@ -1,262 +1,259 @@
-# Japanese translations for PACKAGE package
-# PACKAGE パッケージに対する英訳.
+# Japanese translations for PACKAGE package.
 # Copyright (C) 2019 ORGANIZATION
 # kaoru <kaoru.konno@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-11 13:05+JST\n"
-"PO-Revision-Date: 2019-09-11 13:05+0900\n"
+"POT-Creation-Date: 2019-09-11 19:58+JST\n"
+"PO-Revision-Date: 2019-09-11 19:58+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Fri)"
-msgstr "（金）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Mon)"
-msgstr "（月）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Sat)"
-msgstr "（土）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Sun)"
-msgstr "（日）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Thu)"
-msgstr "（木）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Tue)"
-msgstr "（火）"
+msgstr ""
 
-#: moeclock.py:46
+#: moeclock.py:48
 msgid "(Wed)"
-msgstr "（水）"
+msgstr ""
 
-#: moeclock.py:293
+#: moeclock.py:302
 msgid "All Files"
-msgstr "すべてのファイル"
+msgstr ""
 
-#: moeclock.py:296
+#: moeclock.py:305
 msgid "Sound Files"
-msgstr "音声ファイル"
+msgstr ""
 
-#: moeclock.py:808 moeclock.py:838
+#: moeclock.py:831 moeclock.py:861
 msgid "Moe Clock"
-msgstr "萌え時計"
+msgstr ""
 
-#: moeclock.py:811
+#: moeclock.py:834
 msgid "Change the image every minute and notify the time."
-msgstr "1分ごとに画像を変更し時間を通知します。"
+msgstr ""
 
-#: moeclock.py:812 moeclock.py:813
+#: moeclock.py:835 moeclock.py:836
 msgid "Kaorin@"
-msgstr "かおりん@"
+msgstr ""
 
-#: moeclock.py:835
+#: moeclock.py:858
 msgid "Moe Clock - %H:%M:%S"
-msgstr "萌え時計 - %H:%M:%S"
+msgstr ""
 
-#: moeclock.py:940
+#: moeclock.py:963
 msgid "%s"
-msgstr "%sねん"
+msgstr ""
 
-#: moeclock.py:992
+#: moeclock.py:1015
 msgid "Just Now!"
-msgstr "になったよ！"
+msgstr ""
 
-#: moeclock.py:996
+#: moeclock.py:1019
 msgid "Now!"
-msgstr "だよ！"
+msgstr ""
 
-#: moeclock.py:1070
+#: moeclock.py:1093
 msgid "Callout position change"
-msgstr "吹き出し位置変更"
+msgstr ""
 
-#: moeclock.py:1076
+#: moeclock.py:1099
 msgid "Do you want to save the changed callout position in the image?"
-msgstr "現在の画像に吹き出し位置を保存しますか？"
+msgstr ""
 
-#: moeclock.py:1078
+#: moeclock.py:1101
 msgid "Save callout location in image"
-msgstr "画像に吹き出し位置を保存"
+msgstr ""
 
-#: moeclock.py:1081
+#: moeclock.py:1104
 msgid "Change default callout position"
-msgstr "デフォルトの吹き出し位置を変更"
+msgstr ""
 
 #: moeclock.glade.h:1
 msgid "MoeClock"
-msgstr "萌え時計"
+msgstr ""
 
 #: moeclock.glade.h:2
 msgid "Time Signal"
-msgstr "時報"
+msgstr ""
 
 #: moeclock.glade.h:3
 msgid "Always in front"
-msgstr "常に前面に"
+msgstr ""
 
 #: moeclock.glade.h:4
 msgid "Window Decorate"
-msgstr "タイトルバーを表示する"
+msgstr ""
 
 #: moeclock.glade.h:5
 msgid "Window Size"
-msgstr "ウィンドウサイズ"
+msgstr ""
 
 #: moeclock.glade.h:6
 msgid "Micro(280)"
-msgstr "最小(280)"
+msgstr ""
 
 #: moeclock.glade.h:7
 msgid "Small(320)"
-msgstr "小(320)"
+msgstr ""
 
 #: moeclock.glade.h:8
 msgid "Medium(400)"
-msgstr "中(400)"
+msgstr ""
 
 #: moeclock.glade.h:9
 msgid "Large(480)"
-msgstr "大(480)"
+msgstr ""
 
 #: moeclock.glade.h:10
 msgid "Big(640)"
-msgstr "特大(640)"
+msgstr ""
 
 #: moeclock.glade.h:11
 msgid "Annotation"
-msgstr "吹き出し位置"
+msgstr ""
 
 #: moeclock.glade.h:12
 msgid "TopLeft"
-msgstr "左上"
+msgstr ""
 
 #: moeclock.glade.h:13
 msgid "TopRight"
-msgstr "右上"
+msgstr ""
 
 #: moeclock.glade.h:14
 msgid "BottomLeft"
-msgstr "左下"
+msgstr ""
 
 #: moeclock.glade.h:15
 msgid "BottomRight"
-msgstr "右下"
+msgstr ""
 
 #: moeclock.glade.h:16
 msgid "RemovePrefix"
-msgstr "デフォルトの位置に表示"
+msgstr ""
 
 #: moeclock.glade.h:17
 msgid "Callout size"
-msgstr "吹き出しサイズ"
+msgstr ""
 
 #: moeclock.glade.h:19
 msgid "100%"
-msgstr "100%"
+msgstr ""
 
 #: moeclock.glade.h:21
 msgid "110%"
-msgstr "110%"
+msgstr ""
 
 #: moeclock.glade.h:23
 msgid "120%"
-msgstr "120%"
+msgstr ""
 
 #: moeclock.glade.h:25
 msgid "130%"
-msgstr "130%"
+msgstr ""
 
 #: moeclock.glade.h:27
 msgid "140%"
-msgstr "140%"
+msgstr ""
 
 #: moeclock.glade.h:29
 msgid "150%"
-msgstr "150%"
+msgstr ""
 
 #: moeclockdlg.glade.h:1
 msgid "Settings"
-msgstr "設定"
+msgstr ""
 
 #: moeclockdlg.glade.h:2
 msgid "Select time signal audio"
-msgstr "時報音声選択"
+msgstr ""
 
 #: moeclockdlg.glade.h:3
 msgid "Select time signal audio file (WAVE only)"
-msgstr "時報音声ファイルの選択(WAVE形式のみ)"
+msgstr ""
 
 #: moeclockdlg.glade.h:4
 msgid "Wallpaper Folder"
-msgstr "壁紙フォルダ"
+msgstr ""
 
 #: moeclockdlg.glade.h:5
 msgid "* Folder changes will be effective from the next startup."
-msgstr "※フォルダ変更は次回起動時から有効になります。"
+msgstr ""
 
 #: moeclockdlg.glade.h:6
 msgid "Font"
-msgstr "フォント"
+msgstr ""
 
 #: moeclockdlg.glade.h:7
 msgid ""
 "* Font name only is selectable.\n"
 " Size and style are not reflected."
 msgstr ""
-"※フォントはフォント名のみの選択が有効です。\n"
-"　サイズとスタイルは反映されません。"
 
 #: moeclockdlg.glade.h:9
 msgid "Day of week display offset(px)"
-msgstr "曜日表示オフセット(px)"
+msgstr ""
 
 #: moeclockdlg.glade.h:10
 msgid "Select skin"
-msgstr "スキン選択"
+msgstr ""
 
 #: moeclockdlg.glade.h:11
 msgid "Select skin Folder"
-msgstr "スキンフォルダの選択"
+msgstr ""
 
 #: moeclockdlg.glade.h:12
 msgid "Change font color"
-msgstr "文字の色"
+msgstr ""
 
 #: moeclockdlg.glade.h:13
 msgid "If the sound cuts out"
-msgstr "音声が切れる場合"
+msgstr ""
 
 #: moeclockdlg.glade.h:14
 msgid "centered"
-msgstr "centered"
+msgstr ""
 
 #: moeclockdlg.glade.h:15
 msgid "scaled"
-msgstr "scaled"
+msgstr ""
 
 #: moeclockdlg.glade.h:16
 msgid "stretched"
-msgstr "stretched"
+msgstr ""
 
 #: moeclockdlg.glade.h:17
 msgid "zoom"
-msgstr "zoom"
+msgstr ""
 
 #: moeclockdlg.glade.h:18
 msgid "spanned"
-msgstr "spanned"
+msgstr ""

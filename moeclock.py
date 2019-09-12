@@ -297,7 +297,6 @@ class moeclock:
         self.cbSoundCutOut = self.wTree.get_object ("cbSoundCutOut")
         self.cbSoundCutOut.set_active(self.soundCutOut)
         self.sclCalloutSize = self.wTree.get_object ("sclCalloutSize")
-        self.sclCalloutSize.set_range(80, 200)
         self.sclCalloutSize.set_value(float(self.calloutSize.replace("%","")))
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()

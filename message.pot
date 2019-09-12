@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-11 19:58+JST\n"
+"POT-Creation-Date: 2019-09-12 20:06+JST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,67 +15,71 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Fri)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Mon)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Sat)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Sun)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Thu)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Tue)"
 msgstr ""
 
-#: moeclock.py:48
+#: moeclock.py:49
 msgid "(Wed)"
 msgstr ""
 
-#: moeclock.py:302
+#: moeclock.py:303
 msgid "All Files"
 msgstr ""
 
-#: moeclock.py:305
+#: moeclock.py:306
 msgid "Sound Files"
 msgstr ""
 
-#: moeclock.py:831 moeclock.py:861
+#: moeclock.py:697
+msgid "File Rename Error"
+msgstr ""
+
+#: moeclock.py:846 moeclock.py:876
 msgid "Moe Clock"
 msgstr ""
 
-#: moeclock.py:834
+#: moeclock.py:849
 msgid "Change the image every minute and notify the time."
 msgstr ""
 
-#: moeclock.py:835 moeclock.py:836
+#: moeclock.py:850 moeclock.py:851
 msgid "Kaorin@"
 msgstr ""
 
-#: moeclock.py:858
+#: moeclock.py:873
 msgid "Moe Clock - %H:%M:%S"
 msgstr ""
 
-#: moeclock.py:963
+#: moeclock.py:969
 msgid "%s"
 msgstr ""
 
-#: moeclock.py:1015
+#: moeclock.py:1023
 msgid "Just Now!"
 msgstr ""
 
-#: moeclock.py:1019
+#: moeclock.py:1027
 msgid "Now!"
 msgstr ""
 

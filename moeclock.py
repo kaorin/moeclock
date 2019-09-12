@@ -296,6 +296,9 @@ class moeclock:
         self.fcSound.set_filename(self.sound)
         self.cbSoundCutOut = self.wTree.get_object ("cbSoundCutOut")
         self.cbSoundCutOut.set_active(self.soundCutOut)
+        self.sclCalloutSize = self.wTree.get_object ("sclCalloutSize")
+        self.sclCalloutSize.set_range(80, 200)
+        self.sclCalloutSize.set_value(float(self.calloutSize.replace("%","")))
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
@@ -357,6 +360,7 @@ class moeclock:
         if len(soundFile) > 0:
             self.sound = soundFile
         self.skin = self.fcSkin.get_filename()
+        self.calloutSize = str(self.sclCalloutSize.get_value()) + "%"
         self._saveConf()
         self.preferences.hide()
         GLib.source_remove(self.timeout)

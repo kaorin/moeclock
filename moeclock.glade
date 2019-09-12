@@ -187,67 +187,6 @@
       </object>
     </child>
     <child>
-      <object class="GtkMenuItem" id="miAnnotationSize">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Callout size</property>
-        <child type="submenu">
-          <object class="GtkMenu" id="menu3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuItem" id="mi100">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">100%</property>
-                <signal name="activate" handler="on_mi100_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mi110">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">110%</property>
-                <signal name="activate" handler="on_mi110_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mi120">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">120%</property>
-                <signal name="activate" handler="on_mi120_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mi130">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">130%</property>
-                <signal name="activate" handler="on_mi130_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mi140">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">140%</property>
-                <signal name="activate" handler="on_mi140_activate" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="mi150">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">150%</property>
-                <signal name="activate" handler="on_mi150_activate" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
       <object class="GtkSeparatorMenuItem" id="menuitem2">
         <property name="visible">True</property>
         <property name="can_focus">False</property>

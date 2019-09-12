@@ -936,33 +936,31 @@ class moeclock:
             pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(path)
             pixbufFrame = pixbufFrame.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #吹き出し生成
+            anoType = self.annotationType
+            # 吹出位置 
+            # 右下：0
+            # 右上：1
+            # 左下：2
+            # 左上：3
+            # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
+            if basename.upper().find("--UL--") == 0:
+                anoType = 3
+            if basename.upper().find("--LL--") == 0:
+                anoType = 2
+            if basename.upper().find("--UR--") == 0:
+                anoType = 1
+            if basename.upper().find("--LR--") == 0:
+                anoType = 0
             path = self.skin + '/annotation.svg'
             if os.path.exists(path) == True:
                 svg = Rsvg.Handle.new_from_file(path)
                 width = svg.props.width
                 height = svg.props.height
                 # 吹き出し拡大
-                scale = 1.0
-                if self.calloutSize != "100%":
-                    scale = float(self.calloutSize[0:3]) / 100;
+                scale = float(self.calloutSize.replace("%","")) / 100;
                 s2 = cairo.SVGSurface(None, width * scale, height * scale)
                 ctx = cairo.Context(s2)
                 ctx.save()
-                anoType = self.annotationType
-                # 吹出位置 
-                # 右下：0
-                # 右上：1
-                # 左下：2
-                # 左上：3
-                # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
-                if basename.upper().find("--UL--") == 0:
-                    anoType = 3
-                if basename.upper().find("--LL--") == 0:
-                    anoType = 2
-                if basename.upper().find("--UR--") == 0:
-                    anoType = 1
-                if basename.upper().find("--LR--") == 0:
-                    anoType = 0
                 if anoType == 0:
                     ctx.scale(scale, scale)
                 if anoType == 1:
@@ -985,28 +983,11 @@ class moeclock:
                 pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(path)
                 # 吹き出し拡大
                 scale = 1.0
-                pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
                 if self.calloutSize != "100%":
-                    scale = float(self.calloutSize[0:3]) / 100;
+                    scale = float(self.calloutSize.replace("%","")) / 100;
                     x1 = pixbufCallout.get_width()
                     y1 = pixbufCallout.get_height()
                     pixbufCallout = pixbufCallout.scale_simple(x1 * scale, y1 * scale, GdkPixbuf.InterpType.HYPER )
-                anoType = self.annotationType
-                # 吹出位置 
-                # 右下：0
-                # 右上：1
-                # 左下：2
-                # 左上：3
-                # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
-                if basename.upper().find("--UL--") == 0:
-                    anoType = 3
-                if basename.upper().find("--LL--") == 0:
-                    anoType = 2
-                if basename.upper().find("--UR--") == 0:
-                    anoType = 1
-                if basename.upper().find("--LR--") == 0:
-                    anoType = 0
-
                 if anoType == 1:
                     pixbufCallout = pixbufCallout.flip(False)
                 if anoType == 2:
@@ -1020,6 +1001,7 @@ class moeclock:
                 ctx = cairo.Context(s2)
                 Gdk.cairo_set_source_pixbuf(ctx, pixbufCallout, 0, 0)
                 ctx.paint()
+                del pixbufCallout
             # 日付時刻描画
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
@@ -1114,7 +1096,6 @@ class moeclock:
             del s3
             del s4
             del pixbufWall
-            del pixbufCallout
             del pixbufFrame
             gc.collect()
             return True

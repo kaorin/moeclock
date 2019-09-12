@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-12 21:18+JST\n"
-"PO-Revision-Date: 2019-09-12 21:19+0900\n"
+"POT-Creation-Date: 2019-09-13 01:27+JST\n"
+"PO-Revision-Date: 2019-09-13 01:27+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -16,31 +16,31 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Fri)"
 msgstr "(Fri)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Mon)"
 msgstr "(Mon)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Sat)"
 msgstr "(Sat)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Sun)"
 msgstr "(Sun)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Thu)"
 msgstr "(Thu)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Tue)"
 msgstr "(Tue)"
 
-#: moeclock.py:49
+#: moeclock.py:50
 msgid "(Wed)"
 msgstr "(Wed)"
 
@@ -72,31 +72,31 @@ msgstr "Kaorin@"
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:973
+#: moeclock.py:1025
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:1027
+#: moeclock.py:1073
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:1031
+#: moeclock.py:1077
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1097
+#: moeclock.py:1144
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1103
+#: moeclock.py:1150
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1105
+#: moeclock.py:1152
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1108
+#: moeclock.py:1155
 msgid "Change default callout position"
 msgstr "Change default callout position"
 

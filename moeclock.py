@@ -9,6 +9,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
+from gi.repository import Rsvg
 #import gnome.ui
 import os
 from os.path import abspath, dirname, join
@@ -27,7 +28,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.5"
+VERSION="1.4.5.6"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -929,44 +930,96 @@ class moeclock:
             aspect = y / x
             pixbufWall = pixbufWall.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #枠生成
-            if os.path.exists(self.skin + '/frame.png') == False:
-                 os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
-            pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/frame.png')
+            path = self.skin + '/frame.png'
+            if os.path.exists(path) == False:
+                 path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
+            pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(path)
             pixbufFrame = pixbufFrame.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #吹き出し生成
-            if os.path.exists(self.skin + '/annotation.png') == False:
-                os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
-            # 吹き出し拡大
-            scale = 1.0
-            pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
-            if self.calloutSize != "100%":
-                scale = float(self.calloutSize[0:3]) / 100;
-                x1 = pixbufCallout.get_width()
-                y1 = pixbufCallout.get_height()
-                pixbufCallout = pixbufCallout.scale_simple(x1 * scale, y1 * scale, GdkPixbuf.InterpType.HYPER )
-            anoType = self.annotationType
-            # 吹出位置 
-            # 右下：0
-            # 右上：1
-            # 左下：2
-            # 左上：3
-            # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
-            if basename.upper().find("--UL--") == 0:
-                anoType = 3
-            if basename.upper().find("--LL--") == 0:
-                anoType = 2
-            if basename.upper().find("--UR--") == 0:
-                anoType = 1
-            if basename.upper().find("--LR--") == 0:
-                anoType = 0
+            path = self.skin + '/annotation.svg'
+            if os.path.exists(path) == True:
+                svg = Rsvg.Handle.new_from_file(path)
+                width = svg.props.width
+                height = svg.props.height
+                # 吹き出し拡大
+                scale = 1.0
+                if self.calloutSize != "100%":
+                    scale = float(self.calloutSize[0:3]) / 100;
+                s2 = cairo.SVGSurface(None, width * scale, height * scale)
+                ctx = cairo.Context(s2)
+                ctx.save()
+                anoType = self.annotationType
+                # 吹出位置 
+                # 右下：0
+                # 右上：1
+                # 左下：2
+                # 左上：3
+                # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
+                if basename.upper().find("--UL--") == 0:
+                    anoType = 3
+                if basename.upper().find("--LL--") == 0:
+                    anoType = 2
+                if basename.upper().find("--UR--") == 0:
+                    anoType = 1
+                if basename.upper().find("--LR--") == 0:
+                    anoType = 0
+                if anoType == 0:
+                    ctx.scale(scale, scale)
+                if anoType == 1:
+                    ctx.translate(0, height * scale)
+                    ctx.scale(scale, -scale)
+                if anoType == 2:
+                    ctx.translate(width * scale, 0)
+                    ctx.scale(-scale, scale)
+                if anoType == 3:
+                    ctx.translate(width * scale, height * scale)
+                    ctx.scale(-scale, -scale)
+                svg.render_cairo(ctx)
+                ctx.restore()
+                x1 = width * scale
+                y1 = height * scale
+            else:
+                path = self.skin + '/annotation.png'
+                if os.path.exists(path) == False:
+                    path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
+                pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(path)
+                # 吹き出し拡大
+                scale = 1.0
+                pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
+                if self.calloutSize != "100%":
+                    scale = float(self.calloutSize[0:3]) / 100;
+                    x1 = pixbufCallout.get_width()
+                    y1 = pixbufCallout.get_height()
+                    pixbufCallout = pixbufCallout.scale_simple(x1 * scale, y1 * scale, GdkPixbuf.InterpType.HYPER )
+                anoType = self.annotationType
+                # 吹出位置 
+                # 右下：0
+                # 右上：1
+                # 左下：2
+                # 左上：3
+                # ファイル名の先頭に特殊文字が含まれている場合、吹き出し位置を変更する
+                if basename.upper().find("--UL--") == 0:
+                    anoType = 3
+                if basename.upper().find("--LL--") == 0:
+                    anoType = 2
+                if basename.upper().find("--UR--") == 0:
+                    anoType = 1
+                if basename.upper().find("--LR--") == 0:
+                    anoType = 0
 
-            if anoType == 1:
-                pixbufCallout = pixbufCallout.flip(False)
-            if anoType == 2:
-                pixbufCallout = pixbufCallout.flip(True)
-            if anoType == 3:
-                pixbufCallout = pixbufCallout.flip(True)
-                pixbufCallout = pixbufCallout.flip(False)
+                if anoType == 1:
+                    pixbufCallout = pixbufCallout.flip(False)
+                if anoType == 2:
+                    pixbufCallout = pixbufCallout.flip(True)
+                if anoType == 3:
+                    pixbufCallout = pixbufCallout.flip(True)
+                    pixbufCallout = pixbufCallout.flip(False)
+                s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufCallout.get_width(), pixbufCallout.get_height())
+                x1 = s2.get_width()
+                y1 = s2.get_height()
+                ctx = cairo.Context(s2)
+                Gdk.cairo_set_source_pixbuf(ctx, pixbufCallout, 0, 0)
+                ctx.paint()
             # 日付時刻描画
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
@@ -974,12 +1027,6 @@ class moeclock:
             timeStr = d.strftime("%H:%M")
             weekStr = WEEKString[d.weekday()]
             self.min = d.minute
-            s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufCallout.get_width(), pixbufCallout.get_height())
-            x1 = s2.get_width()
-            y1 = s2.get_height()
-            ctx = cairo.Context(s2)
-            Gdk.cairo_set_source_pixbuf(ctx, pixbufCallout, 0, 0)
-            ctx.paint()
             col = Gdk.color_parse(self.color)
             ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
             ctx.select_font_face(self.font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
@@ -1039,9 +1086,10 @@ class moeclock:
             Gdk.cairo_set_source_pixbuf(ctx4, pixbufFrame, 0, 0)
             ctx4.paint()
 
-            if os.path.exists(self.skin + '/logo.png') == False:
-                 os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/logo.png'
-            s3 = cairo.ImageSurface.create_from_png(self.skin + '/logo.png')
+            path = self.skin + '/logo.png'
+            if os.path.exists(path) == False:
+                 path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/logo.png'
+            s3 = cairo.ImageSurface.create_from_png(path)
             x3 = s3.get_width()
             y3 = s3.get_height()
             if anoType == 0:

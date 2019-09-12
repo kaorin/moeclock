@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import traceback
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -26,7 +27,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.3"
+VERSION="1.4.5.5"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -295,6 +296,9 @@ class moeclock:
         self.fcSound.set_filename(self.sound)
         self.cbSoundCutOut = self.wTree.get_object ("cbSoundCutOut")
         self.cbSoundCutOut.set_active(self.soundCutOut)
+        self.sclCalloutSize = self.wTree.get_object ("sclCalloutSize")
+        self.sclCalloutSize.set_range(80, 200)
+        self.sclCalloutSize.set_value(float(self.calloutSize.replace("%","")))
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
@@ -356,6 +360,7 @@ class moeclock:
         if len(soundFile) > 0:
             self.sound = soundFile
         self.skin = self.fcSkin.get_filename()
+        self.calloutSize = str(self.sclCalloutSize.get_value()) + "%"
         self._saveConf()
         self.preferences.hide()
         GLib.source_remove(self.timeout)
@@ -679,14 +684,28 @@ class moeclock:
                 if type == 0:
                     basename = "--LR--" + basename
                 path = os.path.join(dirname, basename)
-                os.rename(wallpaper, path)
-                self.wlist[self.sw] = path
-                idx = self.tryIndex(self.use_wallpaper_list,wallpaper,-1)
-                if idx >= 0:
-                    self.use_wallpaper_list[idx] = path
-                idx = self.tryIndex(self.wallpaper_list,wallpaper,-1)
-                if idx >= 0:
-                    self.wallpaper_list[idx] = path
+                try:
+                    os.rename(wallpaper, path)
+                    self.wlist[self.sw] = path
+                    idx = self.tryIndex(self.use_wallpaper_list,wallpaper,-1)
+                    if idx >= 0:
+                        self.use_wallpaper_list[idx] = path
+                    idx = self.tryIndex(self.wallpaper_list,wallpaper,-1)
+                    if idx >= 0:
+                        self.wallpaper_list[idx] = path
+                except Exception as e:
+                    error_dialog = Gtk.MessageDialog(
+                        type=Gtk.MessageType.ERROR,
+                        buttons=Gtk.ButtonsType.OK,
+                        message_format=e)
+                    error_dialog.set_title(_('File Rename Error'))
+                    error_dialog.run()
+                    print(e)
+                    t, v, tb = sys.exc_info()
+                    print(traceback.format_exception(t,v,tb))
+                    print(traceback.format_tb(e.__traceback__))
+                    error_dialog.destroy()
+                    dialog.destroy()
             if dialog.calloutDefault.get_active():
                 self.annotationType = type
         elif response == Gtk.ResponseType.CANCEL:
@@ -905,28 +924,27 @@ class moeclock:
             #ファイル名取得
             basename = os.path.basename(wallpaper)
             #壁紙生成
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(wallpaper)
-            x = float(pixbuf.get_width())
-            y = float(pixbuf.get_height())
+            pixbufWall = GdkPixbuf.Pixbuf.new_from_file(wallpaper)
+            x = float(pixbufWall.get_width())
+            y = float(pixbufWall.get_height())
             aspect = y / x
-            pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
-            pixbuf2.savev("/tmp/moeclockWall.png", "png", ["compression"], ["9"])
-            del pixbuf
-            del pixbuf2
+            pixbufWall = pixbufWall.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #枠生成
             if os.path.exists(self.skin + '/frame.png') == False:
                  os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/frame.png')
-            pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
-            pixbuf2.savev("/tmp/moeclockFrame.png", "png", ["compression"], ["9"])
-            del pixbuf
-            del pixbuf2
+            pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/frame.png')
+            pixbufFrame = pixbufFrame.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #吹き出し生成
             if os.path.exists(self.skin + '/annotation.png') == False:
                 os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
-            pixbuf2 = pixbuf
-            pixbuf3 = pixbuf
+            # 吹き出し拡大
+            scale = 1.0
+            pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(self.skin + '/annotation.png')
+            if self.calloutSize != "100%":
+                scale = float(self.calloutSize[0:3]) / 100;
+                x1 = pixbufCallout.get_width()
+                y1 = pixbufCallout.get_height()
+                pixbufCallout = pixbufCallout.scale_simple(x1 * scale, y1 * scale, GdkPixbuf.InterpType.HYPER )
             anoType = self.annotationType
             # 吹出位置 
             # 右下：0
@@ -944,20 +962,12 @@ class moeclock:
                 anoType = 0
 
             if anoType == 1:
-                pixbuf2 = pixbuf.flip(False)
-                pixbuf3 = pixbuf2
+                pixbufCallout = pixbufCallout.flip(False)
             if anoType == 2:
-                pixbuf2 = pixbuf.flip(True)
-                pixbuf3 = pixbuf2
+                pixbufCallout = pixbufCallout.flip(True)
             if anoType == 3:
-                pixbuf2 = pixbuf.flip(True)
-                pixbuf3 = pixbuf2.flip(False)
-            x = float(pixbuf3.get_width())
-            y = float(pixbuf3.get_height())
-            pixbuf3.savev("/tmp/moeclockAnnotation.png", "png", ["compression"], ["9"])
-            del pixbuf
-            del pixbuf2
-            del pixbuf3
+                pixbufCallout = pixbufCallout.flip(True)
+                pixbufCallout = pixbufCallout.flip(False)
             # 日付時刻描画
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
@@ -965,31 +975,33 @@ class moeclock:
             timeStr = d.strftime("%H:%M")
             weekStr = WEEKString[d.weekday()]
             self.min = d.minute
-            s1 = cairo.ImageSurface.create_from_png('/tmp/moeclockAnnotation.png')
-            x1 = s1.get_width()
-            y1 = s1.get_height()
-            ctx = cairo.Context(s1)
+            s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufCallout.get_width(), pixbufCallout.get_height())
+            x1 = s2.get_width()
+            y1 = s2.get_height()
+            ctx = cairo.Context(s2)
+            Gdk.cairo_set_source_pixbuf(ctx, pixbufCallout, 0, 0)
+            ctx.paint()
             col = Gdk.color_parse(self.color)
             ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
             ctx.select_font_face(self.font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
             print (self.font)
-            ctx.set_font_size(16)
-            ofsX = x1 - 144
-            ofsY = y1 - 144
-            yearYofs = 60
-            dateYofs = 80
-            timeYofs = 105
-            nowYOfs = 125
-            xOfs = 144 / 2 + 10
+            ctx.set_font_size(16 * scale)
+            ofsX = x1 - 144 * scale
+            ofsY = y1 - 144 * scale
+            yearYofs = 60 * scale
+            dateYofs = 80 * scale
+            timeYofs = 105 * scale
+            nowYOfs = 125 * scale
+            xOfs = (144  * scale) / 2 + 10 * scale
             if anoType == 1 or anoType == 3:
-                ofsX = x1 - 144
-                ofsY = y1 - 144
-                yearYofs = 30
-                dateYofs = 50
-                timeYofs = 75
-                nowYOfs = 95
+                ofsX = x1 - 144 * scale
+                ofsY = y1 - 144 * scale
+                yearYofs = 30 * scale
+                dateYofs = 50 * scale
+                timeYofs = 75 * scale
+                nowYOfs = 95 * scale
             if anoType == 2 or anoType == 3:
-                xOfs = 40
+                xOfs = 40 * scale
             # 年描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
             ctx.move_to(xOfs - width/2 + ofsX, yearYofs + ofsY)
@@ -999,16 +1011,16 @@ class moeclock:
             ctx.move_to(xOfs - width/2 + ofsX, dateYofs + ofsY)
             ctx.show_text(dateStr)
             # 週描画
-            ctx.set_font_size(10)
-            ctx.move_to(xOfs - 10 + self.weekOffset + width + ofsX, dateYofs + ofsY)
+            ctx.set_font_size(10 * scale)
+            ctx.move_to(xOfs - (10 * scale) + self.weekOffset + width + ofsX, dateYofs + ofsY)
             ctx.show_text(weekStr)
             # 時刻描画
-            ctx.set_font_size(22)
+            ctx.set_font_size(22 * scale)
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(timeStr)
             ctx.move_to(xOfs - width/2 + ofsX, timeYofs + ofsY)
             ctx.show_text(timeStr)
             # メッセージ描画
-            ctx.set_font_size(15)
+            ctx.set_font_size(15 * scale)
             if d.minute == 0:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("になったよ!")
                 ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
@@ -1017,36 +1029,22 @@ class moeclock:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("だよ!")
                 ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Now!"))
-            s1.write_to_png('/tmp/moeclockTmp.png')
-            del s1
 
             #合成開始
-            s1 = cairo.ImageSurface.create_from_png('/tmp/moeclockWall.png')
-            # 吹き出し拡大
-            if self.calloutSize != "100%":
-                scale = float(self.calloutSize[0:3]) / 100;
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file('/tmp/moeclockTmp.png')
-                x1 = pixbuf.get_width()
-                y1 = pixbuf.get_height()
-                pixbuf2 = pixbuf.scale_simple(x1 * scale, y1 * scale,GdkPixbuf.InterpType.BILINEAR )
-                x1 = pixbuf2.get_width()
-                y1 = pixbuf2.get_height()
-                s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32,x1, y1)
-                ctx = cairo.Context(s2)
-                Gdk.cairo_set_source_pixbuf(ctx, pixbuf2, 0, 0)
-                ctx.paint()
-                del pixbuf
-                del pixbuf2
-            else:
-                s2 = cairo.ImageSurface.create_from_png('/tmp/moeclockTmp.png')
+            s1 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufWall.get_width(), pixbufWall.get_height())
+            ctx = cairo.Context(s1)
+            Gdk.cairo_set_source_pixbuf(ctx, pixbufWall, 0, 0)
+            ctx.paint()
+            s4 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufFrame.get_width(), pixbufFrame.get_height())
+            ctx4 = cairo.Context(s4)
+            Gdk.cairo_set_source_pixbuf(ctx4, pixbufFrame, 0, 0)
+            ctx4.paint()
 
             if os.path.exists(self.skin + '/logo.png') == False:
                  os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/logo.png'
             s3 = cairo.ImageSurface.create_from_png(self.skin + '/logo.png')
             x3 = s3.get_width()
             y3 = s3.get_height()
-            s4 = cairo.ImageSurface.create_from_png('/tmp/moeclockFrame.png')
-            ctx = cairo.Context(s1)
             if anoType == 0:
                 ctx.set_source_surface(s2,xsize-x1,(xsize*aspect)-y1)
             if anoType == 1:
@@ -1068,10 +1066,16 @@ class moeclock:
             del s2
             del s3
             del s4
+            del pixbufWall
+            del pixbufCallout
+            del pixbufFrame
             gc.collect()
             return True
         except Exception as e:
             print(e)
+            t, v, tb = sys.exc_info()
+            print(traceback.format_exception(t,v,tb))
+            print(traceback.format_tb(e.__traceback__))
             return False
 
 

@@ -11,6 +11,7 @@ char *s = N_("Select skin");
 char *s = N_("Select skin Folder");
 char *s = N_("Change font color");
 char *s = N_("If the sound cuts out");
+char *s = N_("Callout size");
 char *s = N_("centered");
 char *s = N_("scaled");
 char *s = N_("stretched");

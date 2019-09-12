@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-11 19:58+0900\n"
+"POT-Creation-Date: 2019-09-12 21:18+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,34 +81,6 @@ msgstr ""
 msgid "RemovePrefix"
 msgstr ""
 
-#: moeclock.glade.h:17
-msgid "Callout size"
-msgstr ""
-
-#: moeclock.glade.h:19
-msgid "100%"
-msgstr ""
-
-#: moeclock.glade.h:21
-msgid "110%"
-msgstr ""
-
-#: moeclock.glade.h:23
-msgid "120%"
-msgstr ""
-
-#: moeclock.glade.h:25
-msgid "130%"
-msgstr ""
-
-#: moeclock.glade.h:27
-msgid "140%"
-msgstr ""
-
-#: moeclock.glade.h:29
-msgid "150%"
-msgstr ""
-
 #: moeclockdlg.glade.h:1
 msgid "Settings"
 msgstr ""
@@ -160,21 +132,25 @@ msgid "If the sound cuts out"
 msgstr ""
 
 #: moeclockdlg.glade.h:14
-msgid "centered"
+msgid "Callout size"
 msgstr ""
 
 #: moeclockdlg.glade.h:15
-msgid "scaled"
+msgid "centered"
 msgstr ""
 
 #: moeclockdlg.glade.h:16
-msgid "stretched"
+msgid "scaled"
 msgstr ""
 
 #: moeclockdlg.glade.h:17
-msgid "zoom"
+msgid "stretched"
 msgstr ""
 
 #: moeclockdlg.glade.h:18
+msgid "zoom"
+msgstr ""
+
+#: moeclockdlg.glade.h:19
 msgid "spanned"
 msgstr ""

@@ -24,7 +24,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -44,15 +44,15 @@
      id="namedview4"
      showgrid="false"
      inkscape:zoom="1.3351293"
-     inkscape:cx="-353.58249"
-     inkscape:cy="-64.862205"
+     inkscape:cx="-244.14625"
+     inkscape:cy="-88.829917"
      inkscape:current-layer="svg2"
      inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <path
      id="path3512-0"
-     d="m 102.02089,15.667938 c -27.158526,0 -50.881316,14.73149 -63.617966,36.63021 l -25.805546,-4.52568 19.395706,18.93392 c -2.27626,7.091258 -3.50969,14.651608 -3.50969,22.499038 0,23.144654 10.69954,43.783844 27.41262,57.263564 H 160.30132 c -0.0177,-33.52813 -9.6e-4,-68.170774 -9.6e-4,-102.113862 -13.44577,-17.44707 -34.5479,-28.68719 -58.27953,-28.68719 z"
+     d="m 103.37339,15.165922 c -27.158524,0 -50.881314,14.73149 -63.617964,36.63021 l -25.805546,-4.52568 19.395706,18.93392 c -2.27626,7.091258 -3.50969,14.651608 -3.50969,22.499038 0,23.14465 10.69954,43.78384 27.41262,57.26356 H 161.65382 c -0.0177,-33.52813 -9.6e-4,-68.17077 -9.6e-4,-102.113858 -13.44577,-17.44707 -34.5479,-28.68719 -58.27953,-28.68719 z"
      style="display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:#f366ff;stroke-width:2.56000018;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98823529;marker:none;enable-background:accumulate"
      inkscape:connector-curvature="0"
      inkscape:export-filename="/home/toy/data/萌ぶんちゅ/壁紙/ninattayo.png"

@@ -28,7 +28,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.7"
+VERSION="1.4.5.8"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -952,56 +952,31 @@ class moeclock:
             if basename.upper().find("--LR--") == 0:
                 anoType = 0
             path = self.skin + '/annotation.svg'
-            if os.path.exists(path) == True:
-                svg = Rsvg.Handle.new_from_file(path)
-                width = svg.props.width
-                height = svg.props.height
-                # 吹き出し拡大
-                scale = float(self.calloutSize.replace("%","")) / 100;
-                s2 = cairo.SVGSurface(None, width * scale, height * scale)
-                ctx = cairo.Context(s2)
-                ctx.save()
-                if anoType == 0:
-                    ctx.scale(scale, scale)
-                if anoType == 1:
-                    ctx.translate(0, height * scale)
-                    ctx.scale(scale, -scale)
-                if anoType == 2:
-                    ctx.translate(width * scale, 0)
-                    ctx.scale(-scale, scale)
-                if anoType == 3:
-                    ctx.translate(width * scale, height * scale)
-                    ctx.scale(-scale, -scale)
-                svg.render_cairo(ctx)
-                ctx.restore()
-                x1 = width * scale
-                y1 = height * scale
-            else:
-                path = self.skin + '/annotation.png'
-                if os.path.exists(path) == False:
-                    path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.png'
-                pixbufCallout = GdkPixbuf.Pixbuf.new_from_file(path)
-                # 吹き出し拡大
-                scale = 1.0
-                if self.calloutSize != "100%":
-                    scale = float(self.calloutSize.replace("%","")) / 100;
-                    x1 = pixbufCallout.get_width()
-                    y1 = pixbufCallout.get_height()
-                    pixbufCallout = pixbufCallout.scale_simple(x1 * scale, y1 * scale, GdkPixbuf.InterpType.HYPER )
-                if anoType == 1:
-                    pixbufCallout = pixbufCallout.flip(False)
-                if anoType == 2:
-                    pixbufCallout = pixbufCallout.flip(True)
-                if anoType == 3:
-                    pixbufCallout = pixbufCallout.flip(True)
-                    pixbufCallout = pixbufCallout.flip(False)
-                s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufCallout.get_width(), pixbufCallout.get_height())
-                x1 = s2.get_width()
-                y1 = s2.get_height()
-                ctx = cairo.Context(s2)
-                Gdk.cairo_set_source_pixbuf(ctx, pixbufCallout, 0, 0)
-                ctx.paint()
-                del pixbufCallout
+            if os.path.exists(path) == False:
+                path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.svg'
+            svg = Rsvg.Handle.new_from_file(path)
+            width = svg.props.width
+            height = svg.props.height
+            # 吹き出し拡大
+            scale = float(self.calloutSize.replace("%","")) / 100;
+            s2 = cairo.SVGSurface(None, width * scale, height * scale)
+            ctx = cairo.Context(s2)
+            ctx.save()
+            if anoType == 0:
+                ctx.scale(scale, scale)
+            if anoType == 1:
+                ctx.translate(0, height * scale)
+                ctx.scale(scale, -scale)
+            if anoType == 2:
+                ctx.translate(width * scale, 0)
+                ctx.scale(-scale, scale)
+            if anoType == 3:
+                ctx.translate(width * scale, height * scale)
+                ctx.scale(-scale, -scale)
+            svg.render_cairo(ctx)
+            ctx.restore()
+            x1 = width * scale
+            y1 = height * scale
             # 日付時刻描画
             d = datetime.datetime.today()
             yearStr = _('%s') % (d.year,)
@@ -1040,7 +1015,7 @@ class moeclock:
             ctx.show_text(dateStr)
             # 週描画
             ctx.set_font_size(10 * scale)
-            ctx.move_to(xOfs - (10 * scale) + self.weekOffset + width + ofsX, dateYofs + ofsY)
+            ctx.move_to(xOfs - (10 * scale) + (self.weekOffset * scale) + width + ofsX, dateYofs + ofsY)
             ctx.show_text(weekStr)
             # 時刻描画
             ctx.set_font_size(22 * scale)

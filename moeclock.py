@@ -28,7 +28,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.8"
+VERSION="1.4.5.9"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -989,48 +989,44 @@ class moeclock:
             ctx.select_font_face(self.font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
             print (self.font)
             ctx.set_font_size(16 * scale)
-            ofsX = x1 - 144 * scale
-            ofsY = y1 - 144 * scale
-            yearYofs = 60 * scale
-            dateYofs = 80 * scale
-            timeYofs = 105 * scale
-            nowYOfs = 125 * scale
-            xOfs = (134  * scale) / 2 + 10 * scale
+            calloutXsize = 125
+            calloutYsize = 100
+            ofsX = x1 - calloutXsize * scale
+            ofsY = y1 - calloutYsize * scale
+            yearYofs = 15 * scale
+            dateYofs = 35 * scale
+            timeYofs = 60 * scale
+            nowYOfs = 80 * scale
             if anoType == 1 or anoType == 3:
-                ofsX = x1 - 144 * scale
-                ofsY = y1 - 144 * scale
-                yearYofs = 40 * scale
-                dateYofs = 60 * scale
-                timeYofs = 85 * scale
-                nowYOfs = 105 * scale
+                ofsY = 20 * scale
             if anoType == 2 or anoType == 3:
-                xOfs = 50 * scale
+                ofsX = 0 * scale
             # 年描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
-            ctx.move_to(xOfs - width/2 + ofsX, yearYofs + ofsY)
+            ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, yearYofs + ofsY)
             ctx.show_text(yearStr)
             # 月日描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(dateStr)
-            ctx.move_to(xOfs - width/2 + ofsX, dateYofs + ofsY)
+            ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, dateYofs + ofsY)
             ctx.show_text(dateStr)
             # 週描画
             ctx.set_font_size(10 * scale)
-            ctx.move_to(xOfs - (10 * scale) + (self.weekOffset * scale) + width + ofsX, dateYofs + ofsY)
+            ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX + (self.weekOffset * scale) + width, dateYofs + ofsY)
             ctx.show_text(weekStr)
             # 時刻描画
             ctx.set_font_size(22 * scale)
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(timeStr)
-            ctx.move_to(xOfs - width/2 + ofsX, timeYofs + ofsY)
+            ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, timeYofs + ofsY)
             ctx.show_text(timeStr)
             # メッセージ描画
             ctx.set_font_size(15 * scale)
             if d.minute == 0:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("になったよ!")
-                ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
+                ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Just Now!"))
             else:
                 (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents("だよ!")
-                ctx.move_to(xOfs - width/2 + ofsX, nowYOfs + ofsY)
+                ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, nowYOfs + ofsY)
                 ctx.show_text(_("Now!"))
 
             #合成開始

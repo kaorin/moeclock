@@ -28,7 +28,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.9"
+VERSION="1.4.5.10"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -1000,7 +1000,7 @@ class moeclock:
             if anoType == 1 or anoType == 3:
                 ofsY = 20 * scale
             if anoType == 2 or anoType == 3:
-                ofsX = 0 * scale
+                ofsX = -5 * scale
             # 年描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
             ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, yearYofs + ofsY)

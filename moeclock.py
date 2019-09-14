@@ -849,7 +849,11 @@ class moeclock:
         # "萌え時計",VERSION,"MIT","1分ごとに画像を変更し時間を通知します。",["かおりん"],["かおりん"],"かおりん",self.logo_pixbuf
         about.set_program_name(_("Moe Clock"))
         about.set_version(VERSION)
-        about.set_license("MIT")
+        about.set_license_type(Gtk.License.MIT_X11)
+        about.set_license(
+            "MIT License\nCopyright (c) 2019 Kaoru Konno\n" + 
+            "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative Commons Attribution 3.0 Unported License.  \n" +
+            "時報音声ファイル Copyright © 2011 草乃さちか All Rights Reserved. ")
         about.set_comments(_("Change the image every minute and notify the time."))
         about.set_authors([_("Kaorin@")])
         about.set_documenters([_("Kaorin@")])

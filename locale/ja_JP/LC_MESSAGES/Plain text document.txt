@@ -61,7 +61,18 @@ msgstr "ファイル名変更エラー"
 msgid "Moe Clock"
 msgstr "萌え時計"
 
-#: moeclock.py:853
+#: moeclock.py:855
+msgid ""
+"Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
+"Commons Attribution 3.0 Unported License.  \n"
+msgstr ""
+
+#: moeclock.py:856
+msgid ""
+"Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights Reserved. "
+msgstr ""
+
+#: moeclock.py:857
 msgid "Change the image every minute and notify the time."
 msgstr "1分ごとに画像を変更し時間を通知します。"
 

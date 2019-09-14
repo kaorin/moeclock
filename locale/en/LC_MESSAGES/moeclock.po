@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-14 11:59+JST\n"
-"PO-Revision-Date: 2019-09-14 11:59+0900\n"
+"POT-Creation-Date: 2019-09-14 12:57+JST\n"
+"PO-Revision-Date: 2019-09-14 12:57+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -56,47 +56,71 @@ msgstr "Sound Files"
 msgid "File Rename Error"
 msgstr "File Rename Error"
 
-#: moeclock.py:850 moeclock.py:880
+#: moeclock.py:850 moeclock.py:885
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:853
+#: moeclock.py:855
+msgid ""
+"Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
+"Commons Attribution 3.0 Unported License.  \n"
+msgstr ""
+"Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
+"Commons Attribution 3.0 Unported License.  \n"
+
+#: moeclock.py:856
+msgid ""
+"Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
+"Reserved. \n"
+msgstr ""
+"Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
+"Reserved. \n"
+
+#: moeclock.py:857
+msgid ""
+"* Modification of the time signal file and redistribution as a single unit "
+"are not permitted."
+msgstr ""
+"* Modification of the time signal file and redistribution as a single unit "
+"are not permitted."
+
+#: moeclock.py:858
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:854 moeclock.py:855
+#: moeclock.py:859 moeclock.py:860
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:877
+#: moeclock.py:882
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:982
+#: moeclock.py:987
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:1026
+#: moeclock.py:1031
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:1030
+#: moeclock.py:1035
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1096
+#: moeclock.py:1101
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1102
+#: moeclock.py:1107
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1104
+#: moeclock.py:1109
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1107
+#: moeclock.py:1112
 msgid "Change default callout position"
 msgstr "Change default callout position"
 

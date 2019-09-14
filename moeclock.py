@@ -851,9 +851,10 @@ class moeclock:
         about.set_version(VERSION)
         about.set_license_type(Gtk.License.MIT_X11)
         about.set_license(
-            "MIT License\nCopyright (c) 2019 Kaoru Konno\n" + 
-            "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative Commons Attribution 3.0 Unported License.  \n" +
-            "時報音声ファイル Copyright © 2011 草乃さちか All Rights Reserved. ")
+            "Program MIT License\nCopyright (c) 2019 Kaoru.Konno\n" + 
+            _("Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative Commons Attribution 3.0 Unported License.  \n") +
+            _("Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights Reserved. \n") + 
+            _("* Modification of the time signal file and redistribution as a single unit are not permitted."))
         about.set_comments(_("Change the image every minute and notify the time."))
         about.set_authors([_("Kaorin@")])
         about.set_documenters([_("Kaorin@")])
@@ -994,7 +995,7 @@ class moeclock:
             print (self.font)
             ctx.set_font_size(16 * scale)
             calloutXsize = 125
-            calloutYsize = 100
+            calloutYsize = 103
             ofsX = x1 - calloutXsize * scale
             ofsY = y1 - calloutYsize * scale
             yearYofs = 15 * scale
@@ -1004,7 +1005,7 @@ class moeclock:
             if anoType == 1 or anoType == 3:
                 ofsY = 20 * scale
             if anoType == 2 or anoType == 3:
-                ofsX = -5 * scale
+                ofsX = -3 * scale
             # 年描画
             (x_bearing, y_bearing, width, height, x_advance, y_advance) = ctx.text_extents(yearStr)
             ctx.move_to(((calloutXsize * scale) - width)/2 + ofsX, yearYofs + ofsY)

@@ -28,7 +28,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.4.5.10"
+VERSION="1.4.5.11"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -994,8 +994,8 @@ class moeclock:
             ctx.select_font_face(self.font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
             print (self.font)
             ctx.set_font_size(16 * scale)
-            calloutXsize = 125
-            calloutYsize = 103
+            calloutXsize = 115
+            calloutYsize = 100
             ofsX = x1 - calloutXsize * scale
             ofsY = y1 - calloutYsize * scale
             yearYofs = 15 * scale
@@ -1003,7 +1003,7 @@ class moeclock:
             timeYofs = 60 * scale
             nowYOfs = 80 * scale
             if anoType == 1 or anoType == 3:
-                ofsY = 20 * scale
+                ofsY = 15 * scale
             if anoType == 2 or anoType == 3:
                 ofsX = -3 * scale
             # 年描画
@@ -1080,6 +1080,8 @@ class moeclock:
             t, v, tb = sys.exc_info()
             print(traceback.format_exception(t,v,tb))
             print(traceback.format_tb(e.__traceback__))
+            # ファイルが壊れている場合があるので削除しておく
+            os.remove('/tmp/moeclock.png')
             return False
 
 

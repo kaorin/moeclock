@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-19 23:58+JST\n"
-"PO-Revision-Date: 2019-09-19 23:58+0900\n"
+"POT-Creation-Date: 2019-09-20 05:12+JST\n"
+"PO-Revision-Date: 2019-09-20 05:13+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -44,23 +44,23 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:310
+#: moeclock.py:322
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:313
+#: moeclock.py:325
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:705
+#: moeclock.py:723
 msgid "File Rename Error"
 msgstr "File Rename Error"
 
-#: moeclock.py:854 moeclock.py:889
+#: moeclock.py:872 moeclock.py:907
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:859
+#: moeclock.py:877
 msgid ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
@@ -68,7 +68,7 @@ msgstr ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
 
-#: moeclock.py:860
+#: moeclock.py:878
 msgid ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
@@ -76,7 +76,7 @@ msgstr ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
 
-#: moeclock.py:861
+#: moeclock.py:879
 msgid ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
@@ -84,43 +84,43 @@ msgstr ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
 
-#: moeclock.py:862
+#: moeclock.py:880
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:863 moeclock.py:864
+#: moeclock.py:881 moeclock.py:882
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:886
+#: moeclock.py:904
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:996
+#: moeclock.py:1014
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:1040
+#: moeclock.py:1058
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:1044
+#: moeclock.py:1062
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1130
+#: moeclock.py:1179
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1136
+#: moeclock.py:1185
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1138
+#: moeclock.py:1187
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1141
+#: moeclock.py:1190
 msgid "Change default callout position"
 msgstr "Change default callout position"
 
@@ -245,21 +245,33 @@ msgid "Callout size"
 msgstr "Callout size"
 
 #: moeclockdlg.glade.h:15
+msgid "Do not use an image for the frame"
+msgstr "Do not use an image for the frame"
+
+#: moeclockdlg.glade.h:16
+msgid "line width"
+msgstr "line width"
+
+#: moeclockdlg.glade.h:17
+msgid "Round"
+msgstr "Round"
+
+#: moeclockdlg.glade.h:18
 msgid "centered"
 msgstr "centered"
 
-#: moeclockdlg.glade.h:16
+#: moeclockdlg.glade.h:19
 msgid "scaled"
 msgstr "scaled"
 
-#: moeclockdlg.glade.h:17
+#: moeclockdlg.glade.h:20
 msgid "stretched"
 msgstr "stretched"
 
-#: moeclockdlg.glade.h:18
+#: moeclockdlg.glade.h:21
 msgid "zoom"
 msgstr "zoom"
 
-#: moeclockdlg.glade.h:19
+#: moeclockdlg.glade.h:22
 msgid "spanned"
 msgstr "spanned"

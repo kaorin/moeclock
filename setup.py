@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__="1.4.5.11"
+__VERSION__="1.5.0.0"
 
 params = {
         'name': 'moeclock',
@@ -76,6 +76,7 @@ params = {
                 ['moeskin_bluegreen/color_setting.txt',
                 'moeskin_bluegreen/frame.png',
                 'moeskin_bluegreen/logo.png',
+                'moeskin_bluegreen/style.css',
                 'moeskin_bluegreen/annotation.svg']),
             ('share/moeclock/moeskin_blue',
                 ['moeskin_blue/color_setting.txt',

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-14 19:52+JST\n"
-"PO-Revision-Date: 2019-09-14 19:53+0900\n"
+"POT-Creation-Date: 2019-09-19 23:58+JST\n"
+"PO-Revision-Date: 2019-09-19 23:58+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
@@ -17,51 +17,51 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Fri)"
 msgstr "（金）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Mon)"
 msgstr "（月）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Sat)"
 msgstr "（土）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Sun)"
 msgstr "（日）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Thu)"
 msgstr "（木）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Tue)"
 msgstr "（火）"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Wed)"
 msgstr "（水）"
 
-#: moeclock.py:306
+#: moeclock.py:310
 msgid "All Files"
 msgstr "すべてのファイル"
 
-#: moeclock.py:309
+#: moeclock.py:313
 msgid "Sound Files"
 msgstr "音声ファイル"
 
-#: moeclock.py:701
+#: moeclock.py:705
 msgid "File Rename Error"
 msgstr "ファイル名変更エラー"
 
-#: moeclock.py:850 moeclock.py:885
+#: moeclock.py:854 moeclock.py:889
 msgid "Moe Clock"
 msgstr "萌え時計"
 
-#: moeclock.py:855
+#: moeclock.py:859
 msgid ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
@@ -69,54 +69,54 @@ msgstr ""
 "スキン/アイコン by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
 
-#: moeclock.py:856
+#: moeclock.py:860
 msgid ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights Reserved. "
 msgstr "時報音声ファイル Copyright (c) 2011 草乃さちか All Rights Reserved. "
 
-#: moeclock.py:857
+#: moeclock.py:861
 msgid ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
 msgstr "※時報ファイルの改変および単体での再配布は許可されていません。"
 
-#: moeclock.py:858
+#: moeclock.py:862
 msgid "Change the image every minute and notify the time."
 msgstr "1分ごとに画像を変更し時間を通知します。"
 
-#: moeclock.py:859 moeclock.py:860
+#: moeclock.py:863 moeclock.py:864
 msgid "Kaorin@"
 msgstr "かおりん@"
 
-#: moeclock.py:882
+#: moeclock.py:886
 msgid "Moe Clock - %H:%M:%S"
 msgstr "萌え時計 - %H:%M:%S"
 
-#: moeclock.py:987
+#: moeclock.py:996
 msgid "%s"
 msgstr "%sねん"
 
-#: moeclock.py:1031
+#: moeclock.py:1040
 msgid "Just Now!"
 msgstr "になったよ！"
 
-#: moeclock.py:1035
+#: moeclock.py:1044
 msgid "Now!"
 msgstr "だよ！"
 
-#: moeclock.py:1103
+#: moeclock.py:1130
 msgid "Callout position change"
 msgstr "吹き出し位置変更"
 
-#: moeclock.py:1109
+#: moeclock.py:1136
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "現在の画像に吹き出し位置を保存しますか？"
 
-#: moeclock.py:1111
+#: moeclock.py:1138
 msgid "Save callout location in image"
 msgstr "画像に吹き出し位置を保存"
 
-#: moeclock.py:1114
+#: moeclock.py:1141
 msgid "Change default callout position"
 msgstr "デフォルトの吹き出し位置を変更"
 

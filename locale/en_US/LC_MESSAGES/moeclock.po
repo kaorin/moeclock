@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-14 19:52+JST\n"
-"PO-Revision-Date: 2019-09-14 19:52+0900\n"
+"POT-Creation-Date: 2019-09-19 23:58+JST\n"
+"PO-Revision-Date: 2019-09-19 23:58+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -16,51 +16,51 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Fri)"
 msgstr "(Fri)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Mon)"
 msgstr "(Mon)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Sat)"
 msgstr "(Sat)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Sun)"
 msgstr "(Sun)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Thu)"
 msgstr "(Thu)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Tue)"
 msgstr "(Tue)"
 
-#: moeclock.py:50
+#: moeclock.py:51
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:306
+#: moeclock.py:310
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:309
+#: moeclock.py:313
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:701
+#: moeclock.py:705
 msgid "File Rename Error"
 msgstr "File Rename Error"
 
-#: moeclock.py:850 moeclock.py:885
+#: moeclock.py:854 moeclock.py:889
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:855
+#: moeclock.py:859
 msgid ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
@@ -68,7 +68,7 @@ msgstr ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
 
-#: moeclock.py:856
+#: moeclock.py:860
 msgid ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
@@ -76,7 +76,7 @@ msgstr ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
 
-#: moeclock.py:857
+#: moeclock.py:861
 msgid ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
@@ -84,43 +84,43 @@ msgstr ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
 
-#: moeclock.py:858
+#: moeclock.py:862
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:859 moeclock.py:860
+#: moeclock.py:863 moeclock.py:864
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:882
+#: moeclock.py:886
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:987
+#: moeclock.py:996
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:1031
+#: moeclock.py:1040
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:1035
+#: moeclock.py:1044
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1103
+#: moeclock.py:1130
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1109
+#: moeclock.py:1136
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1111
+#: moeclock.py:1138
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1114
+#: moeclock.py:1141
 msgid "Change default callout position"
 msgstr "Change default callout position"
 

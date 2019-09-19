@@ -31,6 +31,7 @@
     </child>
     <style>
       <class name="mainWindow"/>
+      <class name="outerFrame"/>
     </style>
   </object>
   <object class="GtkMenu" id="mainMenu">

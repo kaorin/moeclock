@@ -5,6 +5,7 @@ import sys
 import traceback
 import gi
 gi.require_version("Gtk", "3.0")
+gi.require_version('Rsvg', '2.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -198,12 +199,15 @@ class moeclock:
         self.calloutSize = conf.GetOption("calloutSize")
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
+        path = self.skin + '/style.css'
+        if os.path.exists(path) == True:
+            self.set_style()
         #メインウィンドウを作成
         self.wMain = Gtk.Builder()
         self.wMain.set_translation_domain(APP)
         self.wMain.add_from_file(os.path.dirname(os.path.abspath(__file__)) + "/moeclock.glade")
         #Create our dictionay and connect it
-        dicMain = { "on_daPict_button_press_event" : self.showMenu,
+        dicMain = { "on_Main_button_press_event" : self.showMenu,
                     "on_miSetting_activate" : self.properties,
                     "on_miExit_activate" : self.on_quit,
                     "on_miInfo_activate" : self.showAboutDialog,
@@ -431,6 +435,9 @@ class moeclock:
         try:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
+            path = self.skin + '/style.css'
+            if os.path.exists(path) == True:
+                pict.set_visible(False)
             (xsize,ysize) = mainWindow.get_size()
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(WallpaperLocation)
             x = float(pixbuf.get_width())
@@ -440,12 +447,9 @@ class moeclock:
                 del self.pixbuf2
             self.pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
             del pixbuf
-            # gc = pict.style.fg_gc[Gtk.StateFlags.NORMAL]
-            # pict.window.draw_pixbuf(gc, self.pixbuf2, 0, 0, 0, 0, -1, -1)
             cr = pict.get_window().cairo_create()
             Gdk.cairo_set_source_pixbuf(cr, self.pixbuf2, 0, 0)
             cr.paint()
-            # cr.fill()
             self.userResize = False
             mainWindow.resize(xsize,int(xsize*aspect))
             pict.queue_draw()
@@ -935,11 +939,16 @@ class moeclock:
             aspect = y / x
             pixbufWall = pixbufWall.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #枠生成
-            path = self.skin + '/frame.png'
-            if os.path.exists(path) == False:
-                 path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
-            pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(path)
-            pixbufFrame = pixbufFrame.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
+            pixbufFrame = None
+            path = self.skin + '/style.css'
+            if os.path.exists(path) == True:
+                self.set_style()
+            else:
+                path = self.skin + '/frame.png'
+                if os.path.exists(path) == False:
+                    path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
+                pixbufFrame = GdkPixbuf.Pixbuf.new_from_file(path)
+                pixbufFrame = pixbufFrame.scale_simple(xsize, int(xsize*aspect),GdkPixbuf.InterpType.BILINEAR )
             #吹き出し生成
             anoType = self.annotationType
             # 吹出位置 
@@ -1039,10 +1048,12 @@ class moeclock:
             ctx = cairo.Context(s1)
             Gdk.cairo_set_source_pixbuf(ctx, pixbufWall, 0, 0)
             ctx.paint()
-            s4 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufFrame.get_width(), pixbufFrame.get_height())
-            ctx4 = cairo.Context(s4)
-            Gdk.cairo_set_source_pixbuf(ctx4, pixbufFrame, 0, 0)
-            ctx4.paint()
+            s4 = None
+            if pixbufFrame != None:
+                s4 = cairo.ImageSurface(cairo.FORMAT_ARGB32, pixbufFrame.get_width(), pixbufFrame.get_height())
+                ctx4 = cairo.Context(s4)
+                Gdk.cairo_set_source_pixbuf(ctx4, pixbufFrame, 0, 0)
+                ctx4.paint()
 
             path = self.skin + '/logo.png'
             if os.path.exists(path) == False:
@@ -1064,13 +1075,15 @@ class moeclock:
             else:
                 ctx.set_source_surface(s3,0,(xsize*aspect)-y3)
             ctx.paint()
-            ctx.set_source_surface(s4,0,0)
-            ctx.paint()
+            if s4 != None:
+                ctx.set_source_surface(s4,0,0)
+                ctx.paint()
             s1.write_to_png('/tmp/moeclock.png')
             del s1
             del s2
             del s3
-            del s4
+            if s4 != None:
+                del s4
             del pixbufWall
             del pixbufFrame
             gc.collect()
@@ -1097,6 +1110,20 @@ class moeclock:
             Gtk.main_iteration_do(False)
         print (ret)             #実行結果のデバッグ用プリント
         return ret
+
+    def set_style(self):
+        """Change Gtk+ Style
+        """
+        provider = Gtk.CssProvider()
+        # Demo CSS kindly provided by Numix project
+        provider.load_from_path(join(WHERE_AM_I, self.skin, 'style.css'))
+        screen = Gdk.Display.get_default_screen(Gdk.Display.get_default())
+        # I was unable to found instrospected version of this
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(),
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
 class RenameDialog(Gtk.Dialog):
     def __init__(self, parent):

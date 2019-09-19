@@ -5,8 +5,8 @@ include *.wav
 include *.desktop
 include *.md
 include LICENSE
-recursive-include default *.png *.txt
-recursive-include moeskin* *.png *.txt
-recursive-include mikunchu *.png *.txt
+recursive-include default *.png *.txt *.svg *.css
+recursive-include moeskin* *.png *.txt *.svg *.css
+recursive-include mikunchu *.png *.txt *.svg *.css
 recursive-include sound *.wav
 recursive-include locale *.po *.mo

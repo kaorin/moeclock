@@ -1,0 +1,8 @@
+/* ウィンドウ全体 */
+.mainWindow {
+    border-radius:10px;
+    border:4px solid #86cecb;
+    background-image: url("/tmp/moeclock.png");
+    background-position: -4px -4px;
+    background-color: transparent;
+}

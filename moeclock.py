@@ -71,7 +71,10 @@ class ConfigXML:
                     "windowDecorate":"True",
                     "annotationType":"0",
                     "soundCutOut":"False",
-                    "calloutSize":"100%"}
+                    "calloutSize":"100%",
+                    "drawFrame":"False",
+                    "lineWidth":"4",
+                    "round":"12"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
@@ -197,6 +200,7 @@ class moeclock:
         self.soundCutOut = eval(conf.GetOption("soundCutOut"))
         self.sound = conf.GetOption("sound")
         self.calloutSize = conf.GetOption("calloutSize")
+        self.drawFrame = eval(conf.GetOption("drawFrame"))
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
         path = self.skin + '/style.css'
@@ -303,6 +307,14 @@ class moeclock:
         self.cbSoundCutOut.set_active(self.soundCutOut)
         self.sclCalloutSize = self.wTree.get_object ("sclCalloutSize")
         self.sclCalloutSize.set_value(float(self.calloutSize.replace("%","")))
+        self.cbDrawFrame = self.wTree.get_object ("cbDrawFrame")
+        self.cbDrawFrame.set_active(self.drawFrame)
+        self.lineWidth = float(conf.GetOption("lineWidth"))
+        self.sclLineWidth = self.wTree.get_object ("sclLineWidth")
+        self.sclLineWidth.set_value(self.lineWidth)
+        self.round = float(conf.GetOption("round"))
+        self.sclRound = self.wTree.get_object ("sclRound")
+        self.sclRound.set_value(self.round)
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
@@ -365,6 +377,9 @@ class moeclock:
             self.sound = soundFile
         self.skin = self.fcSkin.get_filename()
         self.calloutSize = str(self.sclCalloutSize.get_value()) + "%"
+        self.drawFrame = self.cbDrawFrame.get_active()
+        self.lineWidth = self.sclLineWidth.get_value()
+        self.round = self.sclRound.get_value()
         self._saveConf()
         self.preferences.hide()
         GLib.source_remove(self.timeout)
@@ -436,7 +451,7 @@ class moeclock:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
             path = self.skin + '/style.css'
-            if os.path.exists(path) == True:
+            if os.path.exists(path) == True and self.drawFrame == False:
                 pict.set_visible(False)
             (xsize,ysize) = mainWindow.get_size()
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(WallpaperLocation)
@@ -510,6 +525,9 @@ class moeclock:
         conf.SetOption("annotationType", self.annotationType)
         conf.SetOption("soundCutOut", self.soundCutOut)
         conf.SetOption("calloutSize", self.calloutSize)
+        conf.SetOption("drawFrame",self.drawFrame)
+        conf.SetOption("lineWidth",self.lineWidth)
+        conf.SetOption("round",self.round)
         conf.Write()
 
     def showMenu(self,widget, event):
@@ -943,7 +961,7 @@ class moeclock:
             path = self.skin + '/style.css'
             if os.path.exists(path) == True:
                 self.set_style()
-            else:
+            elif self.drawFrame == False:
                 path = self.skin + '/frame.png'
                 if os.path.exists(path) == False:
                     path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/frame.png'
@@ -1078,6 +1096,11 @@ class moeclock:
             if s4 != None:
                 ctx.set_source_surface(s4,0,0)
                 ctx.paint()
+            if self.drawFrame == True:
+                col = Gdk.color_parse(self.color)
+                ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
+                self.roundedrec(ctx, 0, 0, pixbufWall.get_width(), pixbufWall.get_height(), self.round, self.lineWidth)
+                ctx.stroke()
             s1.write_to_png('/tmp/moeclock.png')
             del s1
             del s2
@@ -1110,6 +1133,32 @@ class moeclock:
             Gtk.main_iteration_do(False)
         print (ret)             #実行結果のデバッグ用プリント
         return ret
+
+    def roundedrec(self,context,x,y,w,h,r = 10,line_width = 4):
+        "Draw a rounded rectangle"
+        #   A****BQ
+        #  H      C
+        #  *      *
+        #  G      D
+        #   F****E
+        context.set_line_width(line_width)
+        context.move_to(x+r,y)                      # Move to A
+        context.line_to(x+w-r,y)                    # Straight line to B
+        context.curve_to(x+w,y,x+w,y,x+w,y+r)       # Curve to C, Control points are both at Q
+        context.line_to(x+w,y+h-r)                  # Move to D
+        context.curve_to(x+w,y+h,x+w,y+h,x+w-r,y+h) # Curve to E
+        context.line_to(x+r,y+h)                    # Line to F
+        context.curve_to(x,y+h,x,y+h,x,y+h-r)       # Curve to G
+        context.line_to(x,y+r)                      # Line to H
+        context.curve_to(x,y,x,y,x+r,y)             # Curve to A
+        context.move_to(x,y)
+        context.line_to(x+w,y)
+        context.line_to(x+w,y)
+        context.line_to(x+w,y+h)
+        context.line_to(x,y+h)
+        context.line_to(x,y)
+
+        return
 
     def set_style(self):
         """Change Gtk+ Style

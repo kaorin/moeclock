@@ -1,8 +1,4 @@
 /* ウィンドウ全体 */
-.outerFrame {
-    border:4px solid red;
-}
-
 .mainWindow {
     border-radius:10px;
     border:4px solid #86cecb;

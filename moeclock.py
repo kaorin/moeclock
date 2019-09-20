@@ -29,7 +29,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.5.0.0"
+VERSION="1.5.1.0"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -74,7 +74,8 @@ class ConfigXML:
                     "calloutSize":"100%",
                     "drawFrame":"False",
                     "lineWidth":"4",
-                    "round":"12"}
+                    "round":"12",
+                    "roundWindow":"False"}
     AppName = "moeclock"
     ConfigPath = "/.config/moeclock.xml"
     Options = {}    #オプション値の辞書
@@ -201,6 +202,7 @@ class moeclock:
         self.sound = conf.GetOption("sound")
         self.calloutSize = conf.GetOption("calloutSize")
         self.drawFrame = eval(conf.GetOption("drawFrame"))
+        self.roundWindow = eval(conf.GetOption("roundWindow"))
         if len(uselist) > 0:
             self.use_wallpaper_list = eval(uselist)
         path = self.skin + '/style.css'
@@ -315,6 +317,8 @@ class moeclock:
         self.round = float(conf.GetOption("round"))
         self.sclRound = self.wTree.get_object ("sclRound")
         self.sclRound.set_value(self.round)
+        self.cbRoundWindow = self.wTree.get_object ("cbRoundWindow")
+        self.cbRoundWindow.set_active(self.roundWindow)
         #フィルタの作成
         self.allFilter = Gtk.FileFilter()
         self.waveFilter = Gtk.FileFilter()
@@ -380,6 +384,7 @@ class moeclock:
         self.drawFrame = self.cbDrawFrame.get_active()
         self.lineWidth = self.sclLineWidth.get_value()
         self.round = self.sclRound.get_value()
+        self.roundWindow = self.cbRoundWindow.get_active()
         self._saveConf()
         self.preferences.hide()
         GLib.source_remove(self.timeout)
@@ -450,22 +455,25 @@ class moeclock:
         try:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
-            path = self.skin + '/style.css'
-            if os.path.exists(path) == True and self.drawFrame == False:
-                pict.set_visible(False)
+            # path = self.skin + '/style.css'
+            # if os.path.exists(path) == True and self.drawFrame == False:
+            #     pict.set_visible(False)
             (xsize,ysize) = mainWindow.get_size()
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(WallpaperLocation)
             x = float(pixbuf.get_width())
             y = float(pixbuf.get_height())
             aspect = y / x
-            pixbuf = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
+            self.pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
             cr = pict.get_window().cairo_create()
             Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0)
             cr.paint()
             self.userResize = False
             mainWindow.resize(xsize,int(xsize*aspect))
-            # region = self.createRegion(pixbuf)
-            # mainWindow.shape_combine_region(region)
+            if self.roundWindow:
+                region = self.createRegion(self.pixbuf2)
+                mainWindow.shape_combine_region(region)
+            else:
+                mainWindow.shape_combine_region(None)
             pict.queue_draw()
             del pixbuf
             gc.collect()
@@ -531,6 +539,7 @@ class moeclock:
         conf.SetOption("drawFrame",self.drawFrame)
         conf.SetOption("lineWidth",self.lineWidth)
         conf.SetOption("round",self.round)
+        conf.SetOption("roundWindow",self.roundWindow)
         conf.Write()
 
     def showMenu(self,widget, event):
@@ -1103,6 +1112,7 @@ class moeclock:
                 col = Gdk.color_parse(self.color)
                 ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
                 self.roundedrec(ctx, 0, 0, pixbufWall.get_width(), pixbufWall.get_height(), self.round, self.lineWidth)
+                ctx.close_path()
                 ctx.stroke()
             s1.write_to_png('/tmp/moeclock.png')
             del s1
@@ -1128,9 +1138,16 @@ class moeclock:
         y = pixbuf.get_height()
         mask = cairo.ImageSurface(cairo.FORMAT_ARGB32, x, y)
         ctx = cairo.Context(mask)
+        ctx.set_source_rgba(0.0, 0.0, 0.0, 0.0)
+        ctx.rectangle(0,0,x,y)
+        ctx.fill()
         ctx.set_source_rgb(1.0, 1.0, 1.0)
-        self.roundedrec(ctx, 0, 0, x, y, self.round, self.lineWidth)
+        self.roundedrec(ctx, 0, 0, x, y, self.round, 1, False)
+        ctx.close_path()
+        ctx.fill_preserve()
         ctx.stroke()
+        # デバッグ用
+        # mask.write_to_png('/tmp/mask.png')
         region = Gdk.cairo_region_create_from_surface(mask)
         return region
 
@@ -1147,7 +1164,7 @@ class moeclock:
         print (ret)             #実行結果のデバッグ用プリント
         return ret
 
-    def roundedrec(self,context,x,y,w,h,r = 10,line_width = 4):
+    def roundedrec(self,context,x,y,w,h,r = 10,line_width = 4, border = True):
         "Draw a rounded rectangle"
         #   A****BQ
         #  H      C
@@ -1165,11 +1182,12 @@ class moeclock:
         context.line_to(x,y+r)                      # Line to H
         context.curve_to(x,y,x,y,x+r,y)             # Curve to A
         context.move_to(x,y)
-        context.line_to(x+w,y)
-        context.line_to(x+w,y)
-        context.line_to(x+w,y+h)
-        context.line_to(x,y+h)
-        context.line_to(x,y)
+        if border:
+            context.line_to(x+w,y)
+            context.line_to(x+w,y)
+            context.line_to(x+w,y+h)
+            context.line_to(x,y+h)
+            context.line_to(x,y)
 
         return
 

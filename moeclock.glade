@@ -29,10 +29,6 @@
         <signal name="draw" handler="on_daPict_draw" swapped="no"/>
       </object>
     </child>
-    <style>
-      <class name="mainWindow"/>
-      <class name="outerFrame"/>
-    </style>
   </object>
   <object class="GtkMenu" id="mainMenu">
     <property name="visible">True</property>

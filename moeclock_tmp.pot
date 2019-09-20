@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-20 05:12+0900\n"
+"POT-Creation-Date: 2019-09-20 21:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,33 +86,33 @@ msgid "Settings"
 msgstr ""
 
 #: moeclockdlg.glade.h:2
-msgid "Select time signal audio"
-msgstr ""
-
-#: moeclockdlg.glade.h:3
-msgid "Select time signal audio file (WAVE only)"
-msgstr ""
-
-#: moeclockdlg.glade.h:4
 msgid "Wallpaper Folder"
 msgstr ""
 
-#: moeclockdlg.glade.h:5
+#: moeclockdlg.glade.h:3
 msgid "* Folder changes will be effective from the next startup."
 msgstr ""
 
-#: moeclockdlg.glade.h:6
+#: moeclockdlg.glade.h:4
 msgid "Font"
 msgstr ""
 
-#: moeclockdlg.glade.h:7
+#: moeclockdlg.glade.h:5
 msgid ""
 "* Font name only is selectable.\n"
 " Size and style are not reflected."
 msgstr ""
 
-#: moeclockdlg.glade.h:9
+#: moeclockdlg.glade.h:7
 msgid "Day of week display offset(px)"
+msgstr ""
+
+#: moeclockdlg.glade.h:8
+msgid "Select time signal audio"
+msgstr ""
+
+#: moeclockdlg.glade.h:9
+msgid "Select time signal audio file (WAVE only)"
 msgstr ""
 
 #: moeclockdlg.glade.h:10
@@ -148,21 +148,25 @@ msgid "Round"
 msgstr ""
 
 #: moeclockdlg.glade.h:18
-msgid "centered"
+msgid "Round window"
 msgstr ""
 
 #: moeclockdlg.glade.h:19
-msgid "scaled"
+msgid "centered"
 msgstr ""
 
 #: moeclockdlg.glade.h:20
-msgid "stretched"
+msgid "scaled"
 msgstr ""
 
 #: moeclockdlg.glade.h:21
-msgid "zoom"
+msgid "stretched"
 msgstr ""
 
 #: moeclockdlg.glade.h:22
+msgid "zoom"
+msgstr ""
+
+#: moeclockdlg.glade.h:23
 msgid "spanned"
 msgstr ""

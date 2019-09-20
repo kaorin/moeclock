@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-09-20 05:12+JST\n"
-"PO-Revision-Date: 2019-09-20 05:13+0900\n"
+"POT-Creation-Date: 2019-09-20 21:32+JST\n"
+"PO-Revision-Date: 2019-09-20 21:32+0900\n"
 "Last-Translator: kaoru <kaoru.konno@gmail.com>\n"
 "Language-Team: English\n"
 "MIME-Version: 1.0\n"
@@ -44,23 +44,23 @@ msgstr "(Tue)"
 msgid "(Wed)"
 msgstr "(Wed)"
 
-#: moeclock.py:322
+#: moeclock.py:326
 msgid "All Files"
 msgstr "All Files"
 
-#: moeclock.py:325
+#: moeclock.py:329
 msgid "Sound Files"
 msgstr "Sound Files"
 
-#: moeclock.py:723
+#: moeclock.py:735
 msgid "File Rename Error"
 msgstr "File Rename Error"
 
-#: moeclock.py:872 moeclock.py:907
+#: moeclock.py:884 moeclock.py:919
 msgid "Moe Clock"
 msgstr "Moe Clock"
 
-#: moeclock.py:877
+#: moeclock.py:889
 msgid ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
@@ -68,7 +68,7 @@ msgstr ""
 "Skin/Icon by TOY(http://moebuntu.web.fc2.com/) is licensed under a Creative "
 "Commons Attribution 3.0 Unported License.  \n"
 
-#: moeclock.py:878
+#: moeclock.py:890
 msgid ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
@@ -76,7 +76,7 @@ msgstr ""
 "Time signal audio file Copyright (c) 2011 Sachika.Souno All Rights "
 "Reserved. \n"
 
-#: moeclock.py:879
+#: moeclock.py:891
 msgid ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
@@ -84,43 +84,43 @@ msgstr ""
 "* Modification of the time signal file and redistribution as a single unit "
 "are not permitted."
 
-#: moeclock.py:880
+#: moeclock.py:892
 msgid "Change the image every minute and notify the time."
 msgstr "Change the image every minute and notify the time."
 
-#: moeclock.py:881 moeclock.py:882
+#: moeclock.py:893 moeclock.py:894
 msgid "Kaorin@"
 msgstr "Kaorin@"
 
-#: moeclock.py:904
+#: moeclock.py:916
 msgid "Moe Clock - %H:%M:%S"
 msgstr "Moe Clock - %H:%M:%S"
 
-#: moeclock.py:1014
+#: moeclock.py:1026
 msgid "%s"
 msgstr "%s"
 
-#: moeclock.py:1058
+#: moeclock.py:1070
 msgid "Just Now!"
 msgstr "Just Now!"
 
-#: moeclock.py:1062
+#: moeclock.py:1074
 msgid "Now!"
 msgstr "Now!"
 
-#: moeclock.py:1179
+#: moeclock.py:1210
 msgid "Callout position change"
 msgstr "Callout position change"
 
-#: moeclock.py:1185
+#: moeclock.py:1216
 msgid "Do you want to save the changed callout position in the image?"
 msgstr "Do you want to save the changed callout position in the image?"
 
-#: moeclock.py:1187
+#: moeclock.py:1218
 msgid "Save callout location in image"
 msgstr "Save callout location in image"
 
-#: moeclock.py:1190
+#: moeclock.py:1221
 msgid "Change default callout position"
 msgstr "Change default callout position"
 
@@ -193,26 +193,18 @@ msgid "Settings"
 msgstr "Settings"
 
 #: moeclockdlg.glade.h:2
-msgid "Select time signal audio"
-msgstr "Select time signal audio"
-
-#: moeclockdlg.glade.h:3
-msgid "Select time signal audio file (WAVE only)"
-msgstr "Select time signal audio file (WAVE only)"
-
-#: moeclockdlg.glade.h:4
 msgid "Wallpaper Folder"
 msgstr "Wallpaper Folder"
 
-#: moeclockdlg.glade.h:5
+#: moeclockdlg.glade.h:3
 msgid "* Folder changes will be effective from the next startup."
 msgstr "* Folder changes will be effective from the next startup."
 
-#: moeclockdlg.glade.h:6
+#: moeclockdlg.glade.h:4
 msgid "Font"
 msgstr "Font"
 
-#: moeclockdlg.glade.h:7
+#: moeclockdlg.glade.h:5
 msgid ""
 "* Font name only is selectable.\n"
 " Size and style are not reflected."
@@ -220,9 +212,17 @@ msgstr ""
 "* Font name only is selectable.\n"
 " Size and style are not reflected."
 
-#: moeclockdlg.glade.h:9
+#: moeclockdlg.glade.h:7
 msgid "Day of week display offset(px)"
 msgstr "Day of week display offset(px)"
+
+#: moeclockdlg.glade.h:8
+msgid "Select time signal audio"
+msgstr "Select time signal audio"
+
+#: moeclockdlg.glade.h:9
+msgid "Select time signal audio file (WAVE only)"
+msgstr "Select time signal audio file (WAVE only)"
 
 #: moeclockdlg.glade.h:10
 msgid "Select skin"
@@ -257,21 +257,25 @@ msgid "Round"
 msgstr "Round"
 
 #: moeclockdlg.glade.h:18
+msgid "Round window"
+msgstr "Round window"
+
+#: moeclockdlg.glade.h:19
 msgid "centered"
 msgstr "centered"
 
-#: moeclockdlg.glade.h:19
+#: moeclockdlg.glade.h:20
 msgid "scaled"
 msgstr "scaled"
 
-#: moeclockdlg.glade.h:20
+#: moeclockdlg.glade.h:21
 msgid "stretched"
 msgstr "stretched"
 
-#: moeclockdlg.glade.h:21
+#: moeclockdlg.glade.h:22
 msgid "zoom"
 msgstr "zoom"
 
-#: moeclockdlg.glade.h:22
+#: moeclockdlg.glade.h:23
 msgid "spanned"
 msgstr "spanned"

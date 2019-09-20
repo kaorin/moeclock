@@ -458,20 +458,23 @@ class moeclock:
             x = float(pixbuf.get_width())
             y = float(pixbuf.get_height())
             aspect = y / x
-            if self.pixbuf2 != None:
-                del self.pixbuf2
-            self.pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
-            del pixbuf
+            pixbuf = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
             cr = pict.get_window().cairo_create()
-            Gdk.cairo_set_source_pixbuf(cr, self.pixbuf2, 0, 0)
+            Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0)
             cr.paint()
             self.userResize = False
             mainWindow.resize(xsize,int(xsize*aspect))
+            # region = self.createRegion(pixbuf)
+            # mainWindow.shape_combine_region(region)
             pict.queue_draw()
+            del pixbuf
             gc.collect()
             return True
         except Exception as e:
             print(e)
+            t, v, tb = sys.exc_info()
+            print(traceback.format_exception(t,v,tb))
+            print(traceback.format_tb(e.__traceback__))
             return False
 
     def _changeWallPaper(self):
@@ -1120,6 +1123,16 @@ class moeclock:
             os.remove('/tmp/moeclock.png')
             return False
 
+    def createRegion(self, pixbuf):
+        x = pixbuf.get_width()
+        y = pixbuf.get_height()
+        mask = cairo.ImageSurface(cairo.FORMAT_ARGB32, x, y)
+        ctx = cairo.Context(mask)
+        ctx.set_source_rgb(1.0, 1.0, 1.0)
+        self.roundedrec(ctx, 0, 0, x, y, self.round, self.lineWidth)
+        ctx.stroke()
+        region = Gdk.cairo_region_create_from_surface(mask)
+        return region
 
     def execCommand(self,command):
         '''

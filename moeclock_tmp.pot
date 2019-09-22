@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-20 21:32+0900\n"
+"POT-Creation-Date: 2019-09-22 17:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,22 +58,22 @@ msgid "Big(640)"
 msgstr ""
 
 #: moeclock.glade.h:11
-msgid "Annotation"
+msgid "Image callout position"
 msgstr ""
 
-#: moeclock.glade.h:12
+#: moeclock.glade.h:12 moeclockdlg.glade.h:16
 msgid "TopLeft"
 msgstr ""
 
-#: moeclock.glade.h:13
+#: moeclock.glade.h:13 moeclockdlg.glade.h:17
 msgid "TopRight"
 msgstr ""
 
-#: moeclock.glade.h:14
+#: moeclock.glade.h:14 moeclockdlg.glade.h:18
 msgid "BottomLeft"
 msgstr ""
 
-#: moeclock.glade.h:15
+#: moeclock.glade.h:15 moeclockdlg.glade.h:19
 msgid "BottomRight"
 msgstr ""
 
@@ -86,87 +86,91 @@ msgid "Settings"
 msgstr ""
 
 #: moeclockdlg.glade.h:2
-msgid "Wallpaper Folder"
+msgid "Callout size"
 msgstr ""
 
 #: moeclockdlg.glade.h:3
-msgid "* Folder changes will be effective from the next startup."
+msgid "Wallpaper Folder"
 msgstr ""
 
 #: moeclockdlg.glade.h:4
-msgid "Font"
+msgid "* Folder changes will be effective from the next startup."
 msgstr ""
 
 #: moeclockdlg.glade.h:5
+msgid "Font"
+msgstr ""
+
+#: moeclockdlg.glade.h:6
 msgid ""
 "* Font name only is selectable.\n"
 " Size and style are not reflected."
 msgstr ""
 
-#: moeclockdlg.glade.h:7
+#: moeclockdlg.glade.h:8
 msgid "Day of week display offset(px)"
 msgstr ""
 
-#: moeclockdlg.glade.h:8
+#: moeclockdlg.glade.h:9
 msgid "Select time signal audio"
 msgstr ""
 
-#: moeclockdlg.glade.h:9
+#: moeclockdlg.glade.h:10
 msgid "Select time signal audio file (WAVE only)"
 msgstr ""
 
-#: moeclockdlg.glade.h:10
+#: moeclockdlg.glade.h:11
 msgid "Select skin"
 msgstr ""
 
-#: moeclockdlg.glade.h:11
+#: moeclockdlg.glade.h:12
 msgid "Select skin Folder"
 msgstr ""
 
-#: moeclockdlg.glade.h:12
+#: moeclockdlg.glade.h:13
 msgid "Change font color"
 msgstr ""
 
-#: moeclockdlg.glade.h:13
+#: moeclockdlg.glade.h:14
 msgid "If the sound cuts out"
 msgstr ""
 
-#: moeclockdlg.glade.h:14
-msgid "Callout size"
-msgstr ""
-
 #: moeclockdlg.glade.h:15
-msgid "Do not use an image for the frame"
-msgstr ""
-
-#: moeclockdlg.glade.h:16
-msgid "line width"
-msgstr ""
-
-#: moeclockdlg.glade.h:17
-msgid "Round"
-msgstr ""
-
-#: moeclockdlg.glade.h:18
-msgid "Round window"
-msgstr ""
-
-#: moeclockdlg.glade.h:19
-msgid "centered"
+msgid "Default callout position"
 msgstr ""
 
 #: moeclockdlg.glade.h:20
-msgid "scaled"
+msgid "Do not use an image for the frame"
 msgstr ""
 
 #: moeclockdlg.glade.h:21
-msgid "stretched"
+msgid "line width"
 msgstr ""
 
 #: moeclockdlg.glade.h:22
-msgid "zoom"
+msgid "Round"
 msgstr ""
 
 #: moeclockdlg.glade.h:23
+msgid "Round window"
+msgstr ""
+
+#: moeclockdlg.glade.h:24
+msgid "centered"
+msgstr ""
+
+#: moeclockdlg.glade.h:25
+msgid "scaled"
+msgstr ""
+
+#: moeclockdlg.glade.h:26
+msgid "stretched"
+msgstr ""
+
+#: moeclockdlg.glade.h:27
+msgid "zoom"
+msgstr ""
+
+#: moeclockdlg.glade.h:28
 msgid "spanned"
 msgstr ""

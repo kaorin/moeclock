@@ -132,46 +132,46 @@
       <object class="GtkMenuItem" id="miAnnotationPos">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Annotation</property>
+        <property name="label" translatable="yes">Image callout position</property>
         <property name="use_underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="menu2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkCheckMenuItem" id="miTopLeft">
+              <object class="GtkMenuItem" id="miTopLeft">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">TopLeft</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_miTopLeft_toggled" swapped="no"/>
+                <signal name="activate" handler="on_miTopLeft_activate" swapped="no"/>
               </object>
             </child>
             <child>
-              <object class="GtkCheckMenuItem" id="miTopRight">
+              <object class="GtkMenuItem" id="miTopRight">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">TopRight</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_miTopRight_toggled" swapped="no"/>
+                <signal name="activate" handler="on_miTopRight_activate" swapped="no"/>
               </object>
             </child>
             <child>
-              <object class="GtkCheckMenuItem" id="miBottomLeft">
+              <object class="GtkMenuItem" id="miBottomLeft">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">BottomLeft</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_miBottomLeft_toggled" swapped="no"/>
+                <signal name="activate" handler="on_miBottomLeft_activate" swapped="no"/>
               </object>
             </child>
             <child>
-              <object class="GtkCheckMenuItem" id="miBottomRight">
+              <object class="GtkMenuItem" id="miBottomRight">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">BottomRight</property>
                 <property name="use_underline">True</property>
-                <signal name="toggled" handler="on_miBottomRight_toggled" swapped="no"/>
+                <signal name="activate" handler="on_miBottomRight_activate" swapped="no"/>
               </object>
             </child>
             <child>

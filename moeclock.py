@@ -29,7 +29,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.5.1.0"
+VERSION="1.5.1.1"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -225,10 +225,10 @@ class moeclock:
                     "on_miMidium_activate" : self.on_miMidium_activate,
                     "on_miLarge_activate" : self.on_miLarge_activate,
                     "on_miBig_activate" : self.on_miBig_activate,
-                    "on_miTopLeft_toggled" : self.on_miTopLeft_toggled,
-                    "on_miTopRight_toggled" : self.on_miTopRight_toggled,
-                    "on_miBottomLeft_toggled" : self.on_miBottomLeft_toggled,
-                    "on_miBottomRight_toggled" : self.on_miBottomRight_toggled,
+                    "on_miTopLeft_activate" : self.on_miTopLeft_activate,
+                    "on_miTopRight_activate" : self.on_miTopRight_activate,
+                    "on_miBottomLeft_activate" : self.on_miBottomLeft_activate,
+                    "on_miBottomRight_activate" : self.on_miBottomRight_activate,
                     "on_miRemovePrefix_activate" : self.on_miRemovePrefix_activate,
                     "on_mi100_activate" : self.on_miCalloutSize_activate,
                     "on_mi110_activate" : self.on_miCalloutSize_activate,
@@ -253,25 +253,6 @@ class moeclock:
         miDecorate = self.wMain.get_object("miDecorate")
         miDecorate.set_active(self.windowDecorate)
         mainWindow.set_decorated(self.windowDecorate)
-        # 吹出位置 
-        # 右下：0
-        # 右上：1
-        # 左下：2
-        # 左上：3
-        self.eventCancel = True
-        self.wMain.get_object("miBottomRight").set_active(False)
-        self.wMain.get_object("miTopRight").set_active(False)
-        self.wMain.get_object("miBottomLeft").set_active(False)
-        self.wMain.get_object("miTopLeft").set_active(False)
-        if self.annotationType == 0:
-            self.wMain.get_object("miBottomRight").set_active(True)
-        if self.annotationType == 1:
-            self.wMain.get_object("miTopRight").set_active(True)
-        if self.annotationType == 2:
-            self.wMain.get_object("miBottomLeft").set_active(True)
-        if self.annotationType == 3:
-            self.wMain.get_object("miTopLeft").set_active(True)
-        self.eventCancel = False
         xpos = conf.GetOption("x_pos")
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
@@ -294,6 +275,13 @@ class moeclock:
         rgba = Gdk.RGBA()
         rgba.parse(self.color)
         self.colorSelect.set_rgba(rgba)
+        # 吹出位置 
+        # 右下：0
+        # 右上：1
+        # 左下：2
+        # 左上：3
+        self.cbCalloutPosition = self.wTree.get_object("cbCalloutPosition")
+        self.cbCalloutPosition.set_active_id(str(self.annotationType))
         self.fontSelect = self.wTree.get_object ("fntSelect")
         self.fontSelect.set_font(self.font)
         self.fontSelect.set_show_size(False)
@@ -332,7 +320,7 @@ class moeclock:
         self.fcSound.add_filter(self.waveFilter)
         self.fcSound.add_filter(self.allFilter)
         self.fcSound.set_filter(self.waveFilter)
-
+        self.cbCalloutPosition.set_active_id(str(self.annotationType))
         self.preferences = preferencesDialog
         #Create our dictionay and connect it
         dic = { "on_BTN_OK_clicked" : self.on_BTN_OK_clicked,
@@ -385,6 +373,7 @@ class moeclock:
         self.lineWidth = self.sclLineWidth.get_value()
         self.round = self.sclRound.get_value()
         self.roundWindow = self.cbRoundWindow.get_active()
+        self.annotationType = int(self.cbCalloutPosition.get_active_id())
         self._saveConf()
         self.preferences.hide()
         GLib.source_remove(self.timeout)
@@ -550,25 +539,6 @@ class moeclock:
         '''
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             #右クリック
-            # 吹出位置 
-            # 右下：0
-            # 右上：1
-            # 左下：2
-            # 左上：3
-            self.eventCancel = True
-            self.wMain.get_object("miBottomRight").set_active(False)
-            self.wMain.get_object("miTopRight").set_active(False)
-            self.wMain.get_object("miBottomLeft").set_active(False)
-            self.wMain.get_object("miTopLeft").set_active(False)
-            if self.annotationType == 0:
-                self.wMain.get_object("miBottomRight").set_active(True)
-            if self.annotationType == 1:
-                self.wMain.get_object("miTopRight").set_active(True)
-            if self.annotationType == 2:
-                self.wMain.get_object("miBottomLeft").set_active(True)
-            if self.annotationType == 3:
-                self.wMain.get_object("miTopLeft").set_active(True)
-            self.eventCancel = False
             self.context_menu.popup(None, None, None,None, event.button, event.time)
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 1:
             #左クリック
@@ -695,56 +665,44 @@ class moeclock:
         '''
         壁紙に吹き出しプレフィックスを追加
         '''
-        dialog = RenameDialog(self.wMain.get_object("Main"))
-        response = dialog.run()
-
-        if response == Gtk.ResponseType.OK:
-            print("The OK button was clicked")
-            if dialog.changeFilename.get_active():
-                dirname, basename = os.path.split(wallpaper)
-                if self.checkPrefix(basename):
-                    basename = basename[6:]
-                # 吹出位置 
-                # 右下：0
-                # 右上：1
-                # 左下：2
-                # 左上：3
-                if type == 3:
-                    basename = "--UL--" + basename
-                if type == 2:
-                    basename = "--LL--" + basename
-                if type == 1:
-                    basename = "--UR--" + basename
-                if type == 0:
-                    basename = "--LR--" + basename
-                path = os.path.join(dirname, basename)
-                try:
-                    os.rename(wallpaper, path)
-                    self.wlist[self.sw] = path
-                    idx = self.tryIndex(self.use_wallpaper_list,wallpaper,-1)
-                    if idx >= 0:
-                        self.use_wallpaper_list[idx] = path
-                    idx = self.tryIndex(self.wallpaper_list,wallpaper,-1)
-                    if idx >= 0:
-                        self.wallpaper_list[idx] = path
-                except Exception as e:
-                    error_dialog = Gtk.MessageDialog(
-                        type=Gtk.MessageType.ERROR,
-                        buttons=Gtk.ButtonsType.OK,
-                        message_format=e)
-                    error_dialog.set_title(_('File Rename Error'))
-                    error_dialog.run()
-                    print(e)
-                    t, v, tb = sys.exc_info()
-                    print(traceback.format_exception(t,v,tb))
-                    print(traceback.format_tb(e.__traceback__))
-                    error_dialog.destroy()
-                    dialog.destroy()
-            if dialog.calloutDefault.get_active():
-                self.annotationType = type
-        elif response == Gtk.ResponseType.CANCEL:
-            print("The Cancel button was clicked")
-        dialog.destroy()
+        dirname, basename = os.path.split(wallpaper)
+        if self.checkPrefix(basename):
+            basename = basename[6:]
+        # 吹出位置 
+        # 右下：0
+        # 右上：1
+        # 左下：2
+        # 左上：3
+        if type == 3:
+            basename = "--UL--" + basename
+        if type == 2:
+            basename = "--LL--" + basename
+        if type == 1:
+            basename = "--UR--" + basename
+        if type == 0:
+            basename = "--LR--" + basename
+        path = os.path.join(dirname, basename)
+        try:
+            os.rename(wallpaper, path)
+            self.wlist[self.sw] = path
+            idx = self.tryIndex(self.use_wallpaper_list,wallpaper,-1)
+            if idx >= 0:
+                self.use_wallpaper_list[idx] = path
+            idx = self.tryIndex(self.wallpaper_list,wallpaper,-1)
+            if idx >= 0:
+                self.wallpaper_list[idx] = path
+        except Exception as e:
+            error_dialog = Gtk.MessageDialog(
+                type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.OK,
+                message_format=e)
+            error_dialog.set_title(_('File Rename Error'))
+            error_dialog.run()
+            print(e)
+            t, v, tb = sys.exc_info()
+            print(traceback.format_exception(t,v,tb))
+            print(traceback.format_tb(e.__traceback__))
+            error_dialog.destroy()
 
     def deletePrefixWallpaper(self, wallpaper):
         '''
@@ -773,7 +731,7 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miTopLeft_toggled(self,widget):
+    def on_miTopLeft_activate(self,widget):
         '''
         吹き出し位置切り替え：左上
         '''
@@ -786,7 +744,7 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miTopRight_toggled(self,widget):
+    def on_miTopRight_activate(self,widget):
         '''
         吹き出し位置切り替え：右上
         '''
@@ -799,7 +757,7 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miBottomLeft_toggled(self,widget):
+    def on_miBottomLeft_activate(self,widget):
         '''
         吹き出し位置切り替え：左下
         '''
@@ -812,7 +770,7 @@ class moeclock:
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
 
-    def on_miBottomRight_toggled(self,widget):
+    def on_miBottomRight_activate(self,widget):
         '''
         吹き出し位置切り替え：右下
         '''

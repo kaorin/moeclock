@@ -86,6 +86,46 @@
           </packing>
         </child>
         <child>
+          <object class="GtkBox" id="hbox8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Callout size</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScale" id="sclCalloutSize">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="adjustment">adjCalloutSize</property>
+                <property name="fill_level">200</property>
+                <property name="round_digits">1</property>
+                <property name="digits">0</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="padding">16</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="vbox2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -377,18 +417,19 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="hbox8">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Callout size</property>
+                <property name="margin_right">8</property>
+                <property name="label" translatable="yes">Default callout position</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -397,19 +438,19 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScale" id="sclCalloutSize">
+              <object class="GtkComboBoxText" id="cbCalloutPosition">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="adjustment">adjCalloutSize</property>
-                <property name="fill_level">200</property>
-                <property name="round_digits">1</property>
-                <property name="digits">0</property>
+                <property name="can_focus">False</property>
+                <items>
+                  <item id="3" translatable="yes">TopLeft</item>
+                  <item id="1" translatable="yes">TopRight</item>
+                  <item id="2" translatable="yes">BottomLeft</item>
+                  <item id="0" translatable="yes">BottomRight</item>
+                </items>
               </object>
               <packing>
-                <property name="expand">True</property>
+                <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="padding">16</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -417,7 +458,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">6</property>
+            <property name="position">7</property>
           </packing>
         </child>
         <child>
@@ -431,7 +472,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">7</property>
+            <property name="position">8</property>
           </packing>
         </child>
         <child>
@@ -469,7 +510,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">9</property>
+            <property name="position">10</property>
           </packing>
         </child>
         <child>
@@ -507,7 +548,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">10</property>
+            <property name="position">11</property>
           </packing>
         </child>
         <child>
@@ -521,7 +562,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">11</property>
+            <property name="position">12</property>
           </packing>
         </child>
       </object>

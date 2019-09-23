@@ -12,7 +12,7 @@ moeclock.egg-info
 /*.glade~
 /*.txt
 /*.pot
-
+__pycache__
 message.pot
 moeclock_tmp.pot
 moeclock.pot

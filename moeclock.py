@@ -29,7 +29,7 @@ import locale
 import gc
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-VERSION="1.5.1.1"
+__VERSION__="1.5.1.2"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -840,7 +840,7 @@ class moeclock:
         about = Gtk.AboutDialog()
         # "萌え時計",VERSION,"MIT","1分ごとに画像を変更し時間を通知します。",["かおりん"],["かおりん"],"かおりん",self.logo_pixbuf
         about.set_program_name(_("Moe Clock"))
-        about.set_version(VERSION)
+        about.set_version(__VERSION__)
         about.set_license_type(Gtk.License.MIT_X11)
         about.set_license(
             "Program MIT License\nCopyright (c) 2019 Kaoru.Konno\n" + 

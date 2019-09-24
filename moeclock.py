@@ -27,6 +27,7 @@ import cairo
 import gettext
 import locale
 import gc
+import json
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
 __VERSION__="1.5.1.2"
@@ -953,6 +954,11 @@ class moeclock:
                 anoType = 1
             if basename.upper().find("--LR--") == 0:
                 anoType = 0
+            path = self.skin + '/callout.json'
+            if os.path.exists(path) == True:
+                calloutJson = open(path,"r")
+                jsonDic = json.load(calloutJson)
+                anoType = jsonDic['callout_positon']
             path = self.skin + '/annotation.svg'
             if os.path.exists(path) == False:
                 path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.svg'

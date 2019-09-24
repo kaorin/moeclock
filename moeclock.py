@@ -30,7 +30,7 @@ import gc
 import json
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-__VERSION__="1.5.1.2"
+__VERSION__="1.5.1.3"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))

@@ -19,3 +19,4 @@ moeclock.pot
 locale/en_US/LC_MESSAGES/moeclock_en_US.po
 .vscode/settings.json
 #moeclock.glade#
+stdeb.cfg

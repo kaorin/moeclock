@@ -28,9 +28,10 @@ import gettext
 import locale
 import gc
 import json
+import math
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-__VERSION__="1.5.1.3"
+__VERSION__="1.5.1.4"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -967,21 +968,27 @@ class moeclock:
             height = svg.props.height
             # 吹き出し拡大
             scale = float(self.calloutSize.replace("%","")) / 100;
-            s2 = cairo.SVGSurface(None, width * scale, height * scale)
+            ssvg = cairo.SVGSurface(None, width * scale, height * scale)
+            s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, int(width * scale), int(height * scale))
+            svgctx = cairo.Context(ssvg)
+            svgctx.scale(scale, scale)
+            svg.render_cairo(svgctx)
             ctx = cairo.Context(s2)
             ctx.save()
-            if anoType == 0:
-                ctx.scale(scale, scale)
+            # if anoType == 0:
+            #     ctx.scale(scale, scale)
             if anoType == 1:
-                ctx.translate(0, height * scale)
-                ctx.scale(scale, -scale)
+                m = cairo.Matrix(yy=-1, y0=s2.get_height())
+                ctx.transform(m)
             if anoType == 2:
-                ctx.translate(width * scale, 0)
-                ctx.scale(-scale, scale)
+                m = cairo.Matrix(xx=-1, x0=s2.get_width())
+                ctx.transform(m)
             if anoType == 3:
-                ctx.translate(width * scale, height * scale)
-                ctx.scale(-scale, -scale)
-            svg.render_cairo(ctx)
+                m = cairo.Matrix(yy=-1, xx=-1, x0=s2.get_width(),y0=s2.get_height())
+                ctx.transform(m)
+
+            ctx.set_source_surface(ssvg,0, 0)
+            ctx.paint()
             ctx.restore()
             x1 = width * scale
             y1 = height * scale

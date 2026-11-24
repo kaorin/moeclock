@@ -29,9 +29,11 @@ import locale
 import gc
 import json
 import math
+import ast
+import shlex
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-__VERSION__="1.5.1.4"
+__VERSION__="1.5.3.0"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -41,8 +43,9 @@ SOUND_PLAY="paplay"
 
 try:
     locale.setlocale(locale.LC_ALL, '')
-except:
-    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+except locale.Error:
+    # Minimal installations may not have an en_US locale generated.
+    pass
 locale.bindtextdomain(APP, LOCALE_DIR)
 gettext.bindtextdomain(APP, LOCALE_DIR)
 gettext.textdomain(APP)
@@ -51,6 +54,14 @@ _ = gettext.gettext
 print('Using locale directory: {}'.format(LOCALE_DIR))
 
 WEEKString=[ _('(Mon)'), _('(Tue)'), _('(Wed)'), _('(Thu)'), _('(Fri)'), _('(Sat)'), _('(Sun)'),]
+
+
+def parse_color(value):
+    """Parse a CSS-style color string into a Gdk.RGBA value."""
+    rgba = Gdk.RGBA()
+    if not rgba.parse(value):
+        rgba.parse("#f366ff")
+    return rgba
 
 class ConfigXML:
     '''
@@ -79,7 +90,7 @@ class ConfigXML:
                     "round":"12",
                     "roundWindow":"False"}
     AppName = "moeclock"
-    ConfigPath = "/.config/moeclock.xml"
+    ConfigPath = os.path.join(".config", "moeclock.xml")
     Options = {}    #オプション値の辞書
     domobj = None
 
@@ -91,7 +102,8 @@ class ConfigXML:
         #print "ConfigXML"
         if read == True :
             try:
-                self.domobj = minidom.parse(os.path.abspath(os.path.expanduser("~") + self.ConfigPath))
+                config_file = os.path.join(os.path.expanduser("~"), self.ConfigPath)
+                self.domobj = minidom.parse(config_file)
                 options = self.domobj.getElementsByTagName("options")
                 for opt in options :
                     for op,defVal in self.OptionList.items():
@@ -157,8 +169,10 @@ class ConfigXML:
                 opts.appendChild(opt)
                 text = newdoc.createTextNode(str(self.Options[op]))
                 opt.appendChild(text)
-            file = codecs.open(os.path.abspath(os.path.expanduser("~") + self.ConfigPath), 'wb', encoding='utf-8')
-            newdoc.writexml(file, '', '\t', '\n', encoding='utf-8')
+            config_file = os.path.join(os.path.expanduser("~"), self.ConfigPath)
+            os.makedirs(os.path.dirname(config_file), exist_ok=True)
+            with codecs.open(config_file, 'w', encoding='utf-8') as file:
+                newdoc.writexml(file, '', '\t', '\n', encoding='utf-8')
         except:
             logging.error(traceback.format_exc())
 
@@ -194,19 +208,30 @@ class moeclock:
         uselist = conf.GetOption("use_wallpaper")
         self.font =  conf.GetOption("font")
         self.color = conf.GetOption("color")
-        self.notice = eval(conf.GetOption("notice"))
-        self.alwaysTop = eval(conf.GetOption("alwaysTop"))
-        self.weekOffset = eval(conf.GetOption("weekOffset"))
+        def config_value(value, default):
+            try:
+                return ast.literal_eval(value)
+            except (ValueError, SyntaxError, TypeError):
+                return default
+
+        self.notice = config_value(conf.GetOption("notice"), True)
+        self.alwaysTop = config_value(conf.GetOption("alwaysTop"), False)
+        self.weekOffset = config_value(conf.GetOption("weekOffset"), -10)
         self.skin = conf.GetOption("skin")
-        self.windowDecorate = eval(conf.GetOption("windowDecorate"))
-        self.annotationType = eval(conf.GetOption("annotationType"))
-        self.soundCutOut = eval(conf.GetOption("soundCutOut"))
+        # Migrate old installations that stored resources under /usr/share/moeclock.
+        if not os.path.isdir(self.skin):
+            self.skin = join(WHERE_AM_I, "default")
+        self.windowDecorate = config_value(conf.GetOption("windowDecorate"), True)
+        self.annotationType = config_value(conf.GetOption("annotationType"), 0)
+        self.soundCutOut = config_value(conf.GetOption("soundCutOut"), False)
         self.sound = conf.GetOption("sound")
+        if not os.path.isfile(self.sound):
+            self.sound = join(WHERE_AM_I, "sound.wav")
         self.calloutSize = conf.GetOption("calloutSize")
-        self.drawFrame = eval(conf.GetOption("drawFrame"))
-        self.roundWindow = eval(conf.GetOption("roundWindow"))
-        if len(uselist) > 0:
-            self.use_wallpaper_list = eval(uselist)
+        self.drawFrame = config_value(conf.GetOption("drawFrame"), False)
+        self.roundWindow = config_value(conf.GetOption("roundWindow"), False)
+        if uselist:
+            self.use_wallpaper_list = config_value(uselist, [])
         path = self.skin + '/style.css'
         if os.path.exists(path) == True:
             self.set_style()
@@ -398,16 +423,15 @@ class moeclock:
         if self.soundCutOut:
             # 先頭がカットされる場合S/PDIF等
             # 一度無音の音声ファイルを再生する
-            if os.path.exists("/usr/share/moeclock/sound/nosound.wav") == True:
+            soundPath = os.path.join(WHERE_AM_I, "sound", "nosound.wav")
+            if not os.path.exists(soundPath):
                 soundPath = "/usr/share/moeclock/sound/nosound.wav"
-            elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
-                soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
-            cmdStr = SOUND_PLAY + " "+ soundPath
-            self.execCommand(cmdStr)
+            if os.path.exists(soundPath):
+                self.execCommand([SOUND_PLAY, soundPath])
         if os.path.exists(self.sound) :
             soundFile = self.fcSound.get_filename()
-            cmdStr = SOUND_PLAY + " " + soundFile
-            self.execCommand(cmdStr)
+            if soundFile:
+                self.execCommand([SOUND_PLAY, soundFile])
 
     def on_fcSkin_file_set(self,widget):
         '''
@@ -418,7 +442,7 @@ class moeclock:
             for line in open(skin + "/color_setting.txt", 'r'):
                 line = line.strip('\n')
                 if len(line) > 0:
-                    self.colorSelect.set_color(Gdk.color_parse(line))
+                    self.colorSelect.set_rgba(parse_color(line))
 
     def on_cbSoundCutOut_toggled(self, wiget):
         '''
@@ -428,7 +452,7 @@ class moeclock:
 
     def on_properties_delete_event(self,widget,event):
         widget.hide()
-        return Gtk.TRUE
+        return True
 
     def on_daPict_draw(self,widget, cr, event=None):
         '''
@@ -789,9 +813,18 @@ class moeclock:
         '''
         画面サイズ変更イベント
         '''
-        if self.userResize :
-            self._buildWallPaper(self.wlist[self.sw])
-            self._setWallpaper("/tmp/moeclock.png")
+        # GTK may emit size-allocate before the wallpaper list is initialized.
+        # Ignore the event until a valid wallpaper selection is available.
+        if not self.userResize:
+            return
+        if not getattr(self, "wlist", None):
+            return
+        if not isinstance(getattr(self, "sw", None), int):
+            return
+        if self.sw < 0 or self.sw >= len(self.wlist):
+            return
+        self._buildWallPaper(self.wlist[self.sw])
+        self._setWallpaper("/tmp/moeclock.png")
 
     def on_Main_window_state_event(self, widget, event):
         '''
@@ -901,14 +934,13 @@ class moeclock:
         if self.soundCutOut:
             # 先頭がカットされる場合S/PDIF等
             # 一度無音の音声ファイルを再生する
-            if os.path.exists("/usr/share/moeclock/sound/nosound.wav") == True:
+            soundPath = os.path.join(WHERE_AM_I, "sound", "nosound.wav")
+            if not os.path.exists(soundPath):
                 soundPath = "/usr/share/moeclock/sound/nosound.wav"
-            elif os.path.exists(os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav") == True:
-                soundPath = os.path.dirname(os.path.abspath(__file__)) + "/sound/nosound.wav"
-            cmdStr = SOUND_PLAY + " " + soundPath
-            self.execCommand(cmdStr)
-        cmdStr = SOUND_PLAY + " " + self.sound
-        self.execCommand(cmdStr)
+            if os.path.exists(soundPath):
+                self.execCommand([SOUND_PLAY, soundPath])
+        if os.path.isfile(self.sound):
+            self.execCommand([SOUND_PLAY, self.sound])
 
     def _buildWallPaper(self,wallpaper):
         '''
@@ -964,15 +996,30 @@ class moeclock:
             if os.path.exists(path) == False:
                 path = os.path.dirname(os.path.abspath(__file__)) + "/" + self.skin + '/annotation.svg'
             svg = Rsvg.Handle.new_from_file(path)
-            width = svg.props.width
-            height = svg.props.height
+            # librsvg 2.52+ exposes intrinsic pixel dimensions through this API.
+            if hasattr(svg, "get_intrinsic_size_in_pixels"):
+                has_size, width, height = svg.get_intrinsic_size_in_pixels()
+            else:
+                has_size, width, height = False, 0, 0
+            if not has_size:
+                dimensions = svg.get_dimensions()
+                width = dimensions.width
+                height = dimensions.height
             # 吹き出し拡大
             scale = float(self.calloutSize.replace("%","")) / 100;
             ssvg = cairo.SVGSurface(None, width * scale, height * scale)
             s2 = cairo.ImageSurface(cairo.FORMAT_ARGB32, int(width * scale), int(height * scale))
             svgctx = cairo.Context(ssvg)
             svgctx.scale(scale, scale)
-            svg.render_cairo(svgctx)
+            if hasattr(svg, "render_document"):
+                viewport = Rsvg.Rectangle()
+                viewport.x = 0
+                viewport.y = 0
+                viewport.width = width
+                viewport.height = height
+                svg.render_document(svgctx, viewport)
+            else:
+                svg.render_cairo(svgctx)
             ctx = cairo.Context(s2)
             ctx.save()
             # if anoType == 0:
@@ -999,8 +1046,8 @@ class moeclock:
             timeStr = d.strftime("%H:%M")
             weekStr = WEEKString[d.weekday()]
             self.min = d.minute
-            col = Gdk.color_parse(self.color)
-            ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
+            col = parse_color(self.color)
+            ctx.set_source_rgb(col.red, col.green, col.blue)
             ctx.select_font_face(self.font, cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
             print (self.font)
             ctx.set_font_size(16 * scale)
@@ -1080,8 +1127,8 @@ class moeclock:
                 ctx.set_source_surface(s4,0,0)
                 ctx.paint()
             if self.drawFrame == True:
-                col = Gdk.color_parse(self.color)
-                ctx.set_source_rgb(col.red_float, col.green_float, col.blue_float)
+                col = parse_color(self.color)
+                ctx.set_source_rgb(col.red, col.green, col.blue)
                 self.roundedrec(ctx, 0, 0, pixbufWall.get_width(), pixbufWall.get_height(), self.round, self.lineWidth)
                 ctx.close_path()
                 ctx.stroke()
@@ -1101,7 +1148,10 @@ class moeclock:
             print(traceback.format_exception(t,v,tb))
             print(traceback.format_tb(e.__traceback__))
             # ファイルが壊れている場合があるので削除しておく
-            os.remove('/tmp/moeclock.png')
+            try:
+                os.remove('/tmp/moeclock.png')
+            except OSError:
+                pass
             return False
 
     def createRegion(self, pixbuf):
@@ -1126,10 +1176,16 @@ class moeclock:
         '''
         コマンド実行
         '''
-        print (command)   #受け渡されたコマンドのデバッグ用プリント
+        if isinstance(command, str):
+            command = shlex.split(command)
+        logging.debug("実行コマンド: %s", command)
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
-        ret = subprocess.run(command, shell=True)
+        try:
+            ret = subprocess.run(command, check=False)
+        except FileNotFoundError:
+            logging.error("コマンドが見つかりません: %s", command[0])
+            return None
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         print (ret)             #実行結果のデバッグ用プリント
@@ -1168,10 +1224,11 @@ class moeclock:
         provider = Gtk.CssProvider()
         # Demo CSS kindly provided by Numix project
         provider.load_from_path(join(WHERE_AM_I, self.skin, 'style.css'))
-        screen = Gdk.Display.get_default_screen(Gdk.Display.get_default())
-        # I was unable to found instrospected version of this
+        screen = Gdk.Screen.get_default()
+        if screen is None:
+            return
         Gtk.StyleContext.add_provider_for_screen(
-            Gdk.Screen.get_default(),
+            screen,
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )

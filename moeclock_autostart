@@ -1,5 +1,4 @@
 #!/bin/sh
 sleep 10
-python3 /usr/share/moeclock/moeclock.py $1 $2 $3
-
-
+APP_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+exec python3 "$APP_DIR/moeclock.py" "$@"

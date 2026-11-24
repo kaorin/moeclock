@@ -1,39 +1,61 @@
+# ■■■ 萌え時計 ■■■
 
-# ■■■ 萌え時計 ■■■  
+## Ubuntu 26.10 対応版
+
+このアーカイブは、旧版「萌え時計 1.5.1.4」をUbuntu 26.10（Python 3.14 / GNOME 51）で利用できるように更新したものです。
+GTK 3を使用します。Ubuntu 26.10でもGTK 3のランタイムパッケージが提供されているため、GTK 4への全面移植は行わず、既存の画面・スキン・描画処理を維持しています。
+
+### 動作環境
+
+- Ubuntu 26.10 Desktop（主対象）
+- Python 3.14（Ubuntu標準）
+- GTK 3 / PyGObject
+- librsvg / Cairo
+- PulseAudio互換の音声出力（`paplay`）
+
+### インストール方法（推奨）
+
+1. ZIPを任意のフォルダに展開します。
+2. 端末で展開先フォルダへ移動します。
+3. 次のコマンドを実行します。
+
+```bash
+sudo ./install-ubuntu.sh
+```
+
+必要なUbuntuパッケージをAPTでインストールし、アプリ本体を `/opt/moeclock` に配置します。
+インストール後は、アプリケーション一覧から「萌え時計」を起動できます。
+
+### インストールせずに起動する場合
+
+展開したフォルダ内で次を実行してください。
+
+```bash
+./moeclock
+```
+
+初回起動時に設定ファイル `~/.config/moeclock.xml` が作成されます。
+
+### アンインストール
+
+```bash
+sudo ./uninstall-ubuntu.sh
+```
+
+ユーザー設定 `~/.config/moeclock.xml` は削除しません。
+
+### 依存パッケージを手動でインストールする場合
+
+```bash
+sudo apt update
+sudo apt install python3 python3-gi python3-gi-cairo python3-cairo \
+  gir1.2-gtk-3.0 gir1.2-rsvg-2.0 pulseaudio-utils fonts-noto-cjk
+```
 
 ## 【初めに】
 
-本プログラムは、指定されたフォルダ内の画像を使用する時計です。  
-
-対象となるOSはUbuntuのみです。  
-動作の確認はUbuntu19.04(amd64)で行われています。  
-他にLinuxMint18.3での動作も確認出来ていますが、保証するものではありません。
-
-本プログラムは、pythonを使用して書かれています。  
-GUIの部分には、python-gobjectを使用しています。  
-
-## 【インストール/debの場合】
-
-ダブルクリックでインストーラを起動してください。  
-
-## 【インストール/zipの場合】
-
-任意のフォルダを作成し、全てのファイルをそのフォルダ直下に展開してください。  
-zipファイルは「Clone or Download」から「Download ZIP」で取得できます。
-
-## 【起動方法/debの場合】
-
-アプリケーションメニューのアクセサリよりmoeclockを指定して起動してください。  
-
-## 【起動方法/zipの場合】
-
-moeclock.pyをダブルクリックして起動してください。  
-もしくは、任意にランチャを作成し、moeclock.pyを起動するようにしてください。  
-
-## 【自動起動に設定する場合】
-
-debパッケージの場合、同梱のmoeclock_autostartをコマンドとして指定してください。  
-moeclockを指定すると起動時に画面サイズがデフォルトに戻ってしまいます。  
+本プログラムは、指定されたフォルダ内の画像を使用するデスクトップ時計です。
+GUIにはPython GObject（PyGObject）とGTK 3を使用しています。
 
 ## 【使い方】
 

@@ -1,12 +1,11 @@
-#!/usr/bin/env xdg-open
-
 [Desktop Entry]
 Version=1.0
 Type=Application
+Name=萌え時計
+Name[ja]=萌え時計
+Comment=Desktop clock with images and hourly chimes
+Exec=/opt/moeclock/moeclock
+Icon=/opt/moeclock/moeclock.png
 Terminal=false
-Icon[ja_JP]=/usr/share/moeclock/moeclock.png
-Name[ja_JP]=萌え時計
-Exec=/usr/share/moeclock/moeclock.py
-Name=MoeClock
-Icon=/usr/share/moeclock/moeclock.png
-Categories=Utility;
+Categories=Utility;Clock;
+StartupNotify=false

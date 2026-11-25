@@ -484,9 +484,11 @@ class moeclock:
             cr.paint()
             self.userResize = False
             mainWindow.resize(xsize,int(xsize*aspect))
+            # Apply the rounded shape only after GTK has completed the resize.
+            # The wallpaper pixbuf size is not necessarily the actual GdkWindow
+            # client size (window decorations / allocation timing can differ).
             if self.roundWindow:
-                region = self.createRegion(self.pixbuf2)
-                mainWindow.shape_combine_region(region)
+                GLib.idle_add(self._applyWindowShape)
             else:
                 mainWindow.shape_combine_region(None)
             pict.queue_draw()
@@ -1154,22 +1156,52 @@ class moeclock:
                 pass
             return False
 
-    def createRegion(self, pixbuf):
-        x = pixbuf.get_width()
-        y = pixbuf.get_height()
+    def _applyWindowShape(self):
+        """Apply rounded corners using the actual GTK client-window size."""
+        try:
+            mainWindow = self.wMain.get_object("Main")
+            gdkWindow = mainWindow.get_window()
+            if not self.roundWindow:
+                mainWindow.shape_combine_region(None)
+                return GLib.SOURCE_REMOVE
+            if gdkWindow is None:
+                return GLib.SOURCE_REMOVE
+
+            # Use the realized GdkWindow dimensions, not the wallpaper pixbuf.
+            # This avoids clipping/misalignment when GTK allocates the client
+            # area at a size different from the requested resize dimensions.
+            width = gdkWindow.get_width()
+            height = gdkWindow.get_height()
+            if width <= 0 or height <= 0:
+                return GLib.SOURCE_REMOVE
+
+            region = self.createRegion(width, height)
+            mainWindow.shape_combine_region(region)
+            return GLib.SOURCE_REMOVE
+        except Exception:
+            logging.exception("角丸ウィンドウ領域の適用に失敗しました")
+            return GLib.SOURCE_REMOVE
+
+    def createRegion(self, width, height):
+        """Create a rounded region matching the actual client area."""
+        x = max(1, int(width))
+        y = max(1, int(height))
         mask = cairo.ImageSurface(cairo.FORMAT_ARGB32, x, y)
         ctx = cairo.Context(mask)
-        ctx.set_source_rgba(0.0, 0.0, 0.0, 0.0)
-        ctx.rectangle(0,0,x,y)
-        ctx.fill()
+        ctx.set_operator(cairo.OPERATOR_CLEAR)
+        ctx.paint()
+        ctx.set_operator(cairo.OPERATOR_OVER)
         ctx.set_source_rgb(1.0, 1.0, 1.0)
-        self.roundedrec(ctx, 0, 0, x, y, self.round, 1, False)
+
+        # Keep the configured radius, but prevent corners from crossing on
+        # small windows. A one-pixel inset keeps the antialiased edge in bounds.
+        radius = max(0.0, min(float(self.round), x / 2.0, y / 2.0))
+        self.roundedrec(ctx, 0, 0, x, y, radius, 1, False)
         ctx.close_path()
-        ctx.fill_preserve()
-        ctx.stroke()
-        # デバッグ用
-        # mask.write_to_png('/tmp/mask.png')
+        ctx.fill()
+
         region = Gdk.cairo_region_create_from_surface(mask)
+        mask.finish()
         return region
 
     def execCommand(self,command):

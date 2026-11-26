@@ -52,6 +52,17 @@ sudo apt install python3 python3-gi python3-gi-cairo python3-cairo \
   gir1.2-gtk-3.0 gir1.2-rsvg-2.0 pulseaudio-utils fonts-noto-cjk
 ```
 
+
+## Waylandでのウィンドウ位置復元（1.5.2.16）
+
+WaylandではGTKアプリから画面全体の絶対座標を取得・指定できないため、GNOME Shell拡張を併用します。インストーラーは `gnome-extension/` をログインユーザーの `~/.local/share/gnome-shell/extensions/moeclock-position-restore@local/` に配置し、ログイン中のGNOMEセッションのD-Busを指定して有効化します。有効化に失敗した場合は、端末で `gnome-extensions enable moeclock-position-restore@local` を実行してください。
+
+**初回インストール後は、一度Ubuntuからログアウトして再ログインしてください。** 再ログイン後、端末で `gnome-extensions info moeclock-position-restore@local` を実行し、状態が `有効` になっていることを確認してください。
+
+拡張はMutter上で萌え時計（GTK application ID、WM_CLASS、または実行プロセス情報から識別）のフレーム位置を保存し、次回起動時およびタイトルバー切り替え後に復元します。復元時はMutterのフレームサイズを変更せず、位置のみを複数回適用します。ウィンドウサイズはGTK本体が管理します。保存先は `~/.config/moeclock/wayland-window.json` です。
+
+拡張の動作ログは `journalctl --user -b /usr/bin/gnome-shell` で確認できます（環境によりログの出方は異なります）。位置復元はGNOME Shell / Mutterのバージョンやマルチモニター構成に依存します。Waylandの制約上、全環境での完全な復元を保証するものではありません。
+
 ## 【初めに】
 
 本プログラムは、指定されたフォルダ内の画像を使用するデスクトップ時計です。
@@ -316,3 +327,18 @@ TOYさん、ありがとうございます。
 
 *.1.5.1.4 2020/09/21*  
 　吹き出し表示がLinuxMint20で正常動作しなくなっていたため修正。  
+
+
+### 1.5.2.14 修正
+
+GNOME Shell拡張の無効化時に、追跡中ウィンドウの座標を保存しないようにしました。無効化時の古い／中央配置のフレームが、ユーザーの保存位置を上書きする問題を防ぎます。拡張機能バージョンは5です。
+
+
+### 1.5.2.16 修正
+
+- Waylandでタイトルバーを切り替えた際、再生成されたMutterウィンドウに保存位置を再適用します。
+- 復元処理を `move_resize_frame()` から `move_frame()` に変更し、復元時にウィンドウサイズを強制変更しないようにしました。
+- マッピング直後の位置変動に備え、位置のみを段階的に再適用します。
+- タイトルバー切り替えで破棄される旧ウィンドウの一時座標を保存しません。
+- GNOME Shell拡張のバージョンを7に更新しました。
+- タイトルバーを再表示した際にも、切り替え前の正常な位置を維持するよう調整しました。

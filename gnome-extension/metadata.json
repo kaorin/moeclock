@@ -1,0 +1,11 @@
+{
+  "uuid": "moeclock-position-restore@local",
+  "name": "MoeClock Wayland Position Restore",
+  "description": "Saves and restores the MoeClock window geometry through Mutter on GNOME Wayland.",
+  "version": 7,
+  "shell-version": [
+    "49",
+    "50",
+    "51"
+  ]
+}

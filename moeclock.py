@@ -11,6 +11,17 @@ from gi.repository import Gdk
 from gi.repository import GLib
 from gi.repository import GdkPixbuf
 from gi.repository import Rsvg
+
+# GTK 3 on Wayland derives the xdg_toplevel app_id from the GLib
+# program name. It must match the desktop-file basename: moeclock.desktop.
+# Set it before creating any Gtk.Window (the legacy app uses Gtk.Builder).
+GLib.set_prgname("moeclock")
+
+# Keep the X11 class for sessions running through XWayland.
+try:
+    Gdk.set_program_class("MoeClock")
+except Exception:
+    pass
 #import gnome.ui
 import os
 from os.path import abspath, dirname, join
@@ -33,7 +44,7 @@ import ast
 import shlex
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-__VERSION__="1.5.3.0"
+__VERSION__="1.5.2.16"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -273,6 +284,37 @@ class moeclock:
         self.wMain.connect_signals(dicMain)
         self.context_menu =  self.wMain.get_object ("mainMenu")
         mainWindow = self.wMain.get_object("Main")
+        # Request an RGBA visual before the toplevel is realized. This allows
+        # Cairo to leave the rounded wallpaper corners genuinely transparent
+        # instead of changing the native window shape (which is unreliable on
+        # Wayland and can desynchronize the image and client-area dimensions).
+        try:
+            screen = mainWindow.get_screen()
+            rgba_visual = screen.get_rgba_visual() if screen is not None else None
+            if rgba_visual is not None:
+                mainWindow.set_visual(rgba_visual)
+                mainWindow.set_app_paintable(True)
+                self._rgba_visual_enabled = True
+            else:
+                self._rgba_visual_enabled = False
+                logging.warning("RGBA visualを取得できません。角丸の透明表示は制限される場合があります")
+        except Exception:
+            self._rgba_visual_enabled = False
+            logging.exception("RGBA visualの設定に失敗しました")
+        # Set a stable X11/GTK WM_CLASS for desktop-shell icon matching.
+        try:
+            mainWindow.set_wmclass("moeclock", "MoeClock")
+        except Exception:
+            pass
+        # Keep the running application visible in the desktop taskbar/dock.
+        # The previous code hid the window from the taskbar in its normal state.
+        mainWindow.set_skip_taskbar_hint(False)
+        icon_path = join(WHERE_AM_I, "moeclock.png")
+        if os.path.isfile(icon_path):
+            try:
+                mainWindow.set_icon_from_file(icon_path)
+            except Exception as exc:
+                logging.warning("アプリケーションアイコンを設定できません: %s", exc)
         miNotice = self.wMain.get_object("miNotice")
         miNotice.set_active(self.notice)
         miTop = self.wMain.get_object("miTop")
@@ -284,7 +326,12 @@ class moeclock:
         ypos = conf.GetOption("y_pos")
         xsize = conf.GetOption("x_size")
         ysize = conf.GetOption("y_size")
-        mainWindow.move(int(xpos),int(ypos))
+        # Wayland does not expose global window coordinates to GTK clients.
+        # The companion GNOME Shell extension restores the frame geometry.
+        _display = Gdk.Display.get_default()
+        _is_wayland = bool(_display and "wayland" in _display.get_name().lower())
+        if not _is_wayland:
+            mainWindow.move(int(xpos), int(ypos))
         if int(xsize) > 10 and int(ysize) > 10 :
             self.userResize = False
         mainWindow.resize(int(xsize),int(ysize))
@@ -373,6 +420,8 @@ class moeclock:
         #self.wallpaper_list = [ WALLPAPER_PATH+"/" +x for x in tmplist if x.find(".jpg") >= 0 or x.find(".JPG") >= 0 or x.find(".png") >= 0 or x.find(".PNG") >= 0]
         logging.debug(str(self.wallpaper_list))
         self.timeout = GLib.timeout_add_seconds(int(self.timeout_interval),self.timeout_callback,self)
+        # Show only after the RGBA visual has been selected for the toplevel.
+        mainWindow.show_all()
 
     def __getitem__(self, key):
         return self.wTree.get_object (key)
@@ -454,52 +503,56 @@ class moeclock:
         widget.hide()
         return True
 
-    def on_daPict_draw(self,widget, cr, event=None):
-        '''
-        画面表示イベントハンドラ
-        '''
+    def on_daPict_draw(self, widget, cr, event=None):
+        """Draw the wallpaper with alpha-transparent rounded corners."""
+        width = widget.get_allocated_width()
+        height = widget.get_allocated_height()
+        if width <= 0 or height <= 0:
+            return False
+
+        # Always clear the drawing area to transparent. With roundWindow off,
+        # the complete rectangular wallpaper is then painted over it.
+        cr.save()
+        cr.set_operator(cairo.OPERATOR_CLEAR)
+        cr.paint()
+        cr.set_operator(cairo.OPERATOR_OVER)
+
+        if self.roundWindow:
+            radius = max(0.0, min(float(self.round), width / 2.0, height / 2.0))
+            self.roundedrec(cr, 0, 0, width, height, radius, 1, False)
+            cr.close_path()
+            cr.clip()
+
         if self.pixbuf2:
             Gdk.cairo_set_source_pixbuf(cr, self.pixbuf2, 0, 0)
             cr.paint()
             self.userResize = True
+        cr.restore()
+        return False
 
-    def _setWallpaper(self,WallpaperLocation):
-        '''
-        壁紙設定
-        '''
+    def _setWallpaper(self, WallpaperLocation):
+        """Load and size the wallpaper; drawing is performed by GTK's draw signal."""
         try:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
-            # path = self.skin + '/style.css'
-            # if os.path.exists(path) == True and self.drawFrame == False:
-            #     pict.set_visible(False)
-            (xsize,ysize) = mainWindow.get_size()
+            xsize, ysize = mainWindow.get_size()
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(WallpaperLocation)
-            x = float(pixbuf.get_width())
-            y = float(pixbuf.get_height())
-            aspect = y / x
-            self.pixbuf2 = pixbuf.scale_simple(xsize, int(xsize*aspect),2 )
-            cr = pict.get_window().cairo_create()
-            Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0)
-            cr.paint()
+            source_width = float(pixbuf.get_width())
+            source_height = float(pixbuf.get_height())
+            aspect = source_height / source_width
+            target_width = max(1, int(xsize))
+            target_height = max(1, int(target_width * aspect))
+            self.pixbuf2 = pixbuf.scale_simple(target_width, target_height, GdkPixbuf.InterpType.BILINEAR)
             self.userResize = False
-            mainWindow.resize(xsize,int(xsize*aspect))
-            # Apply the rounded shape only after GTK has completed the resize.
-            # The wallpaper pixbuf size is not necessarily the actual GdkWindow
-            # client size (window decorations / allocation timing can differ).
-            if self.roundWindow:
-                GLib.idle_add(self._applyWindowShape)
-            else:
-                mainWindow.shape_combine_region(None)
+            if (xsize, ysize) != (target_width, target_height):
+                mainWindow.resize(target_width, target_height)
+            # Queue after resize so the clip uses the actual DrawingArea size.
             pict.queue_draw()
             del pixbuf
             gc.collect()
             return True
         except Exception as e:
-            print(e)
-            t, v, tb = sys.exc_info()
-            print(traceback.format_exception(t,v,tb))
-            print(traceback.format_tb(e.__traceback__))
+            logging.exception("壁紙の設定に失敗しました: %s", e)
             return False
 
     def _changeWallPaper(self):
@@ -540,10 +593,15 @@ class moeclock:
         conf.SetOption("color",self.color)
         conf.SetOption("notice",str(self.notice))
         conf.SetOption("alwaysTop",str(self.alwaysTop))
-        (xpos, ypos) = mainWindow.get_position()
         (xsize, ysize) = mainWindow.get_size()
-        conf.SetOption("x_pos",xpos)
-        conf.SetOption("y_pos",ypos)
+        _display = Gdk.Display.get_default()
+        _is_wayland = bool(_display and "wayland" in _display.get_name().lower())
+        # Do not overwrite the last valid coordinates with Wayland's placeholder
+        # (often 0,0). GNOME Shell companion extension owns Wayland geometry.
+        if not _is_wayland:
+            xpos, ypos = mainWindow.get_position()
+            conf.SetOption("x_pos", xpos)
+            conf.SetOption("y_pos", ypos)
         conf.SetOption("x_size",xsize)
         conf.SetOption("y_size",ysize)
         conf.SetOption("weekOffset",self.weekOffset)
@@ -593,19 +651,61 @@ class moeclock:
         mainWindow = self.wMain.get_object("Main")
         mainWindow.set_keep_above(self.alwaysTop)
 
-    def on_miDecorate_toggled(self,widget):
-        '''
-        タイトルバー表示切り替え
-        実際はウィンドウ装飾を切り替える
-        '''
+    def on_miDecorate_toggled(self, widget):
+        """タイトルバー（ウィンドウ装飾）の表示を切り替える。
+
+        Waylandでは、表示済みGtkWindowに対するset_decorated()の変更が
+        コンポジターへ反映されないことがある。いったんunrealizeしてから
+        装飾状態を設定し直し、新しいsurfaceとして表示する。
+        """
         self.windowDecorate = widget.get_active()
         mainWindow = self.wMain.get_object("Main")
+
+        # 初期化中（まだrealizeされていない状態）はプロパティだけ設定する。
+        if not mainWindow.get_realized():
+            mainWindow.set_decorated(self.windowDecorate)
+            return
+
+        width, height = mainWindow.get_size()
+        was_visible = mainWindow.get_visible()
+
+        # GTK/Wayland cannot reliably report a toplevel's global position:
+        # get_position() commonly returns a stale/placeholder coordinate because
+        # Wayland intentionally does not expose global window coordinates.
+        # Reapplying that value after unmapping the window can make the compositor
+        # put the window back at its previous placement. Only preserve coordinates
+        # on X11, where they are meaningful. On Wayland, let the compositor retain
+        # its own placement across the decoration-surface recreation.
+        display = Gdk.Display.get_default()
+        display_name = display.get_name().lower() if display is not None else ""
+        is_wayland = "wayland" in display_name
+        old_position = None if is_wayland else mainWindow.get_position()
+
+        # Recreate the native surface so Wayland receives the new decoration mode.
+        # Do not attempt to move the Wayland window here: GTK cannot provide a
+        # reliable global position on Wayland. The GNOME Shell companion tracks
+        # the replacement Meta.Window and reapplies the saved frame position.
+        # Preserve the GTK client size across the surface recreation.
+        mainWindow.hide()
+        mainWindow.unrealize()
         mainWindow.set_decorated(self.windowDecorate)
-        (xsize, ysize) = mainWindow.get_size()
-        mainWindow.resize(xsize,40)
-        while Gtk.events_pending():
-            Gtk.main_iteration_do(False)
-        self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
+        mainWindow.realize()
+        mainWindow.resize(max(1, width), max(1, height))
+        if old_position is not None:
+            mainWindow.move(int(old_position[0]), int(old_position[1]))
+
+        if was_visible:
+            mainWindow.show_all()
+        mainWindow.queue_draw()
+        GLib.idle_add(self._refreshWallpaperAfterDecoration)
+
+    def _refreshWallpaperAfterDecoration(self):
+        """再表示後に壁紙を描き直す。"""
+        if hasattr(self, "pixbuf2") and self.pixbuf2 is not None:
+            pict = self.wMain.get_object("daPict")
+            if pict is not None:
+                pict.queue_draw()
+        return GLib.SOURCE_REMOVE
         
     def on_miMicro_activate(self,widget):
         '''
@@ -835,11 +935,12 @@ class moeclock:
         '''
         mainWindow = self.wMain.get_object("Main")
         if event.new_window_state & Gdk.WindowState.ICONIFIED:
-            mainWindow.set_skip_taskbar_hint(False)
             self.iconifed = True
         else:
-            mainWindow.set_skip_taskbar_hint(True)
             self.iconifed = False
+        # Do not toggle skip_taskbar_hint here: the window must remain
+        # represented in the desktop taskbar/dock while it is running.
+        mainWindow.set_skip_taskbar_hint(False)
 
     def on_Main_focus_in_event(self,widget,event):
         '''
@@ -1157,52 +1258,14 @@ class moeclock:
             return False
 
     def _applyWindowShape(self):
-        """Apply rounded corners using the actual GTK client-window size."""
+        """Compatibility hook: refresh Cairo alpha clipping instead of X11 shape."""
         try:
-            mainWindow = self.wMain.get_object("Main")
-            gdkWindow = mainWindow.get_window()
-            if not self.roundWindow:
-                mainWindow.shape_combine_region(None)
-                return GLib.SOURCE_REMOVE
-            if gdkWindow is None:
-                return GLib.SOURCE_REMOVE
-
-            # Use the realized GdkWindow dimensions, not the wallpaper pixbuf.
-            # This avoids clipping/misalignment when GTK allocates the client
-            # area at a size different from the requested resize dimensions.
-            width = gdkWindow.get_width()
-            height = gdkWindow.get_height()
-            if width <= 0 or height <= 0:
-                return GLib.SOURCE_REMOVE
-
-            region = self.createRegion(width, height)
-            mainWindow.shape_combine_region(region)
-            return GLib.SOURCE_REMOVE
+            pict = self.wMain.get_object("daPict")
+            if pict is not None:
+                pict.queue_draw()
         except Exception:
-            logging.exception("角丸ウィンドウ領域の適用に失敗しました")
-            return GLib.SOURCE_REMOVE
-
-    def createRegion(self, width, height):
-        """Create a rounded region matching the actual client area."""
-        x = max(1, int(width))
-        y = max(1, int(height))
-        mask = cairo.ImageSurface(cairo.FORMAT_ARGB32, x, y)
-        ctx = cairo.Context(mask)
-        ctx.set_operator(cairo.OPERATOR_CLEAR)
-        ctx.paint()
-        ctx.set_operator(cairo.OPERATOR_OVER)
-        ctx.set_source_rgb(1.0, 1.0, 1.0)
-
-        # Keep the configured radius, but prevent corners from crossing on
-        # small windows. A one-pixel inset keeps the antialiased edge in bounds.
-        radius = max(0.0, min(float(self.round), x / 2.0, y / 2.0))
-        self.roundedrec(ctx, 0, 0, x, y, radius, 1, False)
-        ctx.close_path()
-        ctx.fill()
-
-        region = Gdk.cairo_region_create_from_surface(mask)
-        mask.finish()
-        return region
+            logging.exception("角丸描画の更新に失敗しました")
+        return GLib.SOURCE_REMOVE
 
     def execCommand(self,command):
         '''

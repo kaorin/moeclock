@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="moeclock",
-    version="1.5.2.16",
+    version="1.5.2.26",
     description="Desktop clock with image skins",
     author="Kaoru Konno",
     url="https://github.com/kaorin/moeclock",

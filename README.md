@@ -53,7 +53,7 @@ sudo apt install python3 python3-gi python3-gi-cairo python3-cairo \
 ```
 
 
-## Waylandでのウィンドウ位置復元（1.5.2.16）
+## Waylandでのウィンドウ位置復元（1.5.2.18）
 
 WaylandではGTKアプリから画面全体の絶対座標を取得・指定できないため、GNOME Shell拡張を併用します。インストーラーは `gnome-extension/` をログインユーザーの `~/.local/share/gnome-shell/extensions/moeclock-position-restore@local/` に配置し、ログイン中のGNOMEセッションのD-Busを指定して有効化します。有効化に失敗した場合は、端末で `gnome-extensions enable moeclock-position-restore@local` を実行してください。
 
@@ -334,7 +334,7 @@ TOYさん、ありがとうございます。
 GNOME Shell拡張の無効化時に、追跡中ウィンドウの座標を保存しないようにしました。無効化時の古い／中央配置のフレームが、ユーザーの保存位置を上書きする問題を防ぎます。拡張機能バージョンは5です。
 
 
-### 1.5.2.16 修正
+### 1.5.2.18 修正
 
 - Waylandでタイトルバーを切り替えた際、再生成されたMutterウィンドウに保存位置を再適用します。
 - 復元処理を `move_resize_frame()` から `move_frame()` に変更し、復元時にウィンドウサイズを強制変更しないようにしました。
@@ -342,3 +342,11 @@ GNOME Shell拡張の無効化時に、追跡中ウィンドウの座標を保存
 - タイトルバー切り替えで破棄される旧ウィンドウの一時座標を保存しません。
 - GNOME Shell拡張のバージョンを7に更新しました。
 - タイトルバーを再表示した際にも、切り替え前の正常な位置を維持するよう調整しました。
+
+
+## 1.5.2.18
+タイトルバー非表示時に消えるウィンドウ影を、GTK CSSによる独自ドロップシャドウで補います。タイトルバー表示時はGNOME標準の影を使用します。
+
+## 1.5.2.26
+- GTK DrawingAreaをno-windowモードにし、RGBAトップレベルサーフェスへ直接描画するよう変更。
+- 角丸マスクを単一の閉じたCairoパスで構築し、透明な四隅を正しくクリップするよう修正。

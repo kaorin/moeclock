@@ -44,7 +44,7 @@ import ast
 import shlex
 
 WALLPAPER_PATH = "/home/kaoru/themes/BackGround/used-wallpaper"
-__VERSION__="1.5.2.16"
+__VERSION__="1.5.2.26"
 NAME="moeclock"
 APP = 'moeclock'
 WHERE_AM_I = abspath(dirname(__file__))
@@ -284,6 +284,31 @@ class moeclock:
         self.wMain.connect_signals(dicMain)
         self.context_menu =  self.wMain.get_object ("mainMenu")
         mainWindow = self.wMain.get_object("Main")
+        # Draw the shadow on a dedicated transparent canvas. GTK CSS box-shadow
+        # on a Wayland toplevel is clipped at the native surface boundary, so it
+        # cannot create visible pixels outside the window. The outer canvas
+        # reserves real transparent space around the wallpaper for Cairo shadow.
+        self._shadow_padding = 14
+        self._shadow_enabled = not self.windowDecorate
+        self.shadowArea = self.wMain.get_object("shadowArea")
+        self.daPict = self.wMain.get_object("daPict")
+        # The wallpaper DrawingArea must not let GTK's default draw handler
+        # repaint its background after our CLEAR + rounded-clip Cairo pass.
+        # Otherwise the transparent corner mask can be filled back in.
+        self.daPict.set_app_paintable(True)
+        # Draw directly into the RGBA toplevel surface. A child GdkWindow
+        # can use an opaque visual and defeat per-pixel alpha at rounded corners.
+        self.daPict.set_has_window(False)
+        # Keep the shadow canvas transparent and fully allocated behind the
+        # wallpaper. Returning True from its draw handler prevents GTK's
+        # default background rendering from painting over the Cairo shadow.
+        self.shadowArea.set_app_paintable(True)
+        self.shadowArea.set_hexpand(True)
+        self.shadowArea.set_vexpand(True)
+        self.daPict.set_halign(Gtk.Align.FILL)
+        self.daPict.set_valign(Gtk.Align.FILL)
+        self.shadowArea.connect("draw", self.on_shadowArea_draw)
+        self._update_custom_shadow(mainWindow)
         # Request an RGBA visual before the toplevel is realized. This allows
         # Cairo to leave the rounded wallpaper corners genuinely transparent
         # instead of changing the native window shape (which is unreliable on
@@ -334,7 +359,8 @@ class moeclock:
             mainWindow.move(int(xpos), int(ypos))
         if int(xsize) > 10 and int(ysize) > 10 :
             self.userResize = False
-        mainWindow.resize(int(xsize),int(ysize))
+        _pad = self._shadow_padding if self._shadow_enabled else 0
+        mainWindow.resize(int(xsize) + 2 * _pad, int(ysize) + 2 * _pad)
         mainWindow.set_keep_above(self.alwaysTop)
         #ダイアログを作成
         self.wTree = Gtk.Builder()
@@ -519,7 +545,17 @@ class moeclock:
 
         if self.roundWindow:
             radius = max(0.0, min(float(self.round), width / 2.0, height / 2.0))
-            self.roundedrec(cr, 0, 0, width, height, radius, 1, False)
+            # Build a single closed rounded-rectangle path. The legacy
+            # roundedrec() helper starts an extra sub-path at (x, y), which
+            # is suitable for stroking but can corrupt a fill/clip mask.
+            x0, y0 = 0.0, 0.0
+            x1, y1 = float(width), float(height)
+            r = radius
+            cr.new_sub_path()
+            cr.arc(x1-r, y0+r, r, -math.pi/2.0, 0.0)
+            cr.arc(x1-r, y1-r, r, 0.0, math.pi/2.0)
+            cr.arc(x0+r, y1-r, r, math.pi/2.0, math.pi)
+            cr.arc(x0+r, y0+r, r, math.pi, 3.0*math.pi/2.0)
             cr.close_path()
             cr.clip()
 
@@ -527,15 +563,42 @@ class moeclock:
             Gdk.cairo_set_source_pixbuf(cr, self.pixbuf2, 0, 0)
             cr.paint()
             self.userResize = True
+
+        # Draw the configurable frame LAST, above the wallpaper and shadow
+        # layers. Previously the frame was baked into the generated wallpaper
+        # pixbuf and could be covered/replaced during redraws and rounded-mask
+        # clipping. Keep the stroke inside the allocation so it is not clipped.
+        if self.drawFrame:
+            line_width = max(0.5, float(self.lineWidth))
+            inset = line_width / 2.0 + 0.5
+            x0, y0 = inset, inset
+            x1, y1 = float(width) - inset, float(height) - inset
+            radius = max(0.0, min(float(self.round), (x1-x0)/2.0, (y1-y0)/2.0))
+            col = parse_color(self.color)
+            cr.set_operator(cairo.OPERATOR_OVER)
+            cr.set_source_rgb(col.red, col.green, col.blue)
+            cr.set_line_width(line_width)
+            cr.new_sub_path()
+            cr.arc(x1-radius, y0+radius, radius, -math.pi/2.0, 0.0)
+            cr.arc(x1-radius, y1-radius, radius, 0.0, math.pi/2.0)
+            cr.arc(x0+radius, y1-radius, radius, math.pi/2.0, math.pi)
+            cr.arc(x0+radius, y0+radius, radius, math.pi, 3.0*math.pi/2.0)
+            cr.close_path()
+            cr.stroke()
         cr.restore()
-        return False
+        # We fully handled this DrawingArea.  Stop GTK's default draw handler
+        # from painting an opaque style background over the transparent mask.
+        return True
 
     def _setWallpaper(self, WallpaperLocation):
         """Load and size the wallpaper; drawing is performed by GTK's draw signal."""
         try:
             mainWindow = self.wMain.get_object("Main")
             pict = self.wMain.get_object("daPict")
-            xsize, ysize = mainWindow.get_size()
+            window_width, window_height = mainWindow.get_size()
+            pad = self._shadow_padding if self._shadow_enabled else 0
+            xsize = max(1, window_width - 2 * pad)
+            ysize = max(1, window_height - 2 * pad)
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(WallpaperLocation)
             source_width = float(pixbuf.get_width())
             source_height = float(pixbuf.get_height())
@@ -544,8 +607,10 @@ class moeclock:
             target_height = max(1, int(target_width * aspect))
             self.pixbuf2 = pixbuf.scale_simple(target_width, target_height, GdkPixbuf.InterpType.BILINEAR)
             self.userResize = False
-            if (xsize, ysize) != (target_width, target_height):
-                mainWindow.resize(target_width, target_height)
+            target_window_width = target_width + 2 * pad
+            target_window_height = target_height + 2 * pad
+            if (window_width, window_height) != (target_window_width, target_window_height):
+                mainWindow.resize(target_window_width, target_window_height)
             # Queue after resize so the clip uses the actual DrawingArea size.
             pict.queue_draw()
             del pixbuf
@@ -594,6 +659,9 @@ class moeclock:
         conf.SetOption("notice",str(self.notice))
         conf.SetOption("alwaysTop",str(self.alwaysTop))
         (xsize, ysize) = mainWindow.get_size()
+        _save_pad = self._shadow_padding if self._shadow_enabled else 0
+        xsize = max(1, xsize - 2 * _save_pad)
+        ysize = max(1, ysize - 2 * _save_pad)
         _display = Gdk.Display.get_default()
         _is_wayland = bool(_display and "wayland" in _display.get_name().lower())
         # Do not overwrite the last valid coordinates with Wayland's placeholder
@@ -651,6 +719,77 @@ class moeclock:
         mainWindow = self.wMain.get_object("Main")
         mainWindow.set_keep_above(self.alwaysTop)
 
+    def _update_custom_shadow(self, mainWindow=None):
+        """Reserve transparent outer padding and redraw the custom Cairo shadow."""
+        try:
+            if mainWindow is None:
+                mainWindow = self.wMain.get_object("Main")
+            self._shadow_enabled = not self.windowDecorate
+            pad = self._shadow_padding if self._shadow_enabled else 0
+            pict = self.wMain.get_object("daPict")
+            pict.set_margin_start(pad)
+            pict.set_margin_end(pad)
+            pict.set_margin_top(pad)
+            pict.set_margin_bottom(pad)
+            if hasattr(self, "shadowArea"):
+                self.shadowArea.queue_draw()
+            pict.queue_draw()
+        except Exception:
+            logging.exception("独自ウィンドウ影の更新に失敗しました")
+
+    def on_shadowArea_draw(self, widget, cr):
+        """Draw a soft, GNOME-like drop shadow behind the wallpaper.
+
+        The shadow is made from nested filled rounded rectangles, not stroked
+        outlines.  This avoids the dark hairline seen in the previous build
+        and produces a smooth falloff similar to Mutter's normal window shadow.
+        The GtkOverlay paints the wallpaper above this canvas, hiding the
+        inner part of the shadow while the RGBA margins remain transparent.
+        """
+        if not self._shadow_enabled:
+            cr.save()
+            cr.set_operator(cairo.OPERATOR_CLEAR)
+            cr.paint()
+            cr.restore()
+            return True
+
+        width = float(widget.get_allocated_width())
+        height = float(widget.get_allocated_height())
+        pad = float(self._shadow_padding)
+        image_w = max(1.0, width - 2.0 * pad)
+        image_h = max(1.0, height - 2.0 * pad)
+        radius = float(getattr(self, "round", 10) if self.roundWindow else 3)
+        radius = max(1.0, min(radius, image_w / 2.0, image_h / 2.0))
+
+        cr.save()
+        cr.set_operator(cairo.OPERATOR_CLEAR)
+        cr.paint()
+        cr.set_operator(cairo.OPERATOR_OVER)
+        cr.set_antialias(cairo.ANTIALIAS_BEST)
+
+        # Build a gradual alpha falloff.  Large, very faint silhouettes form
+        # the diffuse outer halo; smaller silhouettes deepen only near the
+        # wallpaper edge.  A slight downward offset mimics a natural desktop
+        # window shadow without creating a hard black border.
+        layers = 40
+        max_spread = max(1.0, pad - 1.0)
+        for i in range(layers, 0, -1):
+            t = float(i) / float(layers)  # 1 at outer edge, 0 near image edge
+            spread = t * max_spread
+            alpha = 0.0060 + (1.0 - t) * 0.0200
+            x = pad - spread
+            y = pad + 4.0 - spread
+            w = image_w + 2.0 * spread
+            h = image_h + 2.0 * spread
+            r = min(radius + spread, w / 2.0, h / 2.0)
+            self.roundedrec(cr, x, y, w, h, r, 1, False)
+            cr.close_path()
+            cr.set_source_rgba(0.0, 0.0, 0.0, alpha)
+            cr.fill()
+
+        cr.restore()
+        return True
+
     def on_miDecorate_toggled(self, widget):
         """タイトルバー（ウィンドウ装飾）の表示を切り替える。
 
@@ -658,8 +797,11 @@ class moeclock:
         コンポジターへ反映されないことがある。いったんunrealizeしてから
         装飾状態を設定し直し、新しいsurfaceとして表示する。
         """
+        previous_decorated = self.windowDecorate
+        previous_pad = 0 if previous_decorated else self._shadow_padding
         self.windowDecorate = widget.get_active()
         mainWindow = self.wMain.get_object("Main")
+        self._update_custom_shadow(mainWindow)
 
         # 初期化中（まだrealizeされていない状態）はプロパティだけ設定する。
         if not mainWindow.get_realized():
@@ -667,6 +809,8 @@ class moeclock:
             return
 
         width, height = mainWindow.get_size()
+        image_width = max(1, width - 2 * previous_pad)
+        image_height = max(1, height - 2 * previous_pad)
         was_visible = mainWindow.get_visible()
 
         # GTK/Wayland cannot reliably report a toplevel's global position:
@@ -690,12 +834,14 @@ class moeclock:
         mainWindow.unrealize()
         mainWindow.set_decorated(self.windowDecorate)
         mainWindow.realize()
-        mainWindow.resize(max(1, width), max(1, height))
+        new_pad = self._shadow_padding if self._shadow_enabled else 0
+        mainWindow.resize(image_width + 2 * new_pad, image_height + 2 * new_pad)
         if old_position is not None:
             mainWindow.move(int(old_position[0]), int(old_position[1]))
 
         if was_visible:
             mainWindow.show_all()
+        self._update_custom_shadow(mainWindow)
         mainWindow.queue_draw()
         GLib.idle_add(self._refreshWallpaperAfterDecoration)
 
@@ -712,7 +858,7 @@ class moeclock:
         表示サイズ変更：最小
         '''
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.resize(280,88)
+        mainWindow.resize(280 + 2 * (self._shadow_padding if self._shadow_enabled else 0),88 + 2 * (self._shadow_padding if self._shadow_enabled else 0))
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -722,7 +868,7 @@ class moeclock:
         表示サイズ変更：小
         '''
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.resize(320,180)
+        mainWindow.resize(320 + 2 * (self._shadow_padding if self._shadow_enabled else 0),180 + 2 * (self._shadow_padding if self._shadow_enabled else 0))
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -732,7 +878,7 @@ class moeclock:
         表示サイズ変更：中
         '''
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.resize(400,225)
+        mainWindow.resize(400 + 2 * (self._shadow_padding if self._shadow_enabled else 0),225 + 2 * (self._shadow_padding if self._shadow_enabled else 0))
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -742,7 +888,7 @@ class moeclock:
         表示サイズ変更：大
         '''
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.resize(480,270)
+        mainWindow.resize(480 + 2 * (self._shadow_padding if self._shadow_enabled else 0),270 + 2 * (self._shadow_padding if self._shadow_enabled else 0))
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -752,7 +898,7 @@ class moeclock:
         表示サイズ変更：特大
         '''
         mainWindow = self.wMain.get_object("Main")
-        mainWindow.resize(640,360)
+        mainWindow.resize(640 + 2 * (self._shadow_padding if self._shadow_enabled else 0),360 + 2 * (self._shadow_padding if self._shadow_enabled else 0))
         while Gtk.events_pending():
             Gtk.main_iteration_do(False)
         self.timeout2 = GLib.timeout_add(100,self.chanegSize_callback,self)
@@ -1229,12 +1375,7 @@ class moeclock:
             if s4 != None:
                 ctx.set_source_surface(s4,0,0)
                 ctx.paint()
-            if self.drawFrame == True:
-                col = parse_color(self.color)
-                ctx.set_source_rgb(col.red, col.green, col.blue)
-                self.roundedrec(ctx, 0, 0, pixbufWall.get_width(), pixbufWall.get_height(), self.round, self.lineWidth)
-                ctx.close_path()
-                ctx.stroke()
+            # The frame is drawn in on_daPict_draw after the wallpaper pass.
             s1.write_to_png('/tmp/moeclock.png')
             del s1
             del s2
